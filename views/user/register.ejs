@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+  </head>
+  <body>
+    <div class="sidenav">
+      <div class="login-main-text">
+        <h2>
+          1tok1<br />
+          Register
+        </h2>
+        <p>Login or register from here to access.</p>
+      </div>
+    </div>
+    <div class="main">
+      <div class="col-md-6 col-sm-12">
+        <div class="login-form">
+          <form>
+            <div class="form-group">
+              <label>User Name</label>
+              <input type="text" class="form-control" placeholder="User Name" />
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="text" class="form-control" placeholder="Email" />
+              </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                class="form-control"
+                placeholder="Password"
+              />
+            </div>
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  placeholder="Password"
+                />
+              </div>
+            <button type="button" class="btn btn-black" onclick="location.href='/home'">Register</button>
+            <button type="button" class="btn btn-light" onclick="location.href='/user/login'">Login</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
