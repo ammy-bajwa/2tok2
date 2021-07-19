@@ -3,7 +3,11 @@ var router = express.Router();
 var dbConn  = require('../db')
 
 router.get('/', function(req, res, next) {
-    res.render('home',{data:[]});
+    if(req.session.loggedIn){
+     res.render('home',{data:[]});
+    }else{
+    res.redirect('/');
+    }
 });
 router.get('/add', function(req, res, next) {    
     // render to add.ejs

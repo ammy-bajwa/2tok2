@@ -5,6 +5,8 @@ exports.up = function(knex, Promise) {
       username TEXT,
       token TEXT,
       admin BIT,
+      verified BIT,
+      active BIT,
       password_digest TEXT,
       createdAt TIMESTAMP
     )`;

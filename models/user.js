@@ -4,6 +4,7 @@ const crypto = require("crypto");
 
 const signup = (request, response) => {
   const user = request.body;
+  console.log('user',user)
   hashPassword(user.password)
     .then((hashedPassword) => {
       delete user.password;
@@ -14,9 +15,13 @@ const signup = (request, response) => {
     .then(() => createUser(user))
     .then((user) => {
       delete user.password_digest;
-      response.status(201).json({ user });
+      request.session.loggedIn = true
+      response.redirect('/home')
     })
-    .catch((err) => console.error(err));
+    .catch((err) => {
+      response.render('user/register',{messages:{error:err.messages}})
+      console.error(err)
+    });
 };
 // app/models/user.js
 const signin = (request, response) => {
@@ -30,11 +35,16 @@ const signin = (request, response) => {
     })
     .then((res) => createToken())
     .then((token) => updateUserToken(token, user))
-    .then(() => {
+    .then((loggedUser) => {
+      console.log('loggedUser')
       delete user.password_digest;
-      response.status(200).json(user);
+      request.session.loggedIn = true
+      response.redirect('/home')
     })
-    .catch((err) => console.error(err));
+    .catch((err) => {
+      response.render('user/login',{messages:{error:err.messages}})
+      console.error(err)
+    });
 };
 const findUser = (userReq) => {
   return database
@@ -103,8 +113,8 @@ const hashPassword = (password) => {
 const createUser = (user) => {
   return database
     .raw(
-      "INSERT INTO users (username, password_digest, token, created_at) VALUES (?, ?, ?, ?) RETURNING id, username, created_at, token",
-      [user.username, user.password_digest, user.token, new Date()]
+      "INSERT INTO users (username,email, password_digest, token, created_at) VALUES (?,?, ?, ?, ?) RETURNING id, username, created_at, token",
+      [user.username, user.email,user.password_digest, user.token, new Date()]
     )
     .then((data) => data.rows[0]);
 };

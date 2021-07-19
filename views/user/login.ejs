@@ -36,6 +36,9 @@
                 placeholder="Password"
               />
             </div>
+            <% if (messages.error) { %>
+              <div class="alert alert-danger" role="alert"><%- messages.error %></div>
+              <% } %>
             <button type="button" class="btn btn-black" onclick="location.href='/home'">Login</button>
             <button type="button" class="btn btn-light" onclick="location.href='/user/register'">Register</button>
           </form>
