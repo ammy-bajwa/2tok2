@@ -4,12 +4,14 @@ var router = express.Router();
 const userModels = require('../models/user')
 /* GET users listing. */
 router.get('/login', function(req, res, next) {
-  //res.render('user/login')
+  res.render('user/login',{layout: false})
+});
+router.post('/login', function(req, res, next) {
   userModels.signin(req,res)
 });
 
 router.get('/register', function(req, res, next) {
-  res.render('user/register')
+  res.render('user/register',{layout: false})
 });
 
 router.post('/register', function(req, res, next) {
@@ -20,6 +22,11 @@ router.post('/register', function(req, res, next) {
   }else{
     res.render('user/register',{messages:{error:'Password not match!'}})
   }
+});
+router.get('/logout', function(req, res, next) {
+  req.session.loggedIn = false
+  req.session.loggedUser = null
+  res.redirect('/');
 });
 
 module.exports = router;

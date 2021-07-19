@@ -13,13 +13,14 @@ const signup = (request, response) => {
     .then(() => createToken())
     .then((token) => (user.token = token))
     .then(() => createUser(user))
-    .then((user) => {
+    .then((_user) => {
       delete user.password_digest;
       request.session.loggedIn = true
+      request.session.loggedUser = _user
       response.redirect('/home')
     })
     .catch((err) => {
-      response.render('user/register',{messages:{error:err.messages}})
+      response.render('user/register',{messages:{error:'Something went wrong!'},layout: false})
       console.error(err)
     });
 };
@@ -36,19 +37,21 @@ const signin = (request, response) => {
     .then((res) => createToken())
     .then((token) => updateUserToken(token, user))
     .then((loggedUser) => {
-      console.log('loggedUser')
       delete user.password_digest;
       request.session.loggedIn = true
+      console.log('loggedUser',loggedUser)
+      request.session.isAdmin = loggedUser.admin == 1
+      request.session.loggedUser = loggedUser
       response.redirect('/home')
     })
     .catch((err) => {
-      response.render('user/login',{messages:{error:err.messages}})
+      response.render('user/login',{messages:{error:'Invalid credentials !'},layout: false})
       console.error(err)
     });
 };
 const findUser = (userReq) => {
   return database
-    .raw("SELECT * FROM users WHERE username = ?", [userReq.username])
+    .raw("SELECT * FROM users WHERE email = ?", [userReq.email])
     .then((data) => data.rows[0]);
 };
 const checkPassword = (reqPassword, foundUser) => {
@@ -67,7 +70,7 @@ const checkPassword = (reqPassword, foundUser) => {
 const updateUserToken = (token, user) => {
   return database
     .raw(
-      "UPDATE users SET token = ? WHERE id = ? RETURNING id, username, token",
+      "UPDATE users SET token = ? WHERE id = ? RETURNING id,email,admin, username, token",
       [token, user.id]
     )
     .then((data) => data.rows[0]);
@@ -113,7 +116,7 @@ const hashPassword = (password) => {
 const createUser = (user) => {
   return database
     .raw(
-      "INSERT INTO users (username,email, password_digest, token, created_at) VALUES (?,?, ?, ?, ?) RETURNING id, username, created_at, token",
+      "INSERT INTO users (username,email, password_digest, token, createdAt) VALUES (?,?, ?, ?, ?) RETURNING id, username,email, createdAt, token",
       [user.username, user.email,user.password_digest, user.token, new Date()]
     )
     .then((data) => data.rows[0]);

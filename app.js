@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var flash = require('express-flash');
 var session = require('express-session');
+const expressLayouts = require('express-ejs-layouts')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/user');
@@ -14,8 +15,12 @@ var homeRouter = require('./routes/home');
 var app = express();
 
 // view engine setup
+app.use(expressLayouts)
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set('layout', './layouts/full-width')
+app.set('view engine', 'ejs')
+
+
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -24,7 +29,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({ 
-    cookie: { maxAge: 60000 },
+    cookie: { maxAge: 24 * 60 * 60 * 1000 },
     store: new session.MemoryStore,
     saveUninitialized: true,
     resave: 'true',

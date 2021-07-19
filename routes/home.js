@@ -3,8 +3,10 @@ var router = express.Router();
 var dbConn  = require('../db')
 
 router.get('/', function(req, res, next) {
+    const userName = req.session?.loggedUser?.username
     if(req.session.loggedIn){
-     res.render('home',{data:[]});
+        console.log('req.session.isAdmin',req.session.isAdmin)
+     res.render('home',{data:[],title:'home',userName,isAdmin:req.session.isAdmin});
     }else{
     res.redirect('/');
     }
