@@ -1,140 +1,322 @@
-<div class="container" style="margin-top: 20px">
+<div id="tradeApp" class="container" style="margin-top: 20px">
   <% if (messages.success) { %>
-  <div class="alert alert-success" role="alert"><%- messages.success %></div>
-  <% } %> <% if (messages.error) { %>
-  <div class="alert alert-danger" role="alert"><%- messages.error %></div>
-  <% } %>
+    <div class="alert alert-success" role="alert">
+      <%- messages.success %>
+    </div>
+    <% } %>
+      <% if (messages.error) { %>
+        <div class="alert alert-danger" role="alert">
+          <%- messages.error %>
+        </div>
+        <% } %>
 
-  <div class="card">
-    <div class="card-header">
-      <ul class="nav nav-pills w-100">
-        <li class="nav-pill active">
-          <a class="nav-link">Balances</a>
-        </li>
-        <li class="nav-pill ml-auto">
-          <button type="submit" class="btn btn-primary">Send</button>
-          <button type="submit" class="btn btn-success">Deposit</button>
-          <button type="submit" class="btn btn-warning">Withdrawal</button>
-        </li>
-        <!-- <li class="nav-pill ml-auto">
+          <div class="card">
+            <div class="card-header">
+              <ul class="nav nav-pills w-100">
+                <li class="nav-pill active">
+                  <a class="nav-link">Balances</a>
+                </li>
+                <li class="nav-pill ml-auto">
+                  <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#sendModal">
+                    Send
+                  </button>
+                  <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#depositModal">
+                    Deposit
+                  </button>
+                  <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#withdrawalModal">
+                    Withdrawal
+                  </button>
+                </li>
+                <!-- <li class="nav-pill ml-auto">
           <a class="nav-link active">Send</a>
           <a class="nav-link active">Deposit</a>
           <a class="nav-link active">Withdrawal</a>
         </li> -->
-      </ul>
-    </div>
-    <div class="card-body">
-      <% if(data.length) { %>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Author</th>
-            <th width="200px">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for(var i = 0; i< data.length; i++) { %>
-          <tr>
-            <th scope="row"><%= (i+1) %></th>
-            <td><%= data[i].name%></td>
-            <td><%= data[i].author%></td>
-            <td>
-              <a
-                class="btn btn-success edit"
-                href="../books/edit/<%=data[i].id%>"
-                >Edit</a
-              >
-              <a
-                class="btn btn-danger delete"
-                onclick="return alert('Are You sure?')"
-                href="../books/delete/<%=data[i].id%>"
-                >Delete</a
-              >
-            </td>
-          </tr>
-          <% } %>
-        </tbody>
-      </table>
-      <% } %>
-
-      <!-- if result is empty -->
-      <% if(!data.length) { %>
-      <p class="text-center">No Balance!</p>
-      <% } %>
-    </div>
-  </div>
-
-  <div class="card" style="margin-top: 20px;">
-    <div class="card-header">
-      <ul class="nav nav-pills w-100">
-        <li class="nav-pill active">
-          <a class="nav-link">Exchange</a>
-        </li>
-      </ul>
-    </div>
-    <div class="card-body">
-      <center><h3>Cryptocurrency exchange</h3></center>
-      <span style="height: 10px;width: 100%;display: block;"></span>
-      <div style="display: flex;flex-direction: row">
-        <div class="form-group"  style="flex: 1;margin-right: 10px;">
-          <label for="exampleFormControlSelect1">From currency</label>
-          <select class="form-control" id="exampleFormControlSelect1">
-            <option>Bitcoin</option>
-            <option>Ethereum</option>
-            <option>Euro</option>
-            <option>Tether</option>
-          </select>
-        </div>
-        <div class="form-group"  style="flex: 1">
-          <label for="exampleFormControlSelect1">To currency</label>
-          <select class="form-control" id="exampleFormControlSelect1">
-            <option>Bitcoin</option>
-            <option>Ethereum</option>
-            <option>Euro</option>
-            <option>Tether</option>
-          </select>
-        </div>
-      </div>
-      <div style="display: flex;flex-direction: row">
-        <div style="flex: 1;margin-right: 10px;">
-          <label for="basic-url">Your Pay</label>
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon3"
-                >BTC</span
-              >
+              </ul>
             </div>
-            <input
-              type="text"
-              class="form-control"
-              id="basic-url"
-              aria-describedby="basic-addon3"
-            />
-          </div>
-          </div>
-          <div style="flex: 1">
-          <label for="basic-url">Your recive</label>
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <span class="input-group-text" id="basic-addon3"
-                >EUR</span
-              >
+            <div class="card-body">
+              <% if(data.length) { %>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Author</th>
+                      <th width="200px">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for(var i=0; i< data.length; i++) { %>
+                      <tr>
+                        <th scope="row">
+                          <%= (i+1) %>
+                        </th>
+                        <td>
+                          <%= data[i].name%>
+                        </td>
+                        <td>
+                          <%= data[i].author%>
+                        </td>
+                        <td>
+                          <a class="btn btn-success edit" href="../books/edit/<%=data[i].id%>">Edit</a>
+                          <a class="btn btn-danger delete" onclick="return alert('Are You sure?')"
+                            href="../books/delete/<%=data[i].id%>">Delete</a>
+                        </td>
+                      </tr>
+                      <% } %>
+                  </tbody>
+                </table>
+                <% } %>
+
+                  <!-- if result is empty -->
+                  <% if(!data.length) { %>
+                    <p class="text-center">No Balance!</p>
+                    <% } %>
             </div>
-            <input
-              type="text"
-              class="form-control"
-              id="basic-url"
-              aria-describedby="basic-addon3"
-            />
           </div>
-        </div>
-      </div>
-      <span style="height: 10px;width: 100%;display: block;"></span>
-      <center><button type="button" class="btn btn-outline-primary">Exchange</button></center>
-      <span style="height: 10px;width: 100%;display: block;"></span>
-      <center><p style="font-size: 10px;">Included fee is: (0.80 %)</p></center>
-    </div>
-  </div>
+
+          <div class="card" style="margin-top: 20px">
+            <div class="card-header">
+              <ul class="nav nav-pills w-100">
+                <li class="nav-pill active">
+                  <a class="nav-link">Exchange</a>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <center>
+                <h3>Cryptocurrency exchange</h3>
+              </center>
+              <span style="height: 10px; width: 100%; display: block"></span>
+              <div style="display: flex; flex-direction: row">
+                <div class="form-group" style="flex: 1; margin-right: 10px">
+                  <label for="exampleFormControlSelect1">From currency</label>
+                  <select class="form-control" v-model="payCurrency">
+                    <option v-for="option in options" :value="option.value">
+                      {{ option.label }}
+                    </option>
+                  </select>
+                </div>
+                <div class="form-group" style="flex: 1">
+                  <label for="exampleFormControlSelect1">To currency</label>
+                  <select class="form-control" v-model="receiveCurrency">
+                    <option v-for="option in options" :value="option.value">
+                      {{ option.label }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div style="display: flex; flex-direction: row">
+                <div style="flex: 1; margin-right: 10px">
+                  <label for="basic-url">Your Pay</label>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon3">{{
+                        payCurrency
+                        }}</span>
+                    </div>
+                    <input type="number" class="form-control" v-model="pay" @keypress="isNumber($event)"
+                      aria-describedby="basic-addon3" />
+                  </div>
+                </div>
+                <div style="flex: 1">
+                  <label for="basic-url">Your receive</label>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="basic-addon3">{{
+                        receiveCurrency
+                        }}</span>
+                    </div>
+                    <input type="number" class="form-control" v-model="receive" @keypress="isNumber($event)"
+                      aria-describedby="basic-addon3" />
+                  </div>
+                </div>
+              </div>
+              <span style="height: 10px; width: 100%; display: block"></span>
+              <center>
+                <button type="button" class="btn btn-outline-primary" v-on:click="exchange">
+                  Exchange
+                </button>
+              </center>
+              <span style="height: 10px; width: 100%; display: block"></span>
+              <center>
+                <p style="font-size: 10px">Included fee is: (0.80 %)</p>
+              </center>
+            </div>
+          </div>
+          <div class="modal fade" id="sendModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Send any currency to other members
+                  </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div style="display: flex; flex-direction: row">
+                    <div style="flex: 1; margin-right: 10px">
+                      <label for="basic-url">Send to:</label>
+                      <div class="input-group mb-3">
+                        <input type="text" class="form-control" v-model="sendTo" placeholder="email"
+                          @keypress="isNumber($event)" aria-describedby="basic-addon3" />
+                      </div>
+                    </div>
+                  </div>
+                  <div style="display: flex; flex-direction: row">
+                    <div class="form-group" style="flex: 1; margin-right: 10px">
+                      <label for="exampleFormControlSelect1">Currency</label>
+                      <select class="form-control" v-model="sendCurrency">
+                        <option v-for="option in options" :value="option.value">
+                          {{ option.label }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div style="display: flex; flex-direction: row">
+                    <div style="flex: 1; margin-right: 10px">
+                      <label for="basic-url">Amount</label>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="basic-addon3">{{
+                            sendCurrency
+                            }}</span>
+                        </div>
+                        <input type="number" class="form-control" v-model="sendAmount" @keypress="isNumber($event)"
+                          aria-describedby="basic-addon3" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                  </button>
+                  <button type="button" class="btn btn-primary">Send</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade" id="depositModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Deposit</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div style="display: flex; flex-direction: row">
+                    <div class="form-group" style="flex: 1; margin-right: 10px">
+                      <label for="exampleFormControlSelect1">Currency</label>
+                      <select class="form-control" v-model="depositCurrency">
+                        <option v-for="option in options" :value="option.value">
+                          {{ option.label }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div style="display: flex; flex-direction: row">
+                    <div style="flex: 1; margin-right: 10px">
+                      <label for="basic-url">Amount</label>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="basic-addon3">{{
+                            depositCurrency
+                            }}</span>
+                        </div>
+                        <input type="number" class="form-control" v-model="depositAmount" @keypress="isNumber($event)"
+                          aria-describedby="basic-addon3" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                  </button>
+                  <button type="button" class="btn btn-primary">Deposit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade" id="withdrawalModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Withdrawal</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div style="display: flex; flex-direction: row">
+                    <div class="form-group" style="flex: 1; margin-right: 10px">
+                      <label for="exampleFormControlSelect1">Currency</label>
+                      <select class="form-control" v-model="withdrawalCurrency">
+                        <option v-for="option in options" :value="option.value">
+                          {{ option.label }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div style="display: flex; flex-direction: row">
+                    <div style="flex: 1; margin-right: 10px">
+                      <label for="basic-url">Amount</label>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="basic-addon3">{{
+                            withdrawalCurrency
+                            }}</span>
+                        </div>
+                        <input type="number" class="form-control" v-model="withdrawalAmount"
+                          @keypress="isNumber($event)" aria-describedby="basic-addon3" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                  </button>
+                  <button type="button" class="btn btn-primary">Withdraw</button>
+                </div>
+              </div>
+            </div>
+          </div>
 </div>
+<Script>
+  var notyf = new Notyf(); 
+  var app = new Vue({
+    el: '#tradeApp', 
+    data: {
+      options:[{ label: 'Bitcoin', value: 'BTC' }, { label: 'Ethereum', value: 'ETH' }, { label: 'Euro', value: 'EUR' }, { label: 'Tether', value: 'USDT' }],
+      payCurrency: '',
+       receiveCurrency: '',
+        pay: '',
+         receive: '',
+         sendTo:'',
+         sendCurrency:'',
+         sendAmount:'',
+         depositCurrency:'',
+         depositAmount:'',
+         withdrawalCurrency:'',
+         withdrawalAmount:''
+
+    }, 
+    methods: {
+      isNumber:
+        function (evt) {
+          evt = (evt) ? evt : window.event; var charCode = (evt.which) ?
+            evt.which : evt.keyCode; if ((charCode > 31 && (charCode < 48 || charCode >
+              57)) && charCode !== 46) { evt.preventDefault();; } else { return true; }
+        },
+      exchange: function () {
+        console.log('data', this.pay); notyf.success('Exchange request sent!'); //alert('exchange') 
+      }
+    }
+  })
+</Script>

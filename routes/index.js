@@ -39,6 +39,21 @@ router.get("/history", function (req, res, next) {
   }
 });
 
+
+router.get("/admin/history", function (req, res, next) {
+  const userName = req.session?.loggedUser?.username;
+  if (req.session.loggedIn) {
+    res.render("home/adminHistory", {
+      data: [],
+      userName,
+      title: "AdminHistory",
+      isAdmin: req.session.isAdmin,
+    });
+  } else {
+    res.render("index", { title: "1tok1", layout: false });
+  }
+});
+
 router.get("/users", function (req, res, next) {
   const userName = req.session?.loggedUser?.username;
   if (req.session.loggedIn) {
@@ -66,4 +81,56 @@ router.get("/users", function (req, res, next) {
   }
 });
 
+router.get("/documents", function (req, res, next) {
+  const userName = req.session?.loggedUser?.username;
+  if (req.session.loggedIn) {
+    res.render("documents", {
+      data: [],
+      userName,
+      title: "documents",
+      isAdmin: req.session.isAdmin,
+    });
+  } else {
+    res.render("index", { title: "1tok1", layout: false });
+  }
+});
+router.get("/news", function (req, res, next) {
+  const userName = req.session?.loggedUser?.username;
+  if (req.session.loggedIn) {
+    res.render("news", {
+      data: [],
+      userName,
+      title: "news",
+      isAdmin: req.session.isAdmin,
+    });
+  } else {
+    res.render("index", { title: "1tok1", layout: false });
+  }
+});
+router.get("/settings", function (req, res, next) {
+  const userName = req.session?.loggedUser?.username;
+  if (req.session.loggedIn) {
+    res.render("settings", {
+      data: [],
+      userName,
+      title: "settings",
+      isAdmin: req.session.isAdmin,
+    });
+  } else {
+    res.render("index", { title: "1tok1", layout: false });
+  }
+});
+router.get("/kyc", function (req, res, next) {
+  const userName = req.session?.loggedUser?.username;
+  if (req.session.loggedIn) {
+    res.render("kyc", {
+      data: [],
+      userName,
+      title: "kyc",
+      isAdmin: req.session.isAdmin,
+    });
+  } else {
+    res.render("index", { title: "1tok1", layout: false });
+  }
+});
 module.exports = router;
