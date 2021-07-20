@@ -27,11 +27,6 @@
                     Withdrawal
                   </button>
                 </li>
-                <!-- <li class="nav-pill ml-auto">
-          <a class="nav-link active">Send</a>
-          <a class="nav-link active">Deposit</a>
-          <a class="nav-link active">Withdrawal</a>
-        </li> -->
               </ul>
             </div>
             <div class="card-body">
@@ -39,28 +34,21 @@
                 <table class="table">
                   <thead>
                     <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Name</th>
-                      <th scope="col">Author</th>
-                      <th width="200px">Action</th>
+                      <th scope="col">Currency</th>
+                      <th scope="col">Total</th>
+                      <th width="200px">Valuation</th>
                     </tr>
                   </thead>
                   <tbody>
                     <% for(var i=0; i< data.length; i++) { %>
                       <tr>
-                        <th scope="row">
-                          <%= (i+1) %>
-                        </th>
                         <td>
-                          <%= data[i].name%>
+                          <%= data[i].currency%>
                         </td>
                         <td>
-                          <%= data[i].author%>
+                          <%= data[i].amount%>
                         </td>
                         <td>
-                          <a class="btn btn-success edit" href="../books/edit/<%=data[i].id%>">Edit</a>
-                          <a class="btn btn-danger delete" onclick="return alert('Are You sure?')"
-                            href="../books/delete/<%=data[i].id%>">Delete</a>
                         </td>
                       </tr>
                       <% } %>
@@ -238,7 +226,7 @@
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">
                     Close
                   </button>
-                  <button type="button" class="btn btn-primary">Deposit</button>
+                  <button type="button" class="btn btn-primary" v-on:click="deposit">Deposit</button>
                 </div>
               </div>
             </div>
@@ -282,7 +270,7 @@
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">
                     Close
                   </button>
-                  <button type="button" class="btn btn-primary">Withdraw</button>
+                  <button type="button" class="btn btn-primary" v-on:click="withdraw">Withdraw</button>
                 </div>
               </div>
             </div>
@@ -315,8 +303,89 @@
               57)) && charCode !== 46) { evt.preventDefault();; } else { return true; }
         },
       exchange: function () {
-        console.log('data', this.pay); notyf.success('Exchange request sent!'); //alert('exchange') 
-      }
+        if(!this.withdrawalCurrency){
+          notyf.error('Please select Currency!');
+          return
+        }
+        if(!this.withdrawalAmount){
+          notyf.error('Please enter amount!');
+          return
+        }
+        fetch('/api/withdraw',{
+          method:'post',
+          headers:{'Content-Type': 'application/json'},
+          body:JSON.stringify({
+            currency:this.withdrawalCurrency,
+            amount:this.withdrawalAmount
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if(data?.error){
+            notyf.error(data?.error)
+          }else{
+            this.withdrawalCurrency = ''
+            this.withdrawalAmount = ''
+            $('#withdrawalModal').modal('hide');
+          }
+        });
+      },
+      deposit:function(){
+        if(!this.depositCurrency){
+          notyf.error('Please select Currency!');
+          return
+        }
+        if(!this.depositAmount){
+          notyf.error('Please enter amount!');
+          return
+        }
+        fetch('/api/deposit',{
+          method:'post',
+          headers:{'Content-Type': 'application/json'},
+          body:JSON.stringify({
+            currency:this.depositCurrency,
+            amount:this.depositAmount
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if(data?.error){
+            notyf.error(data?.error)
+          }else{
+            this.depositCurrency = ''
+            this.depositAmount = ''
+            $('#depositModal').modal('hide');
+          }
+        });
+      },
+      withdraw:function(){
+        if(!this.withdrawalCurrency){
+          notyf.error('Please select Currency!');
+          return
+        }
+        if(!this.withdrawalAmount){
+          notyf.error('Please enter amount!');
+          return
+        }
+        fetch('/api/withdraw',{
+          method:'post',
+          headers:{'Content-Type': 'application/json'},
+          body:JSON.stringify({
+            currency:this.withdrawalCurrency,
+            amount:this.withdrawalAmount
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if(data?.error){
+            notyf.error(data?.error)
+          }else{
+            this.withdrawalCurrency = ''
+            this.withdrawalAmount = ''
+            $('#withdrawalModal').modal('hide');
+          }
+        });
+      },
     }
   })
 </Script>
