@@ -7,8 +7,21 @@ router.get('/', function(req, res, next) {
     if(req.session.loggedIn){
         database.raw("select * from transaction where userId = ?",[req.session?.loggedUser?.id])
         .then((data) => {
+          const _rowsDebit = data?.rows?.filter(_r=>_r.type == 'debit')
+          const _rowsCredit = data?.rows?.filter(_r=>_r.type == 'credit')
+          let _data = {}
+          _rowsCredit.map(_r=>{
+            _data[_r.currency]=_r.amount 
+          })
+          _rowsDebit.map(_r=>{
+            if(_data[_r.currency]){
+            _data[_r.currency] = Number(_data[_r.currency] || 0) - Number(_r.amount)
+            }else{
+              _data[_r.currency] = 0 - Number(_r.amount)
+            }
+          })
           res.render("home", {
-            data:data?.rows,
+            data:_data,
             userName,
             title: "home",
             isAdmin: req.session.isAdmin,

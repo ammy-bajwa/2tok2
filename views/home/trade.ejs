@@ -30,7 +30,7 @@
               </ul>
             </div>
             <div class="card-body">
-              <% if(data.length) { %>
+              <% if(data) { %>
                 <table class="table">
                   <thead>
                     <tr>
@@ -40,24 +40,24 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <% for(var i=0; i< data.length; i++) { %>
+                    <%  Object.keys(data).forEach(function(prop) { %>
                       <tr>
                         <td>
-                          <%= data[i].currency%>
+                          <%= prop %>
                         </td>
                         <td>
-                          <%= data[i].amount%>
+                          <%= data[prop] %>
                         </td>
                         <td>
                         </td>
                       </tr>
-                      <% } %>
+                      <% }) %>
                   </tbody>
                 </table>
                 <% } %>
 
                   <!-- if result is empty -->
-                  <% if(!data.length) { %>
+                  <% if(!data || data == {}) { %>
                     <p class="text-center">No Balance!</p>
                     <% } %>
             </div>

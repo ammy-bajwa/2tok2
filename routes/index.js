@@ -13,10 +13,24 @@ router.get("/", function (req, res, next) {
 router.get("/trade", function (req, res, next) {
   const userName = req.session?.loggedUser?.username;
   if (req.session.loggedIn) {
-    database.raw("select * from transaction where userId = ?",[req.session?.loggedUser?.id])
+    database.raw("select type,currency,SUM (TO_NUMBER(amount,'99G999D9S')) as amount from transaction where userId = ? group by type,currency",[req.session?.loggedUser?.id])
         .then((data) => {
+          const _rowsDebit = data?.rows?.filter(_r=>_r.type == 'debit')
+          const _rowsCredit = data?.rows?.filter(_r=>_r.type == 'credit')
+          let _data = {}
+          _rowsCredit.map(_r=>{
+            _data[_r.currency]=_r.amount 
+          })
+          _rowsDebit.map(_r=>{
+            if(_data[_r.currency]){
+            _data[_r.currency] = Number(_data[_r.currency] || 0) - Number(_r.amount)
+            }else{
+              _data[_r.currency] = 0 - Number(_r.amount)
+            }
+          })
+
           res.render("home/trade", {
-            data:data?.rows,
+            data:_data,
             userName,
             title: "trade",
             isAdmin: req.session.isAdmin,
