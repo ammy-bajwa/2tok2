@@ -11,9 +11,6 @@
         <li class="nav-pill active">
           <a class="nav-link">Users</a>
         </li>
-        <!-- <li class="nav-pill ml-auto">
-                      <a class="nav-link active" href="/books/add">Add Book</a>
-                  </li> -->
       </ul>
     </div>
     <div class="card-body">
@@ -34,22 +31,14 @@
             <td><%= data[i].username%></td>
             <td><%= data[i].email%></td>
             <td>
-              <% if(data[i].admin != 1){ %>
-              <!-- <a
-                class="btn btn-success edit"
-                href="../books/edit/<%=data[i].id%>"
-                >Edit</a
-              > -->
+              <% if(data[i].admin != 1 && data[i].active != 0){ %>
               <a
                 class="btn btn-danger delete"
                 onclick="return alert('Are You sure?')"
                 href="user/delete/<%=data[i].id%>"
-                >Delete</a
+                >Deactivate</a
               >
-              <% } %>
-              <% if(data[i].admin == 1){ %>
-                Admin
-             <% } %>
+              <% } %> <% if(data[i].admin == 1){ %> Admin <% } %>
             </td>
           </tr>
           <% } %>

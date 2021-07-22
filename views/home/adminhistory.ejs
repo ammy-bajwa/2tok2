@@ -85,11 +85,11 @@
                   <td><%= data?.trade_data[i].status%></td>
                   <td>
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                      <label class="btn btn-success ">
-                        <input type="radio" name="options" id="option1" autocomplete="off" checked>Approve
+                      <label class="btn btn-success " v-on:click="approveTrade(<%=data?.trade_data[i].id %>)">
+                        Approve
                       </label>
-                      <label class="btn btn-danger">
-                        <input type="radio" name="options" id="option2" autocomplete="off"> Cancel
+                      <label class="btn btn-danger" v-on:click="cancelTrade(<%=data?.trade_data[i].id %>)">
+                         Cancel
                       </label>
                     </div>
                   </td>
@@ -145,11 +145,11 @@
                 <td><%= data?.deposits_data[i].status%></td>
                 <td>
                   <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-success ">
-                      <input type="radio" name="options" id="option1" autocomplete="off" checked>Approve
+                    <label class="btn btn-success " v-on:click="approveTransaction(<%=data?.deposits_data[i].id %>)">
+                      Approve
                     </label>
-                    <label class="btn btn-danger">
-                      <input type="radio" name="options" id="option2" autocomplete="off"> Cancel
+                    <label class="btn btn-danger" v-on:click="cancelTransaction(<%=data?.deposits_data[i].id %>)">
+                      Cancel
                     </label>
                   </div>
                 </td>
@@ -204,12 +204,12 @@
                 <td><%= data?.withdrawals_data[i].currency%></td>
                 <td><%= data?.withdrawals_data[i].status%></td>
                 <td>
-                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-success ">
-                      <input type="radio" name="options" id="option1" autocomplete="off" checked>Approve
+                  <div class="btn-group btn-group-toggle" >
+                    <label class="btn btn-success " v-on:click="approveTransaction(<%=data?.withdrawals_data[i].id %>)">
+                      Approve
                     </label>
-                    <label class="btn btn-danger">
-                      <input type="radio" name="options" id="option2" autocomplete="off"> Cancel
+                    <label class="btn btn-danger" v-on:click="cancelTransaction(<%=data?.withdrawals_data[i].id %>)">
+                      Cancel
                     </label>
                   </div>
                 </td>
