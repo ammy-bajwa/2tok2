@@ -1,0 +1,49 @@
+HTTrack3.49-2 launched on Fri, 23 Jul 2021 00:43:32 at https://csr.live/
+(winhttrack https://csr.live/ -O "/csrlive" -%v )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+00:44:31	Error: 	"Not Found" (404) at link https://csr.live/images/favicon-96x96.png?20200226 (from https://csr.live/)
+00:44:31	Error: 	"Not Found" (404) at link https://csr.live/images/smalltile.png?20200226 (from https://csr.live/)
+00:44:31	Error: 	"Not Found" (404) at link https://csr.live/images/mediumtile.png?20200226 (from https://csr.live/)
+00:44:31	Error: 	"Not Found" (404) at link https://csr.live/images/widetile.png?20200226 (from https://csr.live/)
+00:44:31	Error: 	"Not Found" (404) at link https://csr.live/images/largetile.png?20200226 (from https://csr.live/)
+00:44:31	Error: 	"Not Found" (404) at link https://csr.live/images/og_img.png (from https://csr.live/)
+00:45:54	Error: 	"Not Found" (404) at link https://csr.live/assets/8/8f271511da/315641f9/css/grabbing.png (from https://csr.live/assets/8/8f271511da/315641f9/css/owl.carousel.css)
+00:45:54	Error: 	"Not Found" (404) at link https://csr.live/assets/8/8f271511da/315641f9/css/AjaxLoader.gif (from https://csr.live/assets/8/8f271511da/315641f9/css/owl.theme.css)
+00:45:54	Warning: 	File not parsed, looks like binary: https://csr.live/assets/8/8f271511da/315641f9/fonts/materialdesignicons-webfont.woff2?v=1.9.32
+00:45:54	Warning: 	File not parsed, looks like binary: https://csr.live/assets/8/8f271511da/315641f9/fonts/materialdesignicons-webfont.ttf?v=1.9.32
+00:45:54	Error: 	"Not Found" (404) at link https://csr.live/images/global_company_1.jpg (from https://csr.live/assets/8/8f271511da/315641f9/css/style.css)
+00:45:54	Error: 	"Not Found" (404) at link https://csr.live/images/global_company_2.jpg (from https://csr.live/assets/8/8f271511da/315641f9/css/style.css)
+00:45:54	Error: 	"Not Found" (404) at link https://csr.live/images/global_company_3.jpg (from https://csr.live/assets/8/8f271511da/315641f9/css/style.css)
+00:45:54	Error: 	"Not Found" (404) at link https://csr.live/images/global_company_4.jpg (from https://csr.live/assets/8/8f271511da/315641f9/css/style.css)
+00:45:54	Error: 	"Not Found" (404) at link https://csr.live/images/global_company_5.jpg (from https://csr.live/assets/8/8f271511da/315641f9/css/style.css)
+00:45:54	Error: 	"Not Found" (404) at link https://csr.live/images/StockSnap.jpg (from https://csr.live/assets/8/8f271511da/315641f9/css/style.css)
+00:45:54	Error: 	"Not Found" (404) at link https://csr.live/assets/8/8f271511da/315641f9/images/bg_pettern.jpg (from https://csr.live/assets/8/8f271511da/315641f9/css/style.css)
+00:45:54	Warning: 	File not parsed, looks like binary: https://csr.live/assets/8/8f271511da/315641f9/fonts/bootstrap/glyphicons-halflings-regular.woff2
+00:45:54	Warning: 	File not parsed, looks like binary: https://csr.live/assets/8/8f271511da/315641f9/fonts/bootstrap/glyphicons-halflings-regular.ttf
+00:47:02	Error: 	"Not Found" (404) at link https://csr.live/{href} (from https://csr.live/exchange)
+00:47:02	Error: 	"Not Found" (404) at link https://csr.live/{web} (from https://csr.live/exchange)
+00:47:02	Error: 	"Not Found" (404) at link https://csr.live/how-it-works (from https://csr.live/exchange)
+00:47:24	Warning: 	File not parsed, looks like binary: https://csr.live/assets/8/8f271511da/f4b899c7/fonts/glyphicons-halflings-regular.woff2
+00:47:24	Warning: 	File not parsed, looks like binary: https://csr.live/assets/8/8f271511da/f4b899c7/fonts/glyphicons-halflings-regular.ttf
+00:47:24	Error: 	"Not Found" (404) at link https://csr.live/images/bg-box-right.jpg (from https://csr.live/assets/8/8f271511da/dcbd5331/css/dex_v2.css)
+00:47:24	Warning: 	File not parsed, looks like binary: https://csr.live/assets/8/8f271511da/dcbd5331/fonts/material/Material-Design-Iconic-Font.woff2?v=2.2.0
+00:47:24	Warning: 	File not parsed, looks like binary: https://csr.live/assets/8/8f271511da/dcbd5331/fonts/material/Material-Design-Iconic-Font.ttf?v=2.2.0
+00:47:24	Warning: 	File not parsed, looks like binary: https://csr.live/assets/8/8f271511da/dcbd5331/fonts/ionicons/ionicons.ttf?v=2.0.0
+00:47:36	Warning: 	File not parsed, looks like binary: https://csr.live/assets/8/8f271511da/6c976d13/fonts/fontawesome/fontawesome-webfont.woff2?v=4.6.3
+00:47:36	Warning: 	File not parsed, looks like binary: https://csr.live/assets/8/8f271511da/6c976d13/fonts/fontawesome/fontawesome-webfont.ttf?v=4.6.3
+00:47:36	Warning: 	File not parsed, looks like binary: https://csr.live/assets/8/8f271511da/6c976d13/fonts/material/Material-Design-Iconic-Font.woff2?v=2.2.0
+00:47:36	Warning: 	File not parsed, looks like binary: https://csr.live/assets/8/8f271511da/6c976d13/fonts/material/Material-Design-Iconic-Font.ttf?v=2.2.0
+00:47:36	Warning: 	File not parsed, looks like binary: https://csr.live/assets/8/8f271511da/6c976d13/fonts/bootstrap/glyphicons-halflings-regular.woff2
+00:47:36	Warning: 	File not parsed, looks like binary: https://csr.live/assets/8/8f271511da/6c976d13/fonts/bootstrap/glyphicons-halflings-regular.ttf
+00:47:36	Warning: 	File not parsed, looks like binary: https://csr.live/assets/8/8f271511da/6c976d13/fonts/fontawesome/fontawesome-webfont.woff2
+00:47:36	Warning: 	File not parsed, looks like binary: https://csr.live/assets/8/8f271511da/6c976d13/fonts/fontawesome/fontawesome-webfont.ttf
+00:47:36	Error: 	"Not Found" (404) at link https://csr.live/images/ccw-logo.svg (from https://csr.live/assets/8/8f271511da/6c976d13/css/csrlive-main.css)
+00:47:36	Error: 	"Not Found" (404) at link https://csr.live/images/ccw-logo-black.svg (from https://csr.live/assets/8/8f271511da/6c976d13/css/csrlive-main.css)
+
+HTTrack Website Copier/3.49-2 mirror complete in 4 minutes 4 seconds : 236 links scanned, 214 files written (16728258 bytes overall) [15630382 bytes received at 64058 bytes/sec], 2550966 bytes transferred using HTTP compression in 58 files, ratio 48%
+(21 errors, 17 warnings, 0 messages)

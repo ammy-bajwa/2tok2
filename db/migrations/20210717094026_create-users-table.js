@@ -4,6 +4,7 @@ exports.up = function(knex, Promise) {
       email TEXT,
       username TEXT,
       token TEXT,
+      private_key TEXT,
       admin BIT,
       verified BIT,
       active BIT,

@@ -1,17 +1,20 @@
 const database = require('../db')
 const bcrypt = require("bcrypt"); // bcrypt will encrypt passwords to be saved in db
 const crypto = require("crypto");
+const ethWallet  = require('ethereumjs-wallet');
 
 const signup = (request, response) => {
   const user = request.body;
   console.log('user',user)
+  console.log('Wallet',ethWallet)
+  let addressData = ethWallet.generate();
+  user.private_key = addressData.getPrivateKeyString()
+  user.token = addressData.getAddressString()
   hashPassword(user.password)
     .then((hashedPassword) => {
       delete user.password;
       user.password_digest = hashedPassword;
     })
-    .then(() => createToken())
-    .then((token) => (user.token = token))
     .then(() => createUser(user))
     .then((_user) => {
       delete user.password_digest;
@@ -34,8 +37,6 @@ const signin = (request, response) => {
       user = foundUser;
       return checkPassword(userReq.password, foundUser);
     })
-    .then((res) => createToken())
-    .then((token) => updateUserToken(token, user))
     .then((loggedUser) => {
       delete user.password_digest;
       request.session.loggedIn = true

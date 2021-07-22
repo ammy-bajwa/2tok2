@@ -1,0 +1,5 @@
+.processing-div {
+    width: 100%;
+    min-height: 250px;
+    background: url("../images/loading.svg") center center no-repeat;
+}
