@@ -67,6 +67,7 @@
                   <th width="col">Currency</th>
                   <th width="col">Fee</th>
                   <th width="col">Status</th>
+                  <th width="col">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -82,6 +83,16 @@
                   <td><%= data?.trade_data[i].sellcurrency%></td>
                   <td><%= data?.trade_data[i].fee%></td>
                   <td><%= data?.trade_data[i].status%></td>
+                  <td>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                      <label class="btn btn-success ">
+                        <input type="radio" name="options" id="option1" autocomplete="off" checked>Approve
+                      </label>
+                      <label class="btn btn-danger">
+                        <input type="radio" name="options" id="option2" autocomplete="off"> Cancel
+                      </label>
+                    </div>
+                  </td>
               </tr>
               <% } %>
             </tbody>
@@ -113,6 +124,7 @@
                 <th scope="col">Total</th>
                 <th scope="col">Currency</th>
                 <th scope="col">Status</th>
+                <th width="col">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -131,6 +143,16 @@
                 <td><%= data?.deposits_data[i].amount%></td>
                 <td><%= data?.deposits_data[i].currency%></td>
                 <td><%= data?.deposits_data[i].status%></td>
+                <td>
+                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-success ">
+                      <input type="radio" name="options" id="option1" autocomplete="off" checked>Approve
+                    </label>
+                    <label class="btn btn-danger">
+                      <input type="radio" name="options" id="option2" autocomplete="off"> Cancel
+                    </label>
+                  </div>
+                </td>
               </tr>
               <% } %>
             </tbody>
@@ -162,6 +184,7 @@
                 <th scope="col">Total</th>
                 <th scope="col">Currency</th>
                 <th scope="col">Status</th>
+                <th width="col">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -180,6 +203,16 @@
                 <td><%= data?.withdrawals_data[i].amount%></td>
                 <td><%= data?.withdrawals_data[i].currency%></td>
                 <td><%= data?.withdrawals_data[i].status%></td>
+                <td>
+                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-success ">
+                      <input type="radio" name="options" id="option1" autocomplete="off" checked>Approve
+                    </label>
+                    <label class="btn btn-danger">
+                      <input type="radio" name="options" id="option2" autocomplete="off"> Cancel
+                    </label>
+                  </div>
+                </td>
               </tr>
               <% } %>
             </tbody>
