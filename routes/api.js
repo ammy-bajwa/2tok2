@@ -59,24 +59,6 @@ router.post("/send", function (req, res, next) {
   }
 });
 
-router.put("/send", function (req, res, next) {
-  const loggedUser = req.session?.loggedUser;
-  if (req.session.loggedIn) {
-    database
-      .raw(
-        "UPDATE transaction SET amount = ? WHERE id = ? RETURNING id,email,admin, username, token",
-        [token, user.id]
-      )
-      .then((data) => data.rows[0])
-      .catch((err) => {
-        res.json({ error: "Something went wrong !", err });
-        console.error(err);
-      });
-  } else {
-    res.json({ error: "401" });
-  }
-});
-
 router.post("/deposit", function (req, res, next) {
   const loggedUser = req.session?.loggedUser;
   const { amount, currency } = req.body;
@@ -97,21 +79,6 @@ router.post("/deposit", function (req, res, next) {
   }
 });
 
-router.put("/deposit", function (req, res, next) {
-  const loggedUser = req.session?.loggedUser;
-  if (req.session.loggedIn) {
-    console.log("req.session.isAdmin", req.session.isAdmin);
-    res.render("home", {
-      data: [],
-      title: "home",
-      userName,
-      isAdmin: req.session.isAdmin,
-    });
-  } else {
-    res.json({ error: "401" });
-  }
-});
-
 router.post("/withdraw", function (req, res, next) {
   const loggedUser = req.session?.loggedUser;
   const { amount, currency } = req.body;
@@ -125,21 +92,6 @@ router.post("/withdraw", function (req, res, next) {
         res.json({ ok: true });
       })
       .catch((err) => catchHandler(err, res));
-  } else {
-    res.json({ error: "401" });
-  }
-});
-
-router.put("/withdraw", function (req, res, next) {
-  const loggedUser = req.session?.loggedUser;
-  if (req.session.loggedIn) {
-    console.log("req.session.isAdmin", req.session.isAdmin);
-    res.render("home", {
-      data: [],
-      title: "home",
-      userName,
-      isAdmin: req.session.isAdmin,
-    });
   } else {
     res.json({ error: "401" });
   }
@@ -172,19 +124,32 @@ router.post("/Exchange", function (req, res, next) {
   }
 });
 
-router.put("/Exchange", function (req, res, next) {
+router.put("/trade/:action/:id", function (req, res, next) {
   const loggedUser = req.session?.loggedUser;
+  const {action,id} = req.params
   if (req.session.loggedIn) {
-    console.log("req.session.isAdmin", req.session.isAdmin);
-    res.render("home", {
-      data: [],
-      title: "home",
-      userName,
-      isAdmin: req.session.isAdmin,
-    });
+    database.raw("UPDATE trades SET status = ? WHERE id = ? RETURNING id,status",[action,id])
+      .then((data) => {
+        res.json({ ok: true });
+      })
+      .catch((err) => catchHandler(err, res));
   } else {
     res.json({ error: "401" });
   }
 });
+router.put("/transaction/:action/:id", function (req, res, next) {
+  const {action,id} = req.params
+  if (req.session.loggedIn && req.session.isAdmin) {
+    database.raw("UPDATE transaction SET status = ? WHERE id = ? RETURNING id,status",[action,id])
+      .then((data) => {
+        res.json({ ok: true });
+      })
+      .catch((err) => catchHandler(err, res));
+  } else {
+    res.json({ error: "401" });
+  }
+});
+
+
 
 module.exports = router;
