@@ -2,17 +2,17 @@ var express = require("express");
 var router = express.Router();
 const database = require("../db");
 
-const catchHandler = (err, res) => {
-  res.json({ error: "Something went wrong !", err });
+const catchHandler = (err, res,msg) => {
+  res.json({ error: msg || "Something went wrong !", err });
   //console.error(err);
 };
 
 router.post("/send", function (req, res, next) {
   const loggedUser = req.session?.loggedUser;
-  const { amount, currency } = req.body;
+  const { amount, currency,email } = req.body;
   if (req.session.loggedIn) {
     database
-      .raw("SELECT * FROM users WHERE email = ?", [userReq.email])
+      .raw("SELECT * FROM users WHERE email = ?", [email])
       .then((_data) => {
         if (_data?.rows?.length > 0) {
           database
@@ -53,8 +53,7 @@ router.post("/send", function (req, res, next) {
         } else {
           res.json({ error: "Invalid recipient!", err });
         }
-      })
-      .catch((err) => catchHandler(err, res));
+      }).catch((err) => catchHandler(err, res,'Invalid Send to'));
   } else {
     res.json({ error: "401" });
   }
@@ -152,7 +151,7 @@ router.post("/Exchange", function (req, res, next) {
   if (req.session.loggedIn) {
     database
       .raw(
-        "INSERT INTO trades (userId,buy, buyCurrency, sell,sellCurrency, fee,status,createdAt) VALUES (?,?, ?, ?, ?,?,?)",
+        "INSERT INTO trades (userId,buy, buyCurrency, sell,sellCurrency, fee,status,createdAt) VALUES (?,?, ?, ?, ?,?,?,?)",
         [
           loggedUser?.id,
           buy,

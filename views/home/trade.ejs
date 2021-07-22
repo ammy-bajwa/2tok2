@@ -182,7 +182,7 @@
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">
                     Close
                   </button>
-                  <button type="button" class="btn btn-primary">Send</button>
+                  <button type="button" class="btn btn-primary" v-on:click="send">Send</button>
                 </div>
               </div>
             </div>
@@ -303,20 +303,30 @@
               57)) && charCode !== 46) { evt.preventDefault();; } else { return true; }
         },
       exchange: function () {
-        if(!this.withdrawalCurrency){
-          notyf.error('Please select Currency!');
+        if(!this.receiveCurrency){
+          notyf.error('Please select buy Currency!');
           return
         }
-        if(!this.withdrawalAmount){
-          notyf.error('Please enter amount!');
+        if(!this.payCurrency){
+          notyf.error('Please select pay Currency!');
           return
         }
-        fetch('/api/withdraw',{
+        if(!this.pay){
+          notyf.error('Please enter sell amount!');
+          return
+        }
+        if(!this.receive){
+          notyf.error('Please enter buy amount!');
+          return
+        }
+        fetch('/api/Exchange',{
           method:'post',
           headers:{'Content-Type': 'application/json'},
           body:JSON.stringify({
-            currency:this.withdrawalCurrency,
-            amount:this.withdrawalAmount
+            buy:this.receive,
+            buyCurrency:this.receiveCurrency,
+            sell:this.pay,
+            sellCurrency:this.payCurrency
           })
         })
         .then(response => response.json())
@@ -324,10 +334,11 @@
           if(data?.error){
             notyf.error(data?.error)
           }else{
-            this.withdrawalCurrency = ''
-            this.withdrawalAmount = ''
-            $('#withdrawalModal').modal('hide');
-            location.reload();
+            this.receiveCurrency = ''
+            this.payCurrency = ''
+            this.receive = ''
+            this.pay = ''
+            notyf.success('Exchange Request send !')
           }
         });
       },
@@ -385,6 +396,41 @@
             this.withdrawalCurrency = ''
             this.withdrawalAmount = ''
             $('#withdrawalModal').modal('hide');
+            location.reload();
+          }
+        });
+      },
+      send:function(){
+        if(!this.sendTo){
+          notyf.error('Please enter send to email!');
+          return
+        }
+        if(!this.sendCurrency){
+          notyf.error('Please enter currency!');
+          return
+        }
+        if(!this.sendAmount){
+          notyf.error('Please enter amount!');
+          return
+        }
+        fetch('/api/send',{
+          method:'post',
+          headers:{'Content-Type': 'application/json'},
+          body:JSON.stringify({
+            currency:this.sendCurrency,
+            amount:this.sendAmount,
+            email:this.sendTo
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if(data?.error){
+            notyf.error(data?.error)
+          }else{
+            this.sendCurrency = ''
+            this.sendAmount = ''
+            this.sendTo = ''
+            $('#sendModal').modal('hide');
             location.reload();
           }
         });

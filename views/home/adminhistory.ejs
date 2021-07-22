@@ -58,17 +58,30 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Author</th>
-                <th width="200px">Action</th>
+                <th scope="col">User</th>
+                <th scope="col">Email</th>
+                  <th scope="col">Datetime</th>
+                  <th scope="col">Buy Amount</th>
+                  <th width="col">Currency</th>
+                  <th scope="col">Sell Amount</th>
+                  <th width="col">Currency</th>
+                  <th width="col">Fee</th>
+                  <th width="col">Status</th>
               </tr>
             </thead>
             <tbody>
               <% for(var i = 0; i< data?.trade_data?.length; i++) { %>
               <tr>
                 <th scope="row"><%= (i+1) %></th>
-                <td><%= data?.trade_data[i].name%></td>
-                <td><%= data?.trade_data[i].author%></td>
+                <td><%= data?.trade_data[i].username%></td>
+                <td><%= data?.trade_data[i].email%></td>
+                <td><%= new Date(data?.trade_data[i].createdat).toLocaleString()%></td>
+                  <td><%= data?.trade_data[i].buy%></td>
+                  <td><%= data?.trade_data[i].buycurrency%></td>
+                  <td><%= data?.trade_data[i].sell%></td>
+                  <td><%= data?.trade_data[i].sellcurrency%></td>
+                  <td><%= data?.trade_data[i].fee%></td>
+                  <td><%= data?.trade_data[i].status%></td>
               </tr>
               <% } %>
             </tbody>
