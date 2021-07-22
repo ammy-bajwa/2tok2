@@ -91,12 +91,12 @@ router.get("/admin/history", function (req, res, next) {
   if (req.session.loggedIn) {
     database
       .raw(
-        "select transaction.*,users.username,users.email from transaction join users on transaction.userId = users.id where transaction.status = 'pending';"
+        "select transaction.*,users.username as username ,users.email as email from transaction join users on transaction.userId = users.id where transaction.status = 'pending';"
       )
       .then((transaction_data) => {
         database
           .raw(
-            "select trades.*,users.username,users.email from trades join users on trades.userId = users.id where trades.status = 'pending';"
+            "select trades.*,users.username as username,users.email as email from trades join users on trades.userId = users.id where trades.status = 'pending';"
           )
           .then((trade_data) => {
             res.render("home/adminhistory", {

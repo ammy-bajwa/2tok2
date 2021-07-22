@@ -10,7 +10,7 @@ exports.up = function(knex, Promise) {
       status TEXT,
       createdAt TIMESTAMP,
       CONSTRAINT fk_user
-      FOREIGN KEY(id) 
+      FOREIGN KEY(userId) 
 	    REFERENCES users(id)
     )`;
     return knex.raw(createQuery);

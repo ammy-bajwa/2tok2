@@ -4,7 +4,7 @@ const database = require("../db");
 
 const catchHandler = (err, res) => {
   res.json({ error: "Something went wrong !", err });
-  console.error(err);
+  //console.error(err);
 };
 
 router.post("/send", function (req, res, next) {
@@ -82,12 +82,12 @@ router.post("/deposit", function (req, res, next) {
   const loggedUser = req.session?.loggedUser;
   const { amount, currency } = req.body;
   console.log('amount',req)
-  console.log('currency',currency)
+  console.log('loggedUser?.id',loggedUser?.id)
   if (req.session.loggedIn) {
     database
       .raw(
-        "INSERT INTO transaction (userId,amount, type, currency, fee,status,createdAt) VALUES (?,?, ?, ?, ?,?,?)",
-        [loggedUser?.id, amount, "credit", currency, 0, "pending", new Date()]
+        "INSERT INTO transaction (amount,userId,type,currency,fee,status,createdAt) VALUES (?,?,?,?,?,?,?) RETURNING id",
+        [amount,loggedUser?.id,"credit",currency, 0, "pending", new Date()]
       )
       .then((data) => {
         res.json({ ok: true });

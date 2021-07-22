@@ -5,62 +5,180 @@
   <div class="alert alert-danger" role="alert"><%- messages.error %></div>
   <% } %>
 
-  <div class="card" >
-    <div class="card-header" style="padding: 10px 0px 0px 0px;border-bottom:0px">
+  <div class="card">
+    <div
+      class="card-header"
+      style="padding: 10px 0px 0px 0px; border-bottom: 0px"
+    >
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-          <a class="nav-item nav-link active" id="nav-trades-tab" data-toggle="tab" href="#nav-trades" role="tab" aria-controls="nav-trades" aria-selected="true">Trades</a>
-          <a class="nav-item nav-link" id="nav-deposits-tab" data-toggle="tab" href="#nav-deposits" role="tab" aria-controls="nav-deposits" aria-selected="false">Deposits</a>
-          <a class="nav-item nav-link" id="nav-withdrawals-tab" data-toggle="tab" href="#nav-withdrawals" role="tab" aria-controls="nav-withdrawals" aria-selected="false">Withdrawals</a>
+          <a
+            class="nav-item nav-link active"
+            id="nav-trades-tab"
+            data-toggle="tab"
+            href="#nav-trades"
+            role="tab"
+            aria-controls="nav-trades"
+            aria-selected="true"
+            >Trades</a
+          >
+          <a
+            class="nav-item nav-link"
+            id="nav-deposits-tab"
+            data-toggle="tab"
+            href="#nav-deposits"
+            role="tab"
+            aria-controls="nav-deposits"
+            aria-selected="false"
+            >Deposits</a
+          >
+          <a
+            class="nav-item nav-link"
+            id="nav-withdrawals-tab"
+            data-toggle="tab"
+            href="#nav-withdrawals"
+            role="tab"
+            aria-controls="nav-withdrawals"
+            aria-selected="false"
+            >Withdrawals</a
+          >
         </div>
       </nav>
     </div>
     <div class="card-body">
-     
       <div class="tab-content" id="nav-tabContent">
-        <div class="tab-pane fade show active" id="nav-trades" role="tabpanel" aria-labelledby="nav-trades-tab">...</div>
-        <div class="tab-pane fade" id="nav-deposits" role="tabpanel" aria-labelledby="nav-deposits-tab">...</div>
-        <div class="tab-pane fade" id="nav-withdrawals" role="tabpanel" aria-labelledby="nav-withdrawals-tab">...</div>
-      </div>
-      <% if(data.length) { %>
-      <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Author</th>
-            <th width="200px">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for(var i = 0; i< data.length; i++) { %>
-          <tr>
-            <th scope="row"><%= (i+1) %></th>
-            <td><%= data[i].name%></td>
-            <td><%= data[i].author%></td>
-            <td>
-              <a
-                class="btn btn-success edit"
-                href="../books/edit/<%=data[i].id%>"
-                >Edit</a
-              >
-              <a
-                class="btn btn-danger delete"
-                onclick="return alert('Are You sure?')"
-                href="../books/delete/<%=data[i].id%>"
-                >Delete</a
-              >
-            </td>
-          </tr>
+        <div
+          class="tab-pane fade show active"
+          id="nav-trades"
+          role="tabpanel"
+          aria-labelledby="nav-trades-tab"
+        >
+          <% if(data?.trade_data?.length) { %>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Author</th>
+                <th width="200px">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(var i = 0; i< data?.trade_data?.length; i++) { %>
+              <tr>
+                <th scope="row"><%= (i+1) %></th>
+                <td><%= data?.trade_data[i].name%></td>
+                <td><%= data?.trade_data[i].author%></td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
           <% } %>
-        </tbody>
-      </table>
-      <% } %>
 
-      <!-- if result is empty -->
-      <% if(!data.length) { %>
-      <p class="text-center">No History!</p>
-      <% } %>
+          <!-- if result is empty -->
+          <% if(!data?.trade_data?.length) { %>
+          <p class="text-center">No Trades!</p>
+          <% } %>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="nav-deposits"
+          role="tabpanel"
+          aria-labelledby="nav-deposits-tab"
+        >
+          <% if(data?.deposits_data?.length) { %>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">User</th>
+                <th scope="col">Email</th>
+                <th scope="col">DateTime</th>
+                <th scope="col">Reference</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Fee</th>
+                <th scope="col">Total</th>
+                <th scope="col">Currency</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(var i = 0; i< data?.deposits_data?.length; i++) { %>
+              <tr>
+                <th scope="row"><%= (i+1) %></th>
+                <td><%= data?.deposits_data[i].username%></td>
+                <td><%= data?.deposits_data[i].email%></td>
+                <td>
+                  <%= new
+                  Date(data?.deposits_data[i].createdat).toLocaleString() %>
+                </td>
+                <td><%= data?.deposits_data[i].ref%></td>
+                <td><%= data?.deposits_data[i].amount%></td>
+                <td><%= data?.deposits_data[i].fee%></td>
+                <td><%= data?.deposits_data[i].amount%></td>
+                <td><%= data?.deposits_data[i].currency%></td>
+                <td><%= data?.deposits_data[i].status%></td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+          <% } %>
+
+          <!-- if result is empty -->
+          <% if(!data?.deposits_data.length) { %>
+          <p class="text-center">No Deposits!</p>
+          <% } %>
+        </div>
+        <div
+          class="tab-pane fade"
+          id="nav-withdrawals"
+          role="tabpanel"
+          aria-labelledby="nav-withdrawals-tab"
+        >
+          <% if(data?.withdrawals_data?.length) { %>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">User</th>
+                <th scope="col">Email</th>
+                <th scope="col">DateTime</th>
+                <th scope="col">Reference</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Fee</th>
+                <th scope="col">Total</th>
+                <th scope="col">Currency</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(var i = 0; i< data?.withdrawals_data?.length; i++) { %>
+              <tr>
+                <th scope="row"><%= (i+1) %></th>
+                <td>
+                  <%= new
+                  Date(data?.withdrawals_data[i].createdat).toLocaleString() %>
+                </td>
+                <td><%= data?.withdrawals_data[i].username%></td>
+                <td><%= data?.withdrawals_data[i].email%></td>
+                <td><%= data?.withdrawals_data[i].ref%></td>
+                <td><%= data?.withdrawals_data[i].amount%></td>
+                <td><%= data?.withdrawals_data[i].fee%></td>
+                <td><%= data?.withdrawals_data[i].amount%></td>
+                <td><%= data?.withdrawals_data[i].currency%></td>
+                <td><%= data?.withdrawals_data[i].status%></td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+          <% } %>
+
+          <!-- if result is empty -->
+          <% if(!data?.withdrawals_data.length) { %>
+          <p class="text-center">No withdrawals!</p>
+          <% } %>
+        </div>
+      </div>
     </div>
   </div>
 </div>
