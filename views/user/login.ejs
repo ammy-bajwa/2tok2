@@ -1,50 +1,165 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Login</title>
-    <link rel="stylesheet" href="/stylesheets/style.css" />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    />
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-  </head>
-  <body>
-    <div class="sidenav">
-      <div class="login-main-text">
-        <h2>
-          1tok1<br />
-          Login
-        </h2>
-        <p>Login or register from here to access.</p>
-      </div>
-    </div>
-    <div class="main">
-      <div class="col-md-6 col-sm-12">
-        <div class="login-form">
-          <form method="POST">
-            <div class="form-group">
-              <label>Email</label>
-              <input name="email" type="text" class="form-control" placeholder="Email" />
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-param" content="_csrf-frontend">
+  <meta name="csrf-token"
+    content="1NnNFoTsqxbr5PWnyaUIhmlXmqL_-JWotWVJKkHhR_zh6KZM04rPWYOmpsLx1kzMKwSskLDBysXZDS0bOaQiyA==">
+  <title>Login | 1Tok1</title>
+
+  <link rel="shortcut icon" href="/images/faviconfeac.ico?20200226" type="image/x-icon" />
+  <link rel="icon" href="/images/faviconfeac.ico?20200226" type="image/vnd.microsoft.icon">
+  <link rel="apple-touch-icon" sizes="57x57" href="/images/apple-touch-icon-57x57feac.png?20200226">
+  <link rel="apple-touch-icon" sizes="60x60" href="/images/apple-touch-icon-60x60feac.png?20200226">
+  <link rel="apple-touch-icon" sizes="72x72" href="/images/apple-touch-icon-72x72feac.png?20200226">
+  <link rel="apple-touch-icon" sizes="76x76" href="/images/apple-touch-icon-76x76feac.png?20200226">
+  <link rel="apple-touch-icon" sizes="114x114" href="/images/apple-touch-icon-114x114feac.png?20200226">
+  <link rel="apple-touch-icon" sizes="120x120" href="/images/apple-touch-icon-120x120feac.png?20200226">
+  <link rel="apple-touch-icon" sizes="144x144" href="/images/apple-touch-icon-144x144feac.png?20200226">
+  <link rel="apple-touch-icon" sizes="152x152" href="/images/apple-touch-icon-152x152feac.png?20200226">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-180x180feac.png?20200226">
+  <link rel="icon" type="image/png" href="/images/favicon-16x16feac.png?20200226" sizes="16x16">
+  <link rel="icon" type="image/png" href="/images/favicon-32x32feac.png?20200226" sizes="32x32">
+  <link rel="icon" type="image/png" href="/images/favicon-96x96feac.html?20200226" sizes="96x96">
+  <link rel="icon" type="image/png" href="/images/android-chrome-192x192feac.png?20200226" sizes="192x192">
+  <meta name="msapplication-square70x70logo" content="/images/smalltilefeac.html?20200226" />
+  <meta name="msapplication-square150x150logo" content="/images/mediumtilefeac.html?20200226" />
+  <meta name="msapplication-wide310x150logo" content="/images/widetilefeac.html?20200226" />
+  <meta name="msapplication-square310x310logo" content="/images/largetilefeac.html?20200226" />
+
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="og:title" content="1Tok1 | Login">
+  <meta name="og:description" content="Login to 1Tok1">
+  <meta name="og:url" content="login.html">
+  <meta name="description" content="Login to 1Tok1">
+  <meta name="og:sitename" content="1Tok1">
+  <meta name="og:type" content="website">
+  <meta name="og:url" content="index.html">
+  <meta name="og:image" content="/images/og_img.html">
+  <link href="/assets/8/8f271511da/2de337b0/css/example.wink.css" rel="stylesheet">
+  <link href="/assets/8/8f271511da/32384b8a/css/sweetalert.css" rel="stylesheet">
+  <link href="/assets/8/8f271511da/6c976d13/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/assets/8/8f271511da/6c976d13/css/material-design-iconic-font.min.css" rel="stylesheet">
+  <link href="/assets/8/8f271511da/6c976d13/css/animate.min.css" rel="stylesheet">
+  <link href="/assets/8/8f271511da/6c976d13/css/csrlive-bootstrap.css" rel="stylesheet">
+  <link href="/assets/8/8f271511da/6c976d13/css/csrlive-core.css" rel="stylesheet">
+  <link href="/assets/8/8f271511da/6c976d13/css/csrlive-misc.css" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800,900&amp;subset=cyrillic,cyrillic-ext,latin-ext,vietnamese"
+    rel="stylesheet">
+  <link href="/assets/8/8f271511da/6c976d13/css/footer_style.css" rel="stylesheet">
+</head>
+
+<body class="simple-page bg-oxygen ">
+  <div id="video-bg">
+    <div id="container">
+      <div class="simple-page-wrap">
+        <div class="simple-page-logo">
+          <a href="index.html">
+            <!-- <img src="/images/csr-live-logo-2.svg" width="200"> -->
+            <h1>1Tok1</h1>
+          </a>
+        </div><!-- logo -->
+
+
+        <div class="simple-page-form" id="signup-form">
+          <h1 class="text-center mb-20">Login</h1>
+          <form id="login-form" method="post" autocomplete="off">
+            <input type="hidden" name="_csrf-frontend"
+              value="1NnNFoTsqxbr5PWnyaUIhmlXmqL_-JWotWVJKkHhR_zh6KZM04rPWYOmpsLx1kzMKwSskLDBysXZDS0bOaQiyA==">
+            <div class="form-group field-loginform-username required">
+
+              <input type="email" id="loginform-username" class="form-control" name="email" tabindex="1"
+                placeholder="Email" aria-required="true">
+
+              <p class="help-block help-block-error"></p>
             </div>
-            <div class="form-group">
-              <label>Password</label>
-              <input
-                type="password"
-                name ="password"
-                class="form-control"
-                placeholder="Password"
-              />
+            <div class="form-group field-loginform-password required">
+
+              <input type="password" id="loginform-password" class="password-hide-show form-control" name="password"
+                tabindex="2" placeholder="Password" aria-required="true">
+
+              <p class="help-block help-block-error"></p>
             </div>
-            <% if (messages.error) { %>
-              <div class="alert alert-danger" role="alert"><%- messages.error %></div>
-              <% } %>
-            <button type="submit" class="btn btn-black" >Login</button>
-            <button type="button" class="btn btn-light" onclick="location.href='/user/register'">Register</button>
+            <div class="form-group m-b-xl field-loginform-rememberme">
+              <div class="checkbox"><input type="hidden" name="LoginForm[rememberMe]" value="0"><input type="checkbox"
+                  id="loginform-rememberme" name="LoginForm[rememberMe]" value="1"><label class="control-label"
+                  for="loginform-rememberme">Remember me</label>
+                <p class="help-block help-block-error"></p>
+              </div>
+            </div>
+            <input type="submit" class="btn btn-primary input-100" name="login-button" value="Log In"></input>
           </form>
+          <% if (messages.error) { %>
+            <div class="alert alert-danger" role="alert">
+              <%- messages.error %>
+            </div>
+            <% } %>
         </div>
+        <div class="simple-page-footer">
+          <p>
+            <a title="Forgot your password? Change it here!">Forgot your password?</a>
+          </p>
+          <p>
+            <small>Don't have an account ?</small>
+            <a href="/user/register" title="Sign up here!">Sign up here!</a>
+          </p>
+        </div>
+      </div><!-- .simple-page-wrap -->
+
+      <!-- Start Footer -->
+      <div class="footer">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-12 text-center">
+              <ul class="list-unstyled footer_menu_list list-inline">
+                <li class="list-inline-item">
+                  <a class="nav-link" href="token-sale-agreement.html">Token Sale Agreement</a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="nav-link" href="terms-of-use.html">Terms of Use</a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="nav-link" href="privacy-policy.html">Privacy Policy</a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="nav-link" href="cookie-policy.html">Cookie Policy</a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="nav-link" href="disclaimer.html">Disclaimer</a>
+                </li>
+                <li class="list-inline-item">
+                  <a class="nav-link" href="support.html">Support</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="text-center">
+                <p class="copy-rights mb-0"> Copyright 1Tok1 2021 © All rights reserved.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
+      <!-- End Footer -->
     </div>
-  </body>
+  </div>
+  <script src="/assets/8/8f271511da/cfd4ba49/jquery.js"></script>
+  <script src="/assets/8/8f271511da/2de337b0/vendor/modernizr.custom.js"></script>
+  <script src="/assets/8/8f271511da/2de337b0/hideShowPassword.js"></script>
+  <script src="/assets/8/8f271511da/32384b8a/js/sweetalert-dev.js"></script>
+  <script src="/assets/8/8f271511da/f91ab1e1/yii.js"></script>
+  <script src="/assets/8/8f271511da/f91ab1e1/yii.activeForm.js"></script>
+  <script>jQuery(function ($) {
+      jQuery('.password-hide-show').hidePassword(true);
+      //jQuery('#login-form').yiiActiveForm([{ "id": "loginform-username", "name": "username", "container": ".field-loginform-username", "input": "#loginform-username", "error": ".help-block.help-block-error", "encodeError": false, "enableAjaxValidation": true }, { "id": "loginform-password", "name": "password", "container": ".field-loginform-password", "input": "#loginform-password", "error": ".help-block.help-block-error", "encodeError": false, "enableAjaxValidation": false }, { "id": "loginform-rememberme", "name": "rememberMe", "container": ".field-loginform-rememberme", "input": "#loginform-rememberme", "error": ".help-block.help-block-error", "encodeError": false, "enableAjaxValidation": false }], []);
+    });</script>
+</body>
+
 </html>

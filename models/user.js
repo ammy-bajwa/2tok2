@@ -39,6 +39,7 @@ const signin = (request, response) => {
     })
     .then((loggedUser) => {
       delete user.password_digest;
+      console.log('loggedUser',loggedUser)
       request.session.loggedIn = true
       console.log('loggedUser',loggedUser)
       request.session.isAdmin = loggedUser.admin == 1
@@ -61,7 +62,11 @@ const checkPassword = (reqPassword, foundUser) => {
       if (err) {
         reject(err);
       } else if (response) {
-        resolve(response);
+        if(response){
+          resolve(foundUser);
+        }else{
+          reject(new Error("Passwords do not match."));
+        }
       } else {
         reject(new Error("Passwords do not match."));
       }

@@ -54,7 +54,7 @@
           aria-labelledby="nav-trades-tab"
         >
           <% if(data?.trade_data?.length) { %>
-          <table class="table">
+          <table class="table table-dark">
             <thead>
               <tr>
                 <th scope="col">#</th>
@@ -111,7 +111,7 @@
           aria-labelledby="nav-deposits-tab"
         >
           <% if(data?.deposits_data?.length) { %>
-          <table class="table">
+          <table class="table table-dark">
             <thead>
               <tr>
                 <th scope="col">#</th>
@@ -160,7 +160,7 @@
           <% } %>
 
           <!-- if result is empty -->
-          <% if(!data?.deposits_data.length) { %>
+          <% if(!data?.deposits_data?.length) { %>
           <p class="text-center">No Deposits!</p>
           <% } %>
         </div>
@@ -171,7 +171,7 @@
           aria-labelledby="nav-withdrawals-tab"
         >
           <% if(data?.withdrawals_data?.length) { %>
-          <table class="table">
+          <table class="table table-dark">
             <thead>
               <tr>
                 <th scope="col">#</th>
@@ -220,7 +220,7 @@
           <% } %>
 
           <!-- if result is empty -->
-          <% if(!data?.withdrawals_data.length) { %>
+          <% if(!data?.withdrawals_data?.length) { %>
           <p class="text-center">No withdrawals!</p>
           <% } %>
         </div>

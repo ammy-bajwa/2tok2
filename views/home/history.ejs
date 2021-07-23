@@ -20,7 +20,7 @@
       <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-trades" role="tabpanel" aria-labelledby="nav-trades-tab">
           <% if(data?.trade_data?.length) { %>
-            <table class="table">
+            <table class="table table-dark">
               <thead>
                 <tr>
                   <th scope="col">#</th>
@@ -57,7 +57,7 @@
         </div>
         <div class="tab-pane fade" id="nav-deposits" role="tabpanel" aria-labelledby="nav-deposits-tab">
           <% if(data?.deposits_data?.length) { %>
-            <table class="table">
+            <table class="table table-dark">
               <thead>
                 <tr>
                   <th scope="col">#</th>
@@ -88,13 +88,13 @@
             <% } %>
       
             <!-- if result is empty -->
-            <% if(!data?.deposits_data.length) { %>
+            <% if(!data?.deposits_data?.length) { %>
             <p class="text-center">No Deposits!</p>
             <% } %>
         </div>
         <div class="tab-pane fade" id="nav-withdrawals" role="tabpanel" aria-labelledby="nav-withdrawals-tab">
           <% if(data?.withdrawals_data?.length) { %>
-            <table class="table">
+            <table class="table table-dark">
               <thead>
                 <tr>
                   <th scope="col">#</th>
@@ -125,7 +125,7 @@
             <% } %>
       
             <!-- if result is empty -->
-            <% if(!data?.withdrawals_data.length) { %>
+            <% if(!data?.withdrawals_data?.length) { %>
             <p class="text-center">No withdrawals!</p>
             <% } %>
         </div>

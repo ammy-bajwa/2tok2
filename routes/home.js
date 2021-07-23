@@ -4,6 +4,7 @@ const database = require("../db");
 
 router.get('/', function(req, res, next) {
     const userName = req.session?.loggedUser?.username
+    console.log('req.session?.loggedUser?.id',req.session?.loggedUser)
     if(req.session.loggedIn){
         database.raw("select type,currency,SUM (TO_NUMBER(amount,'99G999D9S')) as amount from transaction where userId = ? group by type,currency",[req.session?.loggedUser?.id])
         .then((data) => {
