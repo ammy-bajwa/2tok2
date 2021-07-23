@@ -20,6 +20,7 @@ const signup = (request, response) => {
       delete user.password_digest;
       request.session.loggedIn = true
       request.session.loggedUser = _user
+      request.session.isAdmin = false
       response.redirect('/home')
     })
     .catch((err) => {

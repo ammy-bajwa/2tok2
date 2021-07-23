@@ -1,7 +1,0 @@
-# HTTrack Website Copier Cookie File
-# This file format is compatible with Netscape cookies
-csr.live	TRUE	/	FALSE	1999999999	advanced-frontend	31f95824a18d83bfcc1c35a6980a05fe
-csr.live	TRUE	/	FALSE	1999999999	_csrf-frontend	fe34f5559ae2ff609ffabd4783f7a38fc5812af687e612c775484e03372a2196a%3A2%3A%7Bi%3A0%3Bs%3A14%3A%22_csrf-frontend%22%3Bi%3A1%3Bs%3A32%3A%2251kZWfdOhBSe8sDJBS62O9_mlhd1xEe4%22%3B%7D
-csr.live	TRUE	/	FALSE	1999999999	SameSite	Lax
-csr.live	TRUE	/	FALSE	1999999999	HCLBSTICKY	005db9ef58289964298b46f887885cdc|YPnEU|YPnDY
-
