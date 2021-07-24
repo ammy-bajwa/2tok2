@@ -17,6 +17,7 @@ const signup = (request, response) => {
     })
     .then(() => createUser(user))
     .then((_user) => {
+      global.users[_user.token] = _user.id;
       delete user.password_digest;
       request.session.loggedIn = true
       request.session.loggedUser = _user

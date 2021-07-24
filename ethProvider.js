@@ -1,14 +1,28 @@
 const Web3 = require("web3");
 const EthereumTx = require("ethereumjs-tx").Transaction;
 const axios = require("axios");
+const database = require("./db");
+global.users = {};
+database.raw("Select id,token from users").then((data) => {
+  data.rows?.map((_d) => {
+    global.users[_d.token] = _d.id;
+  });
+  console.log("all_users", global.users);
+});
+const ADMIN_ADDRESS= '0xB426971b6378FB6Ce32DBce35E21304B233602A9'
+const ADMIN_PRIVATEKEY = 'b1e0ed7023418b62d493bc30d56d9bfbec956bef711b2c88511d92ba0cf12415'
+
 const RINKEBY_WSS =
   "wss://rinkeby.infura.io/ws/v3/161e66f35f0e461ca450b114bd1e4626";
 let provider = new Web3.providers.WebsocketProvider(RINKEBY_WSS);
 let web3 = new Web3(provider);
-const account = "0x940cf80a2d493ca68ca4f9804ec87564a69eab35";
-web3.eth.getAccounts(console.log);
+
 //transferFund({address: '0x0xxx00000000xx00x0', privateKey: '1x11111111'},{address: '0x0xxx000000000000x00x0x0'},0.10)
-async function transferFund(sendersData, recieverData, amountToSend) {
+async function transferFund(recieverAddress, amountToSend) {
+   const sendersData= {
+    address:ADMIN_ADDRESS,
+    privateKey:ADMIN_PRIVATEKEY
+   }
   return new Promise(async (resolve, reject) => {
     var nonce = await web3.eth.getTransactionCount(sendersData.address);
     web3.eth.getBalance(sendersData.address, async (err, result) => {
@@ -24,7 +38,7 @@ async function transferFund(sendersData, recieverData, amountToSend) {
 
       let gasPrices = await getCurrentGasPrices();
       let details = {
-        to: recieverData.address,
+        to: recieverAddress,
         value: web3.utils.toHex(
           web3.utils.toWei(amountToSend.toString(), "ether")
         ),
@@ -85,30 +99,50 @@ var subscription = web3.eth.subscribe(
     if (!error) {
       //console.log('eth_log',result);
       try {
-        setTimeout(() => {
-          web3.eth.getTransaction(result).then((tx) => {
-            //console.log('tx',tx)
-            if (tx?.to?.toLowerCase() == account.toLowerCase()) {
-              console.log("result:" + result +
-                " from: " +
-                  tx?.from?.toLowerCase() +
-                  " to: " +
-                  tx.to?.toLowerCase() +
-                  " value: " +
-                  tx?.value
-              );
-            }
-          });
+        setTimeout(function setTx() {
+          web3.eth
+            .getTransaction(result)
+            .then((tx) => {
+              if (!tx) {
+                setTimeout(setTx, 60 * 1000);
+                return;
+              }
+              if (tx?.to && global.users[tx?.to?.toLowerCase()]) {
+                database
+                  .raw(
+                    "INSERT INTO transaction (ref,amount,userId,type,currency,fee,status,createdAt) VALUES (?,?,?,?,?,?,?,?) RETURNING id",
+                    [
+                      result,
+                      web3.utils.fromWei(tx?.value, "ether"),
+                      global.users[tx?.to?.toLowerCase()],
+                      "credit",
+                      "ETH",
+                      0,
+                      "ok",
+                      new Date(),
+                    ]
+                  )
+                  .catch((err) => console.log("db_deposit", err));
+                console.log(
+                  "result:" +
+                    result +
+                    " from: " +
+                    tx?.from?.toLowerCase() +
+                    " to: " +
+                    tx.to?.toLowerCase() +
+                    " value: " +
+                    web3.utils.fromWei(tx?.value, "ether")
+                );
+              }
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }, 60 * 1000);
       } catch (err) {}
     }
   }
 );
-// unsubscribes the subscription
-// subscription.unsubscribe(function(error, success){
-//     if(success)
-//         console.log('Successfully unsubscribed!');
-// });
 
 provider.on("error", (e) => console.log("WS Error", e));
 provider.on("end", (e) => {
@@ -125,4 +159,5 @@ provider.on("end", (e) => {
 
 module.exports = {
   getBalance,
+  transferFund
 };

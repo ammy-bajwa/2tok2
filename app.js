@@ -14,9 +14,6 @@ var homeRouter = require('./routes/home');
 var apiRouter = require('./routes/api');
 var eth = require('./ethProvider')
 var app = express();
-eth.getBalance('0x940cf80a2d493ca68ca4f9804ec87564a69eab35').then((_balance)=>{
-  console.log('_balance',_balance)
-})
 
 // view engine setup
 app.use(expressLayouts)
