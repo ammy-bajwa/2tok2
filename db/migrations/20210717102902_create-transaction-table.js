@@ -12,6 +12,7 @@ exports.up = function(knex, Promise) {
       CONSTRAINT fk_user
       FOREIGN KEY(userId) 
 	    REFERENCES users(id)
+      CONSTRAINT ref_to UNIQUE(ref,userId)
     )`;
     return knex.raw(createQuery);
   };

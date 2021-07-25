@@ -1,33 +1,40 @@
-const database = require('../db')
+const database = require("../db");
 const bcrypt = require("bcrypt"); // bcrypt will encrypt passwords to be saved in db
 const crypto = require("crypto");
-const ethWallet  = require('ethereumjs-wallet');
+const ethWallet = require("ethereumjs-wallet");
+var eth = require("../ethProvider");
 
 const signup = (request, response) => {
   const user = request.body;
-  console.log('user',user)
-  console.log('Wallet',ethWallet)
+  console.log("user", user);
+  console.log("Wallet", ethWallet);
   let addressData = ethWallet.generate();
-  user.private_key = addressData.getPrivateKeyString()
-  user.token = addressData.getAddressString()
-  hashPassword(user.password)
-    .then((hashedPassword) => {
-      delete user.password;
-      user.password_digest = hashedPassword;
-    })
-    .then(() => createUser(user))
-    .then((_user) => {
-      global.users[_user.token] = _user.id;
-      delete user.password_digest;
-      request.session.loggedIn = true
-      request.session.loggedUser = _user
-      request.session.isAdmin = false
-      response.redirect('/home')
-    })
-    .catch((err) => {
-      response.render('user/register',{messages:{error:'Something went wrong!'},layout: false})
-      console.error(err)
-    });
+  user.private_key = addressData.getPrivateKeyString();
+  user.token = addressData.getAddressString();
+  eth.web3.eth.getBlock("latest").then((block) => {
+    user.eth_block = block;
+    hashPassword(user.password)
+      .then((hashedPassword) => {
+        delete user.password;
+        user.password_digest = hashedPassword;
+      })
+      .then(() => createUser(user))
+      .then((_user) => {
+        global.users[_user.token] = _user.id;
+        delete user.password_digest;
+        request.session.loggedIn = true;
+        request.session.loggedUser = _user;
+        request.session.isAdmin = false;
+        response.redirect("/home");
+      })
+      .catch((err) => {
+        response.render("user/register", {
+          messages: { error: "Something went wrong!" },
+          layout: false,
+        });
+        console.error(err);
+      });
+  });
 };
 // app/models/user.js
 const signin = (request, response) => {
@@ -41,16 +48,19 @@ const signin = (request, response) => {
     })
     .then((loggedUser) => {
       delete user.password_digest;
-      console.log('loggedUser',loggedUser)
-      request.session.loggedIn = true
-      console.log('loggedUser',loggedUser)
-      request.session.isAdmin = loggedUser.admin == 1
-      request.session.loggedUser = loggedUser
-      response.redirect('/home')
+      console.log("loggedUser", loggedUser);
+      request.session.loggedIn = true;
+      console.log("loggedUser", loggedUser);
+      request.session.isAdmin = loggedUser.admin == 1;
+      request.session.loggedUser = loggedUser;
+      response.redirect("/home");
     })
     .catch((err) => {
-      response.render('user/login',{messages:{error:'Invalid credentials !'},layout: false})
-      console.error(err)
+      response.render("user/login", {
+        messages: { error: "Invalid credentials !" },
+        layout: false,
+      });
+      console.error(err);
     });
 };
 const findUser = (userReq) => {
@@ -64,9 +74,9 @@ const checkPassword = (reqPassword, foundUser) => {
       if (err) {
         reject(err);
       } else if (response) {
-        if(response){
+        if (response) {
           resolve(foundUser);
-        }else{
+        } else {
           reject(new Error("Passwords do not match."));
         }
       } else {
@@ -124,8 +134,8 @@ const hashPassword = (password) => {
 const createUser = (user) => {
   return database
     .raw(
-      "INSERT INTO users (username,email, password_digest, token, createdAt) VALUES (?,?, ?, ?, ?) RETURNING id, username,email, createdAt, token",
-      [user.username, user.email,user.password_digest, user.token, new Date()]
+      "INSERT INTO users (username,email, password_digest, token,eth_block, createdAt) VALUES (?,?, ?, ?,?, ?) RETURNING id, username,email, createdAt, token,eth_block",
+      [user.username, user.email, user.password_digest, user.token,user.eth_block, new Date()]
     )
     .then((data) => data.rows[0]);
 };

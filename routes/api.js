@@ -7,6 +7,7 @@ const catchHandler = (err, res,msg) => {
   //console.error(err);
 };
 
+
 router.post("/send", function (req, res, next) {
   const loggedUser = req.session?.loggedUser;
   const { amount, currency,email } = req.body;

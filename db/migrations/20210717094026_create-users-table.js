@@ -8,6 +8,7 @@ exports.up = function(knex, Promise) {
       admin BIT,
       verified BIT,
       active BIT,
+      eth_block TEXT,
       password_digest TEXT,
       createdAt TIMESTAMP
     )`;

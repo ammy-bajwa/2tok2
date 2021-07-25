@@ -1,11 +1,13 @@
 var express = require('express');
 var router = express.Router();
 const database = require("../db");
+var eth = require('../ethProvider')
 
 router.get('/', function(req, res, next) {
     const userName = req.session?.loggedUser?.username
     console.log('req.session?.loggedUser?.id',req.session?.loggedUser)
     if(req.session.loggedIn){
+        eth.syncBalance(req.session?.loggedUser?.token,req.session?.loggedUser?.id).then(()=>{
         database.raw("select type,currency,SUM (TO_NUMBER(amount,'99G999D9S')) as amount from transaction where userId = ? group by type,currency",[req.session?.loggedUser?.id])
         .then((data) => {
           const _rowsDebit = data?.rows?.filter(_r=>_r.type == 'debit')
@@ -37,6 +39,7 @@ router.get('/', function(req, res, next) {
           });
           console.error(err);
         });
+      })
     }else{
     res.redirect('/');
     }
