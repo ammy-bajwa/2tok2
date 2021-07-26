@@ -14,7 +14,9 @@
             <div class="card-header">
               <ul class="nav nav-pills w-100">
                 <li class="nav-pill active">
-                  <a class="nav-link">Balances</a>
+                  <a class="nav-link" v-on:click="reload">Balances <ion-icon
+                      style="margin-bottom: -3px;padding-left: 5px;padding-right: 5px;" name="reload-outline">
+                    </ion-icon></a>
                 </li>
                 <li class="nav-pill ml-auto">
                   <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#sendModal">
@@ -26,6 +28,7 @@
                   <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#withdrawalModal">
                     Withdrawal
                   </button>
+
                 </li>
               </ul>
             </div>
@@ -40,7 +43,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <%  Object.keys(data).forEach(function(prop) { %>
+                    <% Object.keys(data).forEach(function(prop) { %>
                       <tr>
                         <td>
                           <%= prop %>
@@ -57,7 +60,7 @@
                 <% } %>
 
                   <!-- if result is empty -->
-                  <% if(!data || data == {}) { %>
+                  <% if(!data || data=={}) { %>
                     <p class="text-center">No Balance!</p>
                     <% } %>
             </div>
@@ -207,7 +210,7 @@
                       </select>
                     </div>
                   </div>
-                  <div style="display: flex; flex-direction: row">
+                  <div v-if="depositCurrency != 'ETH' && depositCurrency != 'W2' && depositCurrency != 'W1'" style="display: flex; flex-direction: row">
                     <div style="flex: 1; margin-right: 10px">
                       <label for="basic-url">Amount</label>
                       <div class="input-group mb-3">
@@ -221,12 +224,28 @@
                       </div>
                     </div>
                   </div>
+                  <div v-if="depositCurrency == 'ETH' || depositCurrency == 'W2' || depositCurrency == 'W1'" style="display: flex; flex-direction: row">
+                    <div style="flex: 1; margin-right: 10px">
+                      <label for="basic-url">Address</label>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="basic-addon3">{{
+                            depositCurrency
+                            }}</span>
+                        </div>
+                        <input type="text" class="form-control" v-model="token" readonly aria-describedby="basic-addon3" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">
                     Close
                   </button>
-                  <button type="button" class="btn btn-primary" v-on:click="deposit">Deposit</button>
+                  <button v-if="depositCurrency != 'ETH' && depositCurrency != 'W2' && depositCurrency != 'W1'" type="button" class="btn btn-primary"
+                    v-on:click="deposit">Deposit</button>
+                  <button v-if="depositCurrency == 'ETH' || depositCurrency == 'W2' || depositCurrency == 'W1'" type="button" class="btn btn-primary" v-on:click="copy">Copy
+                    To ClipBoard</button>
                 </div>
               </div>
             </div>
@@ -265,6 +284,17 @@
                       </div>
                     </div>
                   </div>
+                  <div v-if="withdrawalCurrency == 'ETH' || withdrawalCurrency == 'W2' || withdrawalCurrency == 'W1'" style="display: flex; flex-direction: row">
+                    <div style="flex: 1; margin-right: 10px">
+                      <label for="basic-url">Address</label>
+                      <div class="input-group mb-3">
+                        <!-- <div class="input-group-prepend">
+                          <span class="input-group-text" id="basic-addon3">{{withdrawalCurrency}}</span>
+                        </div> -->
+                        <input type="text" class="form-control" v-model="withdrawalAddress" aria-describedby="basic-addon3" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -277,24 +307,26 @@
           </div>
 </div>
 <Script>
-  var notyf = new Notyf(); 
+  var notyf = new Notyf();
   var app = new Vue({
-    el: '#tradeApp', 
+    el: '#tradeApp',
     data: {
-      options:[{ label: 'Bitcoin', value: 'BTC' }, { label: 'Ethereum', value: 'ETH' }, { label: 'Euro', value: 'EUR' }, { label: 'Tether', value: 'USDT' }],
+      options: [{ label: 'Bitcoin', value: 'BTC' }, { label: 'Ethereum', value: 'ETH' }, { label: 'Euro', value: 'EUR' }, { label: 'Tether', value: 'USDT' }, { label: 'W1', value: 'W1' }, { label: 'W2', value: 'W2' }],
       payCurrency: '',
-       receiveCurrency: '',
-        pay: '',
-         receive: '',
-         sendTo:'',
-         sendCurrency:'',
-         sendAmount:'',
-         depositCurrency:'',
-         depositAmount:'',
-         withdrawalCurrency:'',
-         withdrawalAmount:''
+      receiveCurrency: '',
+      pay: '',
+      receive: '',
+      sendTo: '',
+      sendCurrency: '',
+      sendAmount: '',
+      depositCurrency: '',
+      depositAmount: '',
+      withdrawalCurrency: '',
+      withdrawalAmount: '',
+      withdrawalAddress:'',
+      token: '<%= locals?.token %>'
 
-    }, 
+    },
     methods: {
       isNumber:
         function (evt) {
@@ -303,138 +335,184 @@
               57)) && charCode !== 46) { evt.preventDefault();; } else { return true; }
         },
       exchange: function () {
-        if(!this.receiveCurrency){
+        if (!this.receiveCurrency) {
           notyf.error('Please select buy Currency!');
           return
         }
-        if(!this.payCurrency){
+        if (!this.payCurrency) {
           notyf.error('Please select pay Currency!');
           return
         }
-        if(!this.pay){
+        if (!this.pay) {
           notyf.error('Please enter sell amount!');
           return
         }
-        if(!this.receive){
+        if (!this.receive) {
           notyf.error('Please enter buy amount!');
           return
         }
-        fetch('/api/Exchange',{
-          method:'post',
-          headers:{'Content-Type': 'application/json'},
-          body:JSON.stringify({
-            buy:this.receive,
-            buyCurrency:this.receiveCurrency,
-            sell:this.pay,
-            sellCurrency:this.payCurrency
+        fetch('/api/Exchange', {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            buy: this.receive,
+            buyCurrency: this.receiveCurrency,
+            sell: this.pay,
+            sellCurrency: this.payCurrency
           })
         })
-        .then(response => response.json())
-        .then(data => {
-          if(data?.error){
-            notyf.error(data?.error)
-          }else{
-            this.receiveCurrency = ''
-            this.payCurrency = ''
-            this.receive = ''
-            this.pay = ''
-            notyf.success('Exchange Request send !')
-          }
-        });
+          .then(response => response.json())
+          .then(data => {
+            if (data?.error) {
+              notyf.error(data?.error)
+            } else {
+              this.receiveCurrency = ''
+              this.payCurrency = ''
+              this.receive = ''
+              this.pay = ''
+              notyf.success('Exchange Request send !')
+            }
+          });
       },
-      deposit:function(){
-        if(!this.depositCurrency){
+      deposit: function () {
+        if (!this.depositCurrency) {
           notyf.error('Please select Currency!');
           return
         }
-        if(!this.depositAmount){
+        if (!this.depositAmount) {
           notyf.error('Please enter amount!');
           return
         }
-        fetch('/api/deposit',{
-          method:'post',
-          headers:{'Content-Type': 'application/json'},
-          body:JSON.stringify({
-            currency:this.depositCurrency,
-            amount:this.depositAmount
+        fetch('/api/deposit', {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            currency: this.depositCurrency,
+            amount: this.depositAmount
           })
         })
-        .then(response => response.json())
-        .then(data => {
-          if(data?.error){
-            notyf.error(data?.error)
-          }else{
-            this.depositCurrency = ''
-            this.depositAmount = ''
-            $('#depositModal').modal('hide');
-            location.reload();
-          }
-        });
+          .then(response => response.json())
+          .then(data => {
+            if (data?.error) {
+              notyf.error(data?.error)
+            } else {
+              this.depositCurrency = ''
+              this.depositAmount = ''
+              $('#depositModal').modal('hide');
+              location.reload();
+            }
+          });
       },
-      withdraw:function(){
-        if(!this.withdrawalCurrency){
+      withdraw: function () {
+        if (!this.withdrawalCurrency) {
           notyf.error('Please select Currency!');
           return
         }
-        if(!this.withdrawalAmount){
+        if (!this.withdrawalAmount) {
           notyf.error('Please enter amount!');
           return
         }
-        fetch('/api/withdraw',{
-          method:'post',
-          headers:{'Content-Type': 'application/json'},
-          body:JSON.stringify({
-            currency:this.withdrawalCurrency,
-            amount:this.withdrawalAmount
+        fetch('/api/withdraw', {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            currency: this.withdrawalCurrency,
+            amount: this.withdrawalAmount,
+            address:this.withdrawalAddress
           })
         })
-        .then(response => response.json())
-        .then(data => {
-          if(data?.error){
-            notyf.error(data?.error)
-          }else{
-            this.withdrawalCurrency = ''
-            this.withdrawalAmount = ''
-            $('#withdrawalModal').modal('hide');
-            location.reload();
-          }
-        });
+          .then(response => response.json())
+          .then(data => {
+            if (data?.error) {
+              notyf.error(data?.error)
+            } else {
+              this.withdrawalCurrency = ''
+              this.withdrawalAmount = ''
+              $('#withdrawalModal').modal('hide');
+              location.reload();
+            }
+          });
       },
-      send:function(){
-        if(!this.sendTo){
+      send: function () {
+        if (!this.sendTo) {
           notyf.error('Please enter send to email!');
           return
         }
-        if(!this.sendCurrency){
+        if (!this.sendCurrency) {
           notyf.error('Please enter currency!');
           return
         }
-        if(!this.sendAmount){
+        if (!this.sendAmount) {
           notyf.error('Please enter amount!');
           return
         }
-        fetch('/api/send',{
-          method:'post',
-          headers:{'Content-Type': 'application/json'},
-          body:JSON.stringify({
-            currency:this.sendCurrency,
-            amount:this.sendAmount,
-            email:this.sendTo
+        fetch('/api/send', {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            currency: this.sendCurrency,
+            amount: this.sendAmount,
+            email: this.sendTo
           })
         })
-        .then(response => response.json())
-        .then(data => {
-          if(data?.error){
-            notyf.error(data?.error)
-          }else{
-            this.sendCurrency = ''
-            this.sendAmount = ''
-            this.sendTo = ''
-            $('#sendModal').modal('hide');
-            location.reload();
-          }
-        });
+          .then(response => response.json())
+          .then(data => {
+            if (data?.error) {
+              notyf.error(data?.error)
+            } else {
+              this.sendCurrency = ''
+              this.sendAmount = ''
+              this.sendTo = ''
+              $('#sendModal').modal('hide');
+              location.reload();
+            }
+          });
       },
+      reload: function () {
+        location.reload()
+      },
+      copy: function () {
+        var textArea = document.createElement("textarea");
+        textArea.style.position = 'fixed';
+        textArea.style.top = 0;
+        textArea.style.left = 0;
+
+        // Ensure it has a small width and height. Setting to 1px / 1em
+        // doesn't work as this gives a negative w/h on some browsers.
+        textArea.style.width = '2em';
+        textArea.style.height = '2em';
+
+        // We don't need padding, reducing the size if it does flash render.
+        textArea.style.padding = 0;
+
+        // Clean up any borders.
+        textArea.style.border = 'none';
+        textArea.style.outline = 'none';
+        textArea.style.boxShadow = 'none';
+
+        // Avoid flash of the white box if rendered for any reason.
+        textArea.style.background = 'transparent';
+
+
+        textArea.value = this.token;
+
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+          var successful = document.execCommand('copy');
+          var msg = successful ? 'successful' : 'unsuccessful';
+          console.log('Copying text command was ' + msg);
+        } catch (err) {
+          console.log('Oops, unable to copy');
+        }
+
+        document.body.removeChild(textArea);
+      }
     }
   })
+  setTimeout(() => {
+    location.reload()
+  }, 50 * 1800)
 </Script>

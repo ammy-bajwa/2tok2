@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
     console.log('req.session?.loggedUser?.id',req.session?.loggedUser)
     if(req.session.loggedIn){
         eth.syncBalance(req.session?.loggedUser?.token,req.session?.loggedUser?.id).then(()=>{
-        database.raw("select type,currency,SUM (TO_NUMBER(amount,'99G999D9S')) as amount from transaction where userId = ? group by type,currency",[req.session?.loggedUser?.id])
+        database.raw("select type,currency,SUM (amount::numeric) as amount from transaction where userId = ? group by type,currency",[req.session?.loggedUser?.id])
         .then((data) => {
           const _rowsDebit = data?.rows?.filter(_r=>_r.type == 'debit')
           const _rowsCredit = data?.rows?.filter(_r=>_r.type == 'credit')

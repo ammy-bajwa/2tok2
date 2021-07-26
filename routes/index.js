@@ -18,7 +18,7 @@ router.get("/trade", function (req, res, next) {
       .then(() => {
         database
           .raw(
-            "select type,currency,SUM (TO_NUMBER(amount,'99G999D9S')) as amount from transaction where userId = ? group by type,currency",
+            "select type,currency,SUM (amount::numeric) as amount from transaction where userId = ? group by type,currency",
             [req.session?.loggedUser?.id]
           )
           .then((data) => {
@@ -41,6 +41,7 @@ router.get("/trade", function (req, res, next) {
               data: _data,
               userName,
               title: "trade",
+              token:req.session?.loggedUser?.token,
               isAdmin: req.session.isAdmin,
             });
           })

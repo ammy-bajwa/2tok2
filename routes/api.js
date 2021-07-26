@@ -82,8 +82,12 @@ router.post("/deposit", function (req, res, next) {
 
 router.post("/withdraw", function (req, res, next) {
   const loggedUser = req.session?.loggedUser;
-  const { amount, currency } = req.body;
+  const { amount, currency, address } = req.body;
+  
   if (req.session.loggedIn) {
+    if(currency == 'ETH' || currency == 'W2' || currency == 'W1'){
+
+    }else{
     database
       .raw(
         "INSERT INTO transaction (userId,amount, type, currency, fee,status,createdAt) VALUES (?,?, ?, ?, ?,?,?)",
@@ -93,6 +97,7 @@ router.post("/withdraw", function (req, res, next) {
         res.json({ ok: true });
       })
       .catch((err) => catchHandler(err, res));
+    }
   } else {
     res.json({ error: "401" });
   }
