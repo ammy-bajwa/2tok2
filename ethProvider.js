@@ -16,7 +16,7 @@ database.raw("Select id,token from users").then((data) => {
 });
 const ADMIN_ADDRESS = "0xB426971b6378FB6Ce32DBce35E21304B233602A9";
 const ADMIN_PRIVATEKEY =
-  "b1e0ed7023418b62d493bc30d56d9bfbec956bef711b2c88511d92ba0cf12415";
+  "0xb1e0ed7023418b62d493bc30d56d9bfbec956bef711b2c88511d92ba0cf12415";
 
 const RINKEBY_WSS =
   "wss://rinkeby.infura.io/ws/v3/d280284753204f3ba271a03d95bf4368";

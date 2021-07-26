@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const database = require("../db");
-
+const eth = require('../ethProvider')
 const catchHandler = (err, res,msg) => {
   res.json({ error: msg || "Something went wrong !", err });
   //console.error(err);
@@ -85,8 +85,18 @@ router.post("/withdraw", function (req, res, next) {
   const { amount, currency, address } = req.body;
   
   if (req.session.loggedIn) {
-    if(currency == 'ETH' || currency == 'W2' || currency == 'W1'){
-
+    if(currency == 'ETH'){
+      eth.transferFund(address,amount).then((_res)=>{
+        console.log('transfer_req',_res)
+        database.raw(
+        "INSERT INTO transaction (ref,userId,amount, type, currency, fee,status,createdAt) VALUES (?,?,?, ?, ?, ?,?,?)",
+        [_res?.id,loggedUser?.id, amount, "debit", currency, 0, "ok", new Date()]
+      )
+      .then((data) => {
+        res.json({ ok: true });
+      })
+      .catch((err) => catchHandler(err, res));
+      })
     }else{
     database
       .raw(

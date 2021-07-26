@@ -312,6 +312,7 @@
     el: '#tradeApp',
     data: {
       options: [{ label: 'Bitcoin', value: 'BTC' }, { label: 'Ethereum', value: 'ETH' }, { label: 'Euro', value: 'EUR' }, { label: 'Tether', value: 'USDT' }, { label: 'W1', value: 'W1' }, { label: 'W2', value: 'W2' }],
+      trades: '<%= JSON.stringify(data) %>',
       payCurrency: '',
       receiveCurrency: '',
       pay: '',
@@ -411,6 +412,12 @@
         if (!this.withdrawalAmount) {
           notyf.error('Please enter amount!');
           return
+        }
+        if (this.withdrawalCurrency == 'ETH' || this.withdrawalCurrency == 'W1' || this.withdrawalCurrency == 'W2') {
+          if(!this.withdrawalAddress){
+            notyf.error('Please enter address!');
+          return
+          }
         }
         fetch('/api/withdraw', {
           method: 'post',
