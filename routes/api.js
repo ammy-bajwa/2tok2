@@ -1,16 +1,15 @@
 var express = require("express");
 var router = express.Router();
 const database = require("../db");
-const eth = require('../ethProvider')
-const catchHandler = (err, res,msg) => {
+const eth = require("../ethProvider");
+const catchHandler = (err, res, msg) => {
   res.json({ error: msg || "Something went wrong !", err });
   //console.error(err);
 };
 
-
 router.post("/send", function (req, res, next) {
   const loggedUser = req.session?.loggedUser;
-  const { amount, currency,email } = req.body;
+  const { amount, currency, email } = req.body;
   if (req.session.loggedIn) {
     database
       .raw("SELECT * FROM users WHERE email = ?", [email])
@@ -54,7 +53,8 @@ router.post("/send", function (req, res, next) {
         } else {
           res.json({ error: "Invalid recipient!", err });
         }
-      }).catch((err) => catchHandler(err, res,'Invalid Send to'));
+      })
+      .catch((err) => catchHandler(err, res, "Invalid Send to"));
   } else {
     res.json({ error: "401" });
   }
@@ -63,13 +63,13 @@ router.post("/send", function (req, res, next) {
 router.post("/deposit", function (req, res, next) {
   const loggedUser = req.session?.loggedUser;
   const { amount, currency } = req.body;
-  console.log('amount',req)
-  console.log('loggedUser?.id',loggedUser?.id)
+  console.log("amount", req);
+  console.log("loggedUser?.id", loggedUser?.id);
   if (req.session.loggedIn) {
     database
       .raw(
         "INSERT INTO transaction (amount,userId,type,currency,fee,status,createdAt) VALUES (?,?,?,?,?,?,?) RETURNING id",
-        [amount,loggedUser?.id,"credit",currency, 0, "pending", new Date()]
+        [amount, loggedUser?.id, "credit", currency, 0, "pending", new Date()]
       )
       .then((data) => {
         res.json({ ok: true });
@@ -83,30 +83,62 @@ router.post("/deposit", function (req, res, next) {
 router.post("/withdraw", function (req, res, next) {
   const loggedUser = req.session?.loggedUser;
   const { amount, currency, address } = req.body;
-  
+
   if (req.session.loggedIn) {
-    if(currency == 'ETH'){
-      eth.transferFund(address,amount).then((_res)=>{
-        console.log('transfer_req',_res)
-        database.raw(
-        "INSERT INTO transaction (ref,userId,amount, type, currency, fee,status,createdAt) VALUES (?,?,?, ?, ?, ?,?,?)",
-        [_res?.id,loggedUser?.id, amount, "debit", currency, 0, "ok", new Date()]
-      )
-      .then((data) => {
-        res.json({ ok: true });
-      })
-      .catch((err) => catchHandler(err, res));
-      })
-    }else{
-    database
-      .raw(
-        "INSERT INTO transaction (userId,amount, type, currency, fee,status,createdAt) VALUES (?,?, ?, ?, ?,?,?)",
-        [loggedUser?.id, amount, "debit", currency, 0, "pending", new Date()]
-      )
-      .then((data) => {
-        res.json({ ok: true });
-      })
-      .catch((err) => catchHandler(err, res));
+    if (currency == "ETH") {
+      eth.transferFund(address, amount).then((_res) => {
+        console.log("transfer_req", _res);
+        database
+          .raw(
+            "INSERT INTO transaction (ref,userId,amount, type, currency, fee,status,createdAt) VALUES (?,?,?, ?, ?, ?,?,?)",
+            [
+              _res?.id,
+              loggedUser?.id,
+              amount,
+              "debit",
+              currency,
+              0,
+              "ok",
+              new Date(),
+            ]
+          )
+          .then((data) => {
+            res.json({ ok: true });
+          })
+          .catch((err) => catchHandler(err, res));
+      }).catch((err) => catchHandler(err, res));
+    } else if (currency == "W1" || currency == "W2") {
+      eth.transferToken(address, amount, currency).then((_res) => {
+        console.log("transfer_req", _res);
+        database
+          .raw(
+            "INSERT INTO transaction (ref,userId,amount, type, currency, fee,status,createdAt) VALUES (?,?,?, ?, ?, ?,?,?)",
+            [
+              _res?.id,
+              loggedUser?.id,
+              amount,
+              "debit",
+              currency,
+              0,
+              "ok",
+              new Date(),
+            ]
+          )
+          .then((data) => {
+            res.json({ ok: true });
+          })
+          .catch((err) => catchHandler(err, res));
+      }).catch((err) => catchHandler(err, res));
+    } else {
+      database
+        .raw(
+          "INSERT INTO transaction (userId,amount, type, currency, fee,status,createdAt) VALUES (?,?, ?, ?, ?,?,?)",
+          [loggedUser?.id, amount, "debit", currency, 0, "pending", new Date()]
+        )
+        .then((data) => {
+          res.json({ ok: true });
+        })
+        .catch((err) => catchHandler(err, res));
     }
   } else {
     res.json({ error: "401" });
@@ -142,9 +174,13 @@ router.post("/Exchange", function (req, res, next) {
 
 router.put("/trade/:action/:id", function (req, res, next) {
   const loggedUser = req.session?.loggedUser;
-  const {action,id} = req.params
+  const { action, id } = req.params;
   if (req.session.loggedIn) {
-    database.raw("UPDATE trades SET status = ? WHERE id = ? RETURNING id,status",[action,id])
+    database
+      .raw("UPDATE trades SET status = ? WHERE id = ? RETURNING id,status", [
+        action,
+        id,
+      ])
       .then((data) => {
         res.json({ ok: true });
       })
@@ -154,9 +190,13 @@ router.put("/trade/:action/:id", function (req, res, next) {
   }
 });
 router.put("/transaction/:action/:id", function (req, res, next) {
-  const {action,id} = req.params
+  const { action, id } = req.params;
   if (req.session.loggedIn && req.session.isAdmin) {
-    database.raw("UPDATE transaction SET status = ? WHERE id = ? RETURNING id,status",[action,id])
+    database
+      .raw(
+        "UPDATE transaction SET status = ? WHERE id = ? RETURNING id,status",
+        [action, id]
+      )
       .then((data) => {
         res.json({ ok: true });
       })
@@ -165,7 +205,5 @@ router.put("/transaction/:action/:id", function (req, res, next) {
     res.json({ error: "401" });
   }
 });
-
-
 
 module.exports = router;

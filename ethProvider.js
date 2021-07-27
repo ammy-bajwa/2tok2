@@ -1,12 +1,55 @@
 const Web3 = require("web3");
 const EthereumTx = require("ethereumjs-tx").Transaction;
 const axios = require("axios");
+const W1_TOKEN = "0x2d6199141b109aec06825ff3f51bcdefeb316ae7";
+const W2_TOKEN = "0x31b1540C43E0802354a3dFE59731BfbA9D9D17f7";
+
 var etherscan = require("etherscan-api").init(
   "52KWBTETPDVZQMJJ3TUF2YPRTJZ2TCZNPN",
   "rinkeby",
   30000
 );
 const database = require("./db");
+const minABI = [
+  // transfer
+  {
+    constant: false,
+    inputs: [
+      {
+        name: "_to",
+        type: "address",
+      },
+      {
+        name: "_value",
+        type: "uint256",
+      },
+    ],
+    name: "transfer",
+    outputs: [
+      {
+        name: "",
+        type: "bool",
+      },
+    ],
+    type: "function",
+  },
+  // balanceOf
+  {
+    constant: true,
+    inputs: [{ name: "_owner", type: "address" }],
+    name: "balanceOf",
+    outputs: [{ name: "balance", type: "uint256" }],
+    type: "function",
+  },
+  // decimals
+  {
+    constant: true,
+    inputs: [],
+    name: "decimals",
+    outputs: [{ name: "", type: "uint8" }],
+    type: "function",
+  },
+];
 global.users = {};
 database.raw("Select id,token from users").then((data) => {
   data.rows?.map((_d) => {
@@ -76,6 +119,72 @@ async function transferFund(recieverAddress, amountToSend) {
     });
   });
 }
+async function getERC20Balance(contract, walletAddress) {
+  return await contract.methods.balanceOf(walletAddress).call();
+}
+async function transferToken(recieverAddress, amountToSend, tokenType) {
+  const sendersData = {
+    address: ADMIN_ADDRESS,
+    privateKey: ADMIN_PRIVATEKEY,
+  };
+  let contract = null;
+  if (tokenType == "W1") {
+    contract = new web3.eth.Contract(minABI, W1_TOKEN);
+  }
+  if (tokenType == "W2") {
+    contract = new web3.eth.Contract(minABI, W2_TOKEN);
+  }
+  const _value = web3.utils.toHex(web3.utils.toWei(amountToSend.toString()));
+  return new Promise(async (resolve, reject) => {
+    const balance = await contract.methods.balanceOf(ADMIN_ADDRESS).call();
+    console.log("balance_token__value", balance);
+    console.log("balance_token__value", _value);
+    if (balance > amountToSend) {
+      try {
+        const nonce = await web3.eth.getTransactionCount(ADMIN_ADDRESS);
+        const data = contract.methods
+          .transfer(recieverAddress, web3.utils.toHex(amountToSend))
+          .encodeABI();
+          console.log('data',data)
+        const gasPrices = await getCurrentGasPrices();
+        console.log('gasPrices',gasPrices)
+        const rawTransaction = {
+          from: ADMIN_ADDRESS,
+          nonce: nonce,
+          gasLimit: web3.utils.toHex(21000),
+          gasPrice: web3.utils.toHex(gasPrices.high * 1000000000),
+          to: recieverAddress,
+          value: "0x0",
+          data: data,
+          chainId: 4,
+        };
+        const privateKey = sendersData.privateKey.split("0x");
+        const privKey = Buffer.from(privateKey[1], "hex");
+        const transaction = new EthereumTx(rawTransaction, {
+          chain: "rinkeby",
+        });
+        transaction.sign(privKey);
+        const serializedTransaction = transaction.serialize();
+        web3.eth.sendSignedTransaction(
+          "0x" + serializedTransaction.toString("hex"),
+          (err, id) => {
+            if (err) {
+              console.log(err);
+              return reject();
+            }
+            const url = `https://rinkeby.etherscan.io/tx/${id}`;
+            console.log(url);
+            resolve({ id: id, link: url });
+          }
+        );
+      } catch (error) {
+        console.log("sendSignedTransaction_error", error);
+      }
+    } else {
+      return reject();
+    }
+  });
+}
 async function syncBalance(address, id) {
   try {
     var txlist = await etherscan.account.txlist(
@@ -115,25 +224,25 @@ async function syncBalance(address, id) {
       "asc"
     );
     for (let i = 0; i < txERC20list?.result?.length; i++) {
-        const tx = txERC20list.result[i];
-        //console.log("txlist", txlist);
-        try {
-          await database.raw(
-            "INSERT INTO transaction (ref,amount,userId,type,currency,fee,status,createdAt) VALUES (?,?,?,?,?,?,?,?) RETURNING id",
-            [
-              tx?.hash,
-              web3.utils.fromWei(tx?.value, "ether"),
-              id,
-              "credit",
-              tx?.tokenName,
-              0,
-              "ok",
-              new Date(),
-            ]
-          );
-        } catch (error) {
-          //console.log('error',error)
-        }
+      const tx = txERC20list.result[i];
+      //console.log("txlist", txlist);
+      try {
+        await database.raw(
+          "INSERT INTO transaction (ref,amount,userId,type,currency,fee,status,createdAt) VALUES (?,?,?,?,?,?,?,?) RETURNING id",
+          [
+            tx?.hash,
+            web3.utils.fromWei(tx?.value, "ether"),
+            id,
+            "credit",
+            tx?.tokenName,
+            0,
+            "ok",
+            new Date(),
+          ]
+        );
+      } catch (error) {
+        //console.log('error',error)
+      }
     }
   } catch (err) {
     console.log("err", err);
@@ -229,6 +338,7 @@ async function getBalance(address) {
 module.exports = {
   getBalance,
   transferFund,
+  transferToken,
   syncBalance,
   web3,
 };
