@@ -9,130 +9,190 @@
           <%- messages.error %>
         </div>
         <% } %>
+          <div style="display: flex;flex-direction: row;">
+            <div class="card" style="flex: 1;">
+              <div class="card-header">
+                <ul class="nav nav-pills w-100">
+                  <li class="nav-pill active">
+                    <a class="nav-link" v-on:click="reload">Balances <ion-icon
+                        style="margin-bottom: -3px;padding-left: 5px;padding-right: 5px;" name="reload-outline">
+                      </ion-icon></a>
+                  </li>
+                  <li class="nav-pill ml-auto">
+                    <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#sendModal">
+                      Send
+                    </button>
+                    <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#depositModal">
+                      Deposit
+                    </button>
+                    <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#withdrawalModal">
+                      Withdrawal
+                    </button>
 
-          <div class="card">
+                  </li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <% if(data) { %>
+                  <table class="table table-dark">
+                    <thead>
+                      <tr>
+                        <th scope="col">Currency</th>
+                        <th scope="col">Total</th>
+                        <th width="200px">Valuation</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% Object.keys(data).forEach(function(prop) { %>
+                        <tr>
+                          <td>
+                            <%= prop %>
+                          </td>
+                          <td>
+                            <%= data[prop] %>
+                          </td>
+                          <td>
+                          </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                  </table>
+                  <% } %>
+
+                    <!-- if result is empty -->
+                    <% if(!data || data=={}) { %>
+                      <p class="text-center">No Balance!</p>
+                      <% } %>
+              </div>
+            </div>
+            <div class="card" style="flex: 1;margin-left: 20px">
+              <div class="card-header">
+                <ul class="nav nav-pills w-100">
+                  <li class="nav-pill active">
+                    <a class="nav-link">Exchange</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <center>
+                  <h3>Cryptocurrency exchange</h3>
+                </center>
+                <span style="height: 10px; width: 100%; display: block"></span>
+                <div style="display: flex; flex-direction: row">
+                  <div class="form-group" style="flex: 1; margin-right: 10px">
+                    <label for="exampleFormControlSelect1">From currency</label>
+                    <select class="form-control" v-model="payCurrency">
+                      <option v-for="option in options" :value="option.value">
+                        {{ option.label }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="form-group" style="flex: 1">
+                    <label for="exampleFormControlSelect1">To currency</label>
+                    <select class="form-control" v-model="receiveCurrency">
+                      <option v-for="option in options" :value="option.value">
+                        {{ option.label }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div style="display: flex; flex-direction: row">
+                  <div style="flex: 1; margin-right: 10px">
+                    <label for="basic-url">Your Pay</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon3">{{
+                          payCurrency
+                          }}</span>
+                      </div>
+                      <input type="number" class="form-control" v-model="pay" @keypress="isNumber($event)"
+                        aria-describedby="basic-addon3" />
+                    </div>
+                  </div>
+                  <div style="flex: 1">
+                    <label for="basic-url">Your receive</label>
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon3">{{
+                          receiveCurrency
+                          }}</span>
+                      </div>
+                      <input type="number" class="form-control" v-model="receive" @keypress="isNumber($event)"
+                        aria-describedby="basic-addon3" />
+                    </div>
+                  </div>
+                </div>
+                <span style="height: 10px; width: 100%; display: block"></span>
+                <center>
+                  <button type="button" class="btn btn-outline-primary" v-on:click="exchange">
+                    Exchange
+                  </button>
+                </center>
+                <span style="height: 10px; width: 100%; display: block"></span>
+                <center>
+                  <p style="font-size: 10px">Included fee is: (0.80 %)</p>
+                </center>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="flex: 1;margin-top: 20px">
             <div class="card-header">
               <ul class="nav nav-pills w-100">
                 <li class="nav-pill active">
-                  <a class="nav-link" v-on:click="reload">Balances <ion-icon
-                      style="margin-bottom: -3px;padding-left: 5px;padding-right: 5px;" name="reload-outline">
-                    </ion-icon></a>
-                </li>
-                <li class="nav-pill ml-auto">
-                  <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#sendModal">
-                    Send
-                  </button>
-                  <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#depositModal">
-                    Deposit
-                  </button>
-                  <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#withdrawalModal">
-                    Withdrawal
-                  </button>
-
+                  <a class="nav-link" v-on:click="reload">Order Book</a>
                 </li>
               </ul>
             </div>
             <div class="card-body">
-              <% if(data) { %>
+              <% if(tradeData?.length) { %>
                 <table class="table table-dark">
                   <thead>
                     <tr>
-                      <th scope="col">Currency</th>
-                      <th scope="col">Total</th>
-                      <th width="200px">Valuation</th>
+                      <th scope="col">#</th>
+                      <!-- <th scope="col">User</th>
+                      <th scope="col">Email</th> -->
+                        <th scope="col">Datetime</th>
+                        <th scope="col">Buy Amount</th>
+                        <th width="col">Currency</th>
+                        <th scope="col">Sell Amount</th>
+                        <th width="col">Currency</th>
+                        <th width="col">Fee</th>
+                        <!-- <th width="col">Status</th> -->
+                        <th width="col">Action</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <% Object.keys(data).forEach(function(prop) { %>
-                      <tr>
-                        <td>
-                          <%= prop %>
+                    <% for(var i = 0; i< tradeData?.length; i++) { %>
+                    <tr>
+                      <th scope="row"><%= (i+1) %></th>
+                      <!-- <td><%= tradeData[i].username%></td>
+                      <td><%= tradeData[i].email%></td> -->
+                      <td><%= new Date(tradeData[i].createdat).toLocaleString()%></td>
+                        <td><%= tradeData[i].buy%></td>
+                        <td><%= tradeData[i].buycurrency%></td>
+                        <td><%= tradeData[i].sell%></td>
+                        <td><%= tradeData[i].sellcurrency%></td>
+                        <td><%= tradeData[i].fee%></td>
+                        <!-- <td><%= tradeData[i].status%></td> -->
+                        <td> 
+                          <% if(tradeData[i].userid != userId) { %>
+                          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-success " v-on:click="approveTrade(<%=tradeData[i].id %>)">
+                              Trade
+                            </label>
+                          </div>
+                          <% } %>
                         </td>
-                        <td>
-                          <%= data[prop] %>
-                        </td>
-                        <td>
-                        </td>
-                      </tr>
-                      <% }) %>
+                    </tr>
+                    <% } %>
                   </tbody>
                 </table>
                 <% } %>
 
                   <!-- if result is empty -->
-                  <% if(!data || data=={}) { %>
-                    <p class="text-center">No Balance!</p>
+                  <% if(!tradeData || tradeData=={}) { %>
+                    <p class="text-center">No Orders!</p>
                     <% } %>
-            </div>
-          </div>
-
-          <div class="card" style="margin-top: 20px">
-            <div class="card-header">
-              <ul class="nav nav-pills w-100">
-                <li class="nav-pill active">
-                  <a class="nav-link">Exchange</a>
-                </li>
-              </ul>
-            </div>
-            <div class="card-body">
-              <center>
-                <h3>Cryptocurrency exchange</h3>
-              </center>
-              <span style="height: 10px; width: 100%; display: block"></span>
-              <div style="display: flex; flex-direction: row">
-                <div class="form-group" style="flex: 1; margin-right: 10px">
-                  <label for="exampleFormControlSelect1">From currency</label>
-                  <select class="form-control" v-model="payCurrency">
-                    <option v-for="option in options" :value="option.value">
-                      {{ option.label }}
-                    </option>
-                  </select>
-                </div>
-                <div class="form-group" style="flex: 1">
-                  <label for="exampleFormControlSelect1">To currency</label>
-                  <select class="form-control" v-model="receiveCurrency">
-                    <option v-for="option in options" :value="option.value">
-                      {{ option.label }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <div style="display: flex; flex-direction: row">
-                <div style="flex: 1; margin-right: 10px">
-                  <label for="basic-url">Your Pay</label>
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="basic-addon3">{{
-                        payCurrency
-                        }}</span>
-                    </div>
-                    <input type="number" class="form-control" v-model="pay" @keypress="isNumber($event)"
-                      aria-describedby="basic-addon3" />
-                  </div>
-                </div>
-                <div style="flex: 1">
-                  <label for="basic-url">Your receive</label>
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="basic-addon3">{{
-                        receiveCurrency
-                        }}</span>
-                    </div>
-                    <input type="number" class="form-control" v-model="receive" @keypress="isNumber($event)"
-                      aria-describedby="basic-addon3" />
-                  </div>
-                </div>
-              </div>
-              <span style="height: 10px; width: 100%; display: block"></span>
-              <center>
-                <button type="button" class="btn btn-outline-primary" v-on:click="exchange">
-                  Exchange
-                </button>
-              </center>
-              <span style="height: 10px; width: 100%; display: block"></span>
-              <center>
-                <p style="font-size: 10px">Included fee is: (0.80 %)</p>
-              </center>
             </div>
           </div>
           <div class="modal fade" id="sendModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -210,7 +270,8 @@
                       </select>
                     </div>
                   </div>
-                  <div v-if="depositCurrency != 'ETH' && depositCurrency != 'W2' && depositCurrency != 'W1'" style="display: flex; flex-direction: row">
+                  <div v-if="depositCurrency != 'ETH' && depositCurrency != 'W2' && depositCurrency != 'W1'"
+                    style="display: flex; flex-direction: row">
                     <div style="flex: 1; margin-right: 10px">
                       <label for="basic-url">Amount</label>
                       <div class="input-group mb-3">
@@ -224,7 +285,8 @@
                       </div>
                     </div>
                   </div>
-                  <div v-if="depositCurrency == 'ETH' || depositCurrency == 'W2' || depositCurrency == 'W1'" style="display: flex; flex-direction: row">
+                  <div v-if="depositCurrency == 'ETH' || depositCurrency == 'W2' || depositCurrency == 'W1'"
+                    style="display: flex; flex-direction: row">
                     <div style="flex: 1; margin-right: 10px">
                       <label for="basic-url">Address</label>
                       <div class="input-group mb-3">
@@ -233,7 +295,8 @@
                             depositCurrency
                             }}</span>
                         </div>
-                        <input type="text" class="form-control" v-model="token" readonly aria-describedby="basic-addon3" />
+                        <input type="text" class="form-control" v-model="token" readonly
+                          aria-describedby="basic-addon3" />
                       </div>
                     </div>
                   </div>
@@ -242,9 +305,10 @@
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">
                     Close
                   </button>
-                  <button v-if="depositCurrency != 'ETH' && depositCurrency != 'W2' && depositCurrency != 'W1'" type="button" class="btn btn-primary"
-                    v-on:click="deposit">Deposit</button>
-                  <button v-if="depositCurrency == 'ETH' || depositCurrency == 'W2' || depositCurrency == 'W1'" type="button" class="btn btn-primary" v-on:click="copy">Copy
+                  <button v-if="depositCurrency != 'ETH' && depositCurrency != 'W2' && depositCurrency != 'W1'"
+                    type="button" class="btn btn-primary" v-on:click="deposit">Deposit</button>
+                  <button v-if="depositCurrency == 'ETH' || depositCurrency == 'W2' || depositCurrency == 'W1'"
+                    type="button" class="btn btn-primary" v-on:click="copy">Copy
                     To ClipBoard</button>
                 </div>
               </div>
@@ -284,14 +348,16 @@
                       </div>
                     </div>
                   </div>
-                  <div v-if="withdrawalCurrency == 'ETH' || withdrawalCurrency == 'W2' || withdrawalCurrency == 'W1'" style="display: flex; flex-direction: row">
+                  <div v-if="withdrawalCurrency == 'ETH' || withdrawalCurrency == 'W2' || withdrawalCurrency == 'W1'"
+                    style="display: flex; flex-direction: row">
                     <div style="flex: 1; margin-right: 10px">
                       <label for="basic-url">Address</label>
                       <div class="input-group mb-3">
                         <!-- <div class="input-group-prepend">
                           <span class="input-group-text" id="basic-addon3">{{withdrawalCurrency}}</span>
                         </div> -->
-                        <input type="text" class="form-control" v-model="withdrawalAddress" aria-describedby="basic-addon3" />
+                        <input type="text" class="form-control" v-model="withdrawalAddress"
+                          aria-describedby="basic-addon3" />
                       </div>
                     </div>
                   </div>
@@ -324,7 +390,7 @@
       depositAmount: '',
       withdrawalCurrency: '',
       withdrawalAmount: '',
-      withdrawalAddress:'',
+      withdrawalAddress: '',
       token: '<%= locals?.token %>'
 
     },
@@ -372,6 +438,7 @@
               this.receive = ''
               this.pay = ''
               notyf.success('Exchange Request send !')
+              location.reload()
             }
           });
       },
@@ -414,9 +481,9 @@
           return
         }
         if (this.withdrawalCurrency == 'ETH' || this.withdrawalCurrency == 'W1' || this.withdrawalCurrency == 'W2') {
-          if(!this.withdrawalAddress){
+          if (!this.withdrawalAddress) {
             notyf.error('Please enter address!');
-          return
+            return
           }
         }
         fetch('/api/withdraw', {
@@ -425,7 +492,7 @@
           body: JSON.stringify({
             currency: this.withdrawalCurrency,
             amount: this.withdrawalAmount,
-            address:this.withdrawalAddress
+            address: this.withdrawalAddress
           })
         })
           .then(response => response.json())
@@ -516,6 +583,11 @@
         }
 
         document.body.removeChild(textArea);
+      },
+      approveTrade: function (id) {
+        fetch(`/api/trade/approve/${id}`,{method:'put'})
+        .then(response => response.json())
+        .then(data => {if(data?.error){notyf.error(data?.error)}else{location.reload()}});
       }
     }
   })

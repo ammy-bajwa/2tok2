@@ -10,51 +10,45 @@ router.get("/", function (req, res, next) {
     res.render("index", { title: "1tok1", layout: false });
   }
 });
-router.get("/trade", function (req, res, next) {
+router.get("/trade", async function (req, res, next) {
   const userName = req.session?.loggedUser?.username;
   if (req.session.loggedIn) {
-    eth
-      .syncBalance(req.session?.loggedUser?.token, req.session?.loggedUser?.id)
-      .then(() => {
-        database
-          .raw(
-            "select type,currency,SUM (amount::numeric) as amount from transaction where userId = ? group by type,currency",
-            [req.session?.loggedUser?.id]
-          )
-          .then((data) => {
-            const _rowsDebit = data?.rows?.filter((_r) => _r.type == "debit");
-            const _rowsCredit = data?.rows?.filter((_r) => _r.type == "credit");
-            let _data = {};
-            _rowsCredit.map((_r) => {
-              _data[_r.currency] = _r.amount;
-            });
-            _rowsDebit.map((_r) => {
-              if (_data[_r.currency]) {
-                _data[_r.currency] =
-                  Number(_data[_r.currency] || 0) - Number(_r.amount);
-              } else {
-                _data[_r.currency] = 0 - Number(_r.amount);
-              }
-            });
-
-            res.render("home/trade", {
-              data: _data,
-              userName,
-              title: "trade",
-              token:req.session?.loggedUser?.token,
-              isAdmin: req.session.isAdmin,
-            });
-          })
-          .catch((err) => {
-            res.render("home/trade", {
-              data: [],
-              userName,
-              title: "trade",
-              isAdmin: req.session.isAdmin,
-            });
-            console.error(err);
-          });
+    try {
+      await eth.syncBalance(req.session?.loggedUser?.token, req.session?.loggedUser?.id)
+      const data = await database.raw("select type,currency,SUM (amount::numeric) as amount from transaction where userId = ? group by type,currency",[req.session?.loggedUser?.id])
+      const tradeData = await database.raw("select trades.*,users.username as username,users.email as email from trades join users on trades.userId = users.id where trades.status = 'pending';")
+      const _rowsDebit = data?.rows?.filter((_r) => _r.type == "debit");
+      const _rowsCredit = data?.rows?.filter((_r) => _r.type == "credit");
+      let _data = {};
+        _rowsCredit.map((_r) => {_data[_r.currency] = _r.amount});
+        _rowsDebit.map((_r) => {
+          if (_data[_r.currency]) {
+            _data[_r.currency] =
+              Number(_data[_r.currency] || 0) - Number(_r.amount);
+          } else {
+            _data[_r.currency] = 0 - Number(_r.amount);
+          }
+        });
+        res.render("home/trade", {
+          data: _data,
+          tradeData:tradeData?.rows,
+          userName,
+          settings:global.settings?.[0],
+          title: "trade",
+          token:req.session?.loggedUser?.token,
+          userId:req.session?.loggedUser?.id,
+          isAdmin: req.session.isAdmin,
+        });
+    } catch (err) {
+      res.render("home/trade", {
+        data: [],
+        tradeData:[],
+        userName,
+        title: "trade",
+        isAdmin: req.session.isAdmin,
       });
+      console.error(err);
+    }      
   } else {
     res.render("index", { title: "1tok1", layout: false });
   }

@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const database = require("../db");
 const eth = require("../ethProvider");
+
 const catchHandler = (err, res, msg) => {
   res.json({ error: msg || "Something went wrong !", err });
   //console.error(err);
@@ -86,49 +87,55 @@ router.post("/withdraw", function (req, res, next) {
 
   if (req.session.loggedIn) {
     if (currency == "ETH") {
-      eth.transferFund(address, amount).then((_res) => {
-        console.log("transfer_req", _res);
-        database
-          .raw(
-            "INSERT INTO transaction (ref,userId,amount, type, currency, fee,status,createdAt) VALUES (?,?,?, ?, ?, ?,?,?)",
-            [
-              _res?.id,
-              loggedUser?.id,
-              amount,
-              "debit",
-              currency,
-              0,
-              "ok",
-              new Date(),
-            ]
-          )
-          .then((data) => {
-            res.json({ ok: true });
-          })
-          .catch((err) => catchHandler(err, res));
-      }).catch((err) => catchHandler(err, res));
+      eth
+        .transferFund(address, amount)
+        .then((_res) => {
+          console.log("transfer_req", _res);
+          database
+            .raw(
+              "INSERT INTO transaction (ref,userId,amount, type, currency, fee,status,createdAt) VALUES (?,?,?, ?, ?, ?,?,?)",
+              [
+                _res?.id,
+                loggedUser?.id,
+                amount,
+                "debit",
+                currency,
+                0,
+                "ok",
+                new Date(),
+              ]
+            )
+            .then((data) => {
+              res.json({ ok: true });
+            })
+            .catch((err) => catchHandler(err, res));
+        })
+        .catch((err) => catchHandler(err, res));
     } else if (currency == "W1" || currency == "W2") {
-      eth.transferToken(address, amount, currency).then((_res) => {
-        console.log("transfer_req", _res);
-        database
-          .raw(
-            "INSERT INTO transaction (ref,userId,amount, type, currency, fee,status,createdAt) VALUES (?,?,?, ?, ?, ?,?,?)",
-            [
-              _res?.id,
-              loggedUser?.id,
-              amount,
-              "debit",
-              currency,
-              0,
-              "ok",
-              new Date(),
-            ]
-          )
-          .then((data) => {
-            res.json({ ok: true });
-          })
-          .catch((err) => catchHandler(err, res));
-      }).catch((err) => catchHandler(err, res));
+      eth
+        .transferToken(address, amount, currency)
+        .then((_res) => {
+          console.log("transfer_req", _res);
+          database
+            .raw(
+              "INSERT INTO transaction (ref,userId,amount, type, currency, fee,status,createdAt) VALUES (?,?,?, ?, ?, ?,?,?)",
+              [
+                _res?.id,
+                loggedUser?.id,
+                amount,
+                "debit",
+                currency,
+                0,
+                "ok",
+                new Date(),
+              ]
+            )
+            .then((data) => {
+              res.json({ ok: true });
+            })
+            .catch((err) => catchHandler(err, res));
+        })
+        .catch((err) => catchHandler(err, res));
     } else {
       database
         .raw(
@@ -172,23 +179,51 @@ router.post("/Exchange", function (req, res, next) {
   }
 });
 
-router.put("/trade/:action/:id", function (req, res, next) {
-  const loggedUser = req.session?.loggedUser;
-  const { action, id } = req.params;
-  if (req.session.loggedIn) {
-    database
-      .raw("UPDATE trades SET status = ? WHERE id = ? RETURNING id,status", [
-        action,
-        id,
-      ])
-      .then((data) => {
+router.put(
+  "/trade/:action/:id",
+  async function (req, res, next) {
+    const loggedUser = req.session?.loggedUser;
+    const { action, id } = req.params;
+    if (req.session.loggedIn) {
+      try {
+        const data = await database.raw(
+          "UPDATE trades SET status = ? WHERE id = ? RETURNING userid,buy,buycurrency,sell,sellcurrency,status",
+          [action, id]
+        );
+        await database.raw(
+          "INSERT INTO transaction (amount,userId,type,currency,fee,status,createdAt) VALUES (?,?,?,?,?,?,?) RETURNING id",
+          [
+            data.sell,
+            loggedUser?.id,
+            "debit",
+            data.sellcurrency,
+            0,
+            "trade",
+            new Date(),
+          ]
+        );
+        await database.raw(
+          "INSERT INTO transaction (amount,userId,type,currency,fee,status,createdAt) VALUES (?,?,?,?,?,?,?) RETURNING id",
+          [
+            data.buy,
+            data.userid,
+            "credit",
+            data.buycurrency,
+            0,
+            "trade",
+            new Date(),
+          ]
+        );
         res.json({ ok: true });
-      })
-      .catch((err) => catchHandler(err, res));
-  } else {
-    res.json({ error: "401" });
+      } catch (error) {
+        catchHandler(error, res);
+      }
+    } else {
+      res.json({ error: "401" });
+    }
   }
-});
+);
+
 router.put("/transaction/:action/:id", function (req, res, next) {
   const { action, id } = req.params;
   if (req.session.loggedIn && req.session.isAdmin) {

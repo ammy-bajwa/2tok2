@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
-    "databaseMigration": "knex migrate:latest"
+    "databaseMigration": "knex migrate:latest",
+    "db":"heroku pg:psql postgresql-crystalline-24570 --app wayn1tok1"
   },
   "dependencies": {
     "axios": "^0.21.1",

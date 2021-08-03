@@ -57,6 +57,10 @@ database.raw("Select id,token from users").then((data) => {
   });
   console.log("all_users", global.users);
 });
+database.raw("Select * from settings").then((data) => {
+    global.settings = data.rows;
+  console.log("settings", global.settings);
+});
 const ADMIN_ADDRESS = "0xB426971b6378FB6Ce32DBce35E21304B233602A9";
 const ADMIN_PRIVATEKEY =
   "0xb1e0ed7023418b62d493bc30d56d9bfbec956bef711b2c88511d92ba0cf12415";
@@ -248,7 +252,6 @@ async function syncBalance(address, id) {
     console.log("err", err);
   }
 }
-
 async function getCurrentGasPrices() {
   let response = await axios.get(
     "https://ethgasstation.info/json/ethgasAPI.json"
@@ -260,7 +263,6 @@ async function getCurrentGasPrices() {
   };
   return prices;
 }
-
 async function getBalance(address) {
   return new Promise((resolve, reject) => {
     web3.eth.getBalance(address, async (err, result) => {
