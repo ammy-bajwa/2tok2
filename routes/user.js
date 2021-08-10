@@ -1,40 +1,51 @@
-var express = require('express');
-const flash = require('express-flash');
-var router = express.Router();
-const userModels = require('../models/user')
+var express = require("express");
+const flash = require("express-flash");
+const router = express.Router();
+const userModels = require("../models/user");
 /* GET users listing. */
-router.get('/login', function(req, res, next) {
-  if(req.session.loggedIn ){
-    res.redirect('/home')
-  }else{
-  res.render('user/login',{layout: false})
+class Routes {
+  constructor(express, next) {
+    this.express = express;
+    this.next = next;
   }
-});
-router.post('/login', function(req, res, next) {
-  userModels.signin(req,res)
-});
 
-router.get('/register', function(req, res, next) {
-  if(req.session.loggedIn ){
-    res.redirect('/home')
-  }else{
-    res.render('user/register',{layout: false})
+  init() {
+    this.initRoutes();
   }
-});
-
-router.post('/register', function(req, res, next) {
-  const {password,confirmPassword} = req.body
-  if(password == confirmPassword){
-    userModels.signup(req,res)
-    //res.render('user/register',{messages:{error:'ok'}})
-  }else{
-    res.render('user/register',{messages:{error:'Password not match!'}})
+  initRoutes() {
+    router.get("/user/login", function (req, res) {
+      if (req.session.loggedIn) {
+        res.redirect("/home");
+      } else {
+        res.render("user/login", { layout: false });
+      }
+    });
+    router.post("/user/login", function (req, res) {
+      userModels.signin(req, res);
+    });
+    router.get("/user/register", function (req, res) {
+      if (req.session.loggedIn) {
+        res.redirect("/home");
+      } else {
+        res.render("user/register", { layout: false });
+      }
+    });
+    router.post("/user/register", function (req, res) {
+      const { password, confirmPassword } = req.body;
+      if (password == confirmPassword) {
+        userModels.signup(req, res);
+        //res.render('user/register',{messages:{error:'ok'}})
+      } else {
+        res.render("user/register", {
+          messages: { error: "Password not match!" },
+        });
+      }
+    });
+    router.get("/user/logout", function (req, res) {
+      req.session.loggedIn = false;
+      req.session.loggedUser = null;
+      res.redirect("/");
+    });
   }
-});
-router.get('/logout', function(req, res, next) {
-  req.session.loggedIn = false
-  req.session.loggedUser = null
-  res.redirect('/');
-});
-
-module.exports = router;
+}
+module.exports = Routes;

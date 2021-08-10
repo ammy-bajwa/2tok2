@@ -1,62 +1,27 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
 
-var flash = require('express-flash');
-var session = require('express-session');
-const expressLayouts = require('express-ejs-layouts')
+const express = require("express");
+const next = require("next");
+const NextjsExpressRouter = require("./nextjs_express_router")
+const Middleware = require("./middleware")
+const httpServer = (express) => {
+  return require('http').createServer(express)
+}
+class Server {
+  constructor(port) {
+    this.port = port
+    this.express = express()
+    this.next = next({ dev: process.env.NODE_ENV !== 'production' })
+    this.middleware = new Middleware(this.express)
+    this.router = new NextjsExpressRouter(this.express, this.next)
+  }
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/user');
-var homeRouter = require('./routes/home');
-var apiRouter = require('./routes/api');
-var eth = require('./ethProvider')
-var app = express();
+  async start() {
+    await this.next.prepare()
+    await this.middleware.init()
+    await this.router.init()
+    this.server = httpServer(this.express)
+    this.server.listen(this.port)
+  }
+}
 
-// view engine setup
-app.use(expressLayouts)
-app.set('views', path.join(__dirname, 'views'));
-app.set('layout', './layouts/full-width')
-app.set('view engine', 'ejs')
-
-app.use(logger('dev'));
-app.use(express.json());
-
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(session({ 
-    cookie: { maxAge: 24 * 60 * 60 * 1000 },
-    store: new session.MemoryStore,
-    saveUninitialized: true,
-    resave: 'true',
-    secret: 'secret'
-}))
-
-app.use(flash());
-
-app.use('/', indexRouter);
-app.use('/api', apiRouter);
-app.use('/user', usersRouter);
-app.use('/home', homeRouter);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
-
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
-
-module.exports = app;
+module.exports = Server;
