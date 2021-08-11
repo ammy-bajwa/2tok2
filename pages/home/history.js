@@ -1,4 +1,12 @@
-<div class="container" style="margin-top: 20px">
+export async function getServerSideProps({ req }) {
+  return {
+    props: {},
+  };
+}
+
+export default function Index({}) {
+  return (
+  <div class="container" style="margin-top: 20px">
   <% if (messages.success) { %>
   <div class="alert alert-success" role="alert"><%- messages.success %></div>
   <% } %> <% if (messages.error) { %>
@@ -135,7 +143,9 @@
   </div>
 </div>
 <script>
-  // $(function () {
+  {/* // $(function () {
   //   $('#myTab li:last-child a').tab('show')
-  // })
+  // }) */}
 </script>
+  )
+            }

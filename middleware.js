@@ -13,7 +13,7 @@ class Middleware {
 
   async init() {
     
-    this.express.use(favicon(path.join(__dirname, '..', 'public', 'favicon.png')));
+    this.express.use(favicon(path.join(__dirname, '..', 'public/images', 'favicon-32x32feac.png')));
     this.express.use(expressLayouts);
     // this.express.set("views", path.join(__dirname, "views"));
     // this.express.set("layout", "./layouts/full-width");

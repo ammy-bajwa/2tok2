@@ -1,4 +1,11 @@
-<nav
+export async function getServerSideProps({ req }) {
+  return {
+    props: {},
+  };
+}
+
+export default function Index({}) {
+  return (<nav
   class="navbar navbar-expand-md navbar-dark bg-dark sidebarNavigation"
   data-sidebarClass="navbar-dark bg-dark"
 >
@@ -62,3 +69,4 @@
     </div>
   </div>
 </nav>
+)}

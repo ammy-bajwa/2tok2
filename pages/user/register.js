@@ -1,4 +1,11 @@
-<!-- <!DOCTYPE html>
+export async function getServerSideProps({ req }) {
+  return {
+    props: {},
+  };
+}
+
+export default function Index({}) {
+  return (
 <html>
 
 <head>
@@ -230,4 +237,4 @@
     });</script>
 </body>
 
-</html>
+</html>)}
