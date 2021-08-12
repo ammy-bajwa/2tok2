@@ -1,8 +1,8 @@
 export async function getServerSideProps({ req }) {
   return {
     props: {
-      message: req.locals.message,
-      error: req.locals.error,
+      message: req.locals?.message || 'something wrong!',
+      error: req.locals?.error || {},
     },
   };
 }

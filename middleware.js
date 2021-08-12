@@ -1,4 +1,4 @@
-const bodyParser = require('body-parser');
+var express = require('express')
 const path = require('path')
 const favicon = require('serve-favicon');
 const cookieParser = require("cookie-parser");
@@ -13,18 +13,18 @@ class Middleware {
 
   async init() {
     
-    this.express.use(favicon(path.join(__dirname, '..', 'public/images', 'favicon-32x32feac.png')));
+    //this.express.use(favicon(path.join(__dirname, '..', 'public/images', 'favicon-32x32feac.png')));
     this.express.use(expressLayouts);
     // this.express.set("views", path.join(__dirname, "views"));
     // this.express.set("layout", "./layouts/full-width");
     // this.express.set("view engine", "ejs");
 
     this.express.use(logger("dev"));
-    this.express.use(this.express.json());
+    this.express.use(express.json());
 
-    this.express.use(this.express.urlencoded({ extended: false }));
+    this.express.use(express.urlencoded({ extended: false }));
     this.express.use(cookieParser());
-    this.express.use(this.express.static(path.join(__dirname, "public")));
+    this.express.use(express.static(path.join(__dirname, "public")));
 
     this.express.use(
       session({

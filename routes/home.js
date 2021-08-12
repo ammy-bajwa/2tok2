@@ -10,7 +10,7 @@ class Routes {
     this.initRoutes();
   }
   initRoutes() {
-    this.express.get("/home", async function (req, res) {
+    this.express.get("/home", async (req, res) =>{
       const userName = req.session?.loggedUser?.username;
       console.log("req.session?.loggedUser?.id", req.session?.loggedUser);
       if (req.session.loggedIn) {

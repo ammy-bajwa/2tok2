@@ -11,15 +11,18 @@ class Routes {
   }
   initRoutes() {
     /* GET home page. */
-    this.express.get("/", function (req, res) {
+    this.express.get("/",  (req, res) =>{
+      console.log('a')
       if (req.session.loggedIn) {
+        console.log('b')
         res.redirect("home");
       } else {
+        console.log('c')
         req.data = { title: "1tok1", layout: false }
-        this.next.render(req, res,"/",req.query);
+        this.next.render(req, res,"/index",req.query);
       }
     });
-    this.express.get("/trade", async function (req, res) {
+    this.express.get("/trade", async  (req, res) =>{
       const userName = req.session?.loggedUser?.username;
       if (req.session.loggedIn) {
         try {
@@ -69,10 +72,10 @@ class Routes {
           console.error(err);
         }
       } else {
-        res.render("index", { title: "1tok1", layout: false });
+        this.next.render(req, res,"/main",req.query);
       }
     });
-    this.express.get("/history", function (req, res) {
+    this.express.get("/history",  (req, res) =>{
       const userName = req.session?.loggedUser?.username;
       if (req.session.loggedIn) {
         database
@@ -132,10 +135,10 @@ class Routes {
             console.error(err);
           });
       } else {
-        res.render("index", { title: "1tok1", layout: false });
+        res.redirect("/");
       }
     });
-    this.express.get("/admin/history", function (req, res) {
+    this.express.get("/admin/history",  (req, res) =>{
       const userName = req.session?.loggedUser?.username;
       if (req.session.loggedIn) {
         database
@@ -198,7 +201,7 @@ class Routes {
         res.render("index", { title: "1tok1", layout: false });
       }
     });
-    this.express.get("/users", function (req, res) {
+    this.express.get("/users",  (req, res) =>{
       const userName = req.session?.loggedUser?.username;
       if (req.session.loggedIn) {
         database
@@ -224,7 +227,7 @@ class Routes {
         res.render("index", { title: "1tok1", layout: false });
       }
     });
-    this.express.get("/documents", function (req, res) {
+    this.express.get("/documents",  (req, res) =>{
       const userName = req.session?.loggedUser?.username;
       if (req.session.loggedIn) {
         res.render("documents", {
@@ -237,7 +240,7 @@ class Routes {
         res.render("index", { title: "1tok1", layout: false });
       }
     });
-    this.express.get("/news", function (req, res) {
+    this.express.get("/news",  (req, res) =>{
       const userName = req.session?.loggedUser?.username;
       if (req.session.loggedIn) {
         res.render("news", {
@@ -250,7 +253,7 @@ class Routes {
         res.render("index", { title: "1tok1", layout: false });
       }
     });
-    this.express.get("/settings", function (req, res) {
+    this.express.get("/settings",  (req, res) =>{
       const userName = req.session?.loggedUser?.username;
       if (req.session.loggedIn) {
         res.render("settings", {
@@ -263,7 +266,7 @@ class Routes {
         res.render("index", { title: "1tok1", layout: false });
       }
     });
-    this.express.get("/kyc", function (req, res) {
+    this.express.get("/kyc",  (req, res) =>{
       const userName = req.session?.loggedUser?.username;
       if (req.session.loggedIn) {
         res.render("kyc", {

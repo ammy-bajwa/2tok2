@@ -29,7 +29,6 @@ class NextjsExpressRouter {
   }
 
   initErrors() {
-    // catch 404 and forward to error handler
     this.express.use((req, res, next) => {
       const err = new Error("Not Found");
       err.status = 404;
@@ -38,9 +37,9 @@ class NextjsExpressRouter {
 
     this.express.use((err, req, res, next) => {
       res.status(err.status || 500);
-      res.locals.error = err;
-      res.locals.message = err.message;
-      this.next.render(req, res, "/error", {});
+      res.locals.error = err
+      res.locals.errorDescription = err.message
+      this.next.render(req, res, "/_error", {});
     });
   }
 }

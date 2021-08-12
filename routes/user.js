@@ -1,6 +1,3 @@
-var express = require("express");
-const flash = require("express-flash");
-const router = express.Router();
 const userModels = require("../models/user");
 /* GET users listing. */
 class Routes {
@@ -13,24 +10,24 @@ class Routes {
     this.initRoutes();
   }
   initRoutes() {
-    router.get("/user/login", function (req, res) {
+    this.express.get("/user/login",  (req, res) =>{
       if (req.session.loggedIn) {
         res.redirect("/home");
       } else {
         res.render("user/login", { layout: false });
       }
     });
-    router.post("/user/login", function (req, res) {
+    this.express.post("/user/login",  (req, res) =>{
       userModels.signin(req, res);
     });
-    router.get("/user/register", function (req, res) {
+    this.express.get("/user/register",  (req, res) =>{
       if (req.session.loggedIn) {
         res.redirect("/home");
       } else {
         res.render("user/register", { layout: false });
       }
     });
-    router.post("/user/register", function (req, res) {
+    this.express.post("/user/register",  (req, res) =>{
       const { password, confirmPassword } = req.body;
       if (password == confirmPassword) {
         userModels.signup(req, res);
@@ -41,7 +38,7 @@ class Routes {
         });
       }
     });
-    router.get("/user/logout", function (req, res) {
+    this.express.get("/user/logout",  (req, res) =>{
       req.session.loggedIn = false;
       req.session.loggedUser = null;
       res.redirect("/");
