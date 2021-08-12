@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "build":"next build",
     "databaseMigration": "knex migrate:latest",
     "db": "heroku pg:psql postgresql-crystalline-24570 --app wayn1tok1"
   },
@@ -41,10 +42,7 @@
     "nodemon": "^2.0.12"
   },
   "nodemonConfig": {
-    "ignore": [
-      "test/*",
-      "docs/*"
-    ],
+    "ignore": ["test/*","docs/*"],
     "delay": 1500
   }
 }

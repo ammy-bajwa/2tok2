@@ -1,7 +1,7 @@
 import NProgress from "nprogress";
 import { useEffect } from "react";
 import Router from "next/router";
-
+import "./styles.css";
 const App = ({ Component, pageProps }) => {
   useEffect(() => {
     Router.events.on("routeChangeStart", () => NProgress.start());
