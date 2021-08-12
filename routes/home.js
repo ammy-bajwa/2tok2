@@ -37,19 +37,21 @@ class Routes {
               _data[_r.currency] = 0 - Number(_r.amount);
             }
           });
-          res.render("home", {
+          req.locals = {
             data: _data,
             userName,
             title: "home",
             isAdmin: req.session.isAdmin,
-          });
+          }
+          this.next.render(req,res,"/home", req.query);
         } catch (error) {
-          res.render("home", {
+          req.locals = {
             data: [],
             userName,
             title: "home",
             isAdmin: req.session.isAdmin,
-          });
+          }
+          this.next.render(req,res,"/home", req.query);
           console.error(err);
         }
       } else {

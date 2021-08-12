@@ -1,16 +1,24 @@
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { Notyf } from "notyf";
+import "notyf/notyf.min.css";
 export async function getServerSideProps({ req }) {
   return {
     props: {
-      message: req.locals?.message,
+      message: req.locals?.message || {},
       data: req.locals?.data,
+      tradeData: [],
+      userName: req.locals?.userName,
+      settings: req.locals?.settings,
+      title: req.locals?.title,
+      token: req.locals?.token,
+      userId: req.locals?.userId,
+      isAdmin: req.locals?.isAdmin,
     },
   };
 }
 
-export default function Index({}) {
-  var notyf = new Notyf();
+export default function Index({ messages, data ,tradeData,userName,settings,title,token,userId,isAdmin}) {
+  var notyf = null;
   const [state, setState] = useState({
     options: [
       { label: "Bitcoin", value: "BTC" },
@@ -20,7 +28,7 @@ export default function Index({}) {
       { label: "W1", value: "W1" },
       { label: "W2", value: "W2" },
     ],
-    trades: "<%= JSON.stringify(data) %>",
+    trades: JSON.stringify(data),
     payCurrency: "",
     receiveCurrency: "",
     pay: "",
@@ -33,7 +41,6 @@ export default function Index({}) {
     withdrawalCurrency: "",
     withdrawalAmount: "",
     withdrawalAddress: "",
-    token: "<%= locals?.token %>",
   });
 
   const isNumber = (evt) => {
@@ -242,20 +249,38 @@ export default function Index({}) {
         }
       });
   };
-
-  setTimeout(() => {
-    location.reload();
-  }, 50 * 1800);
+  useEffect(() => {
+    notyf = new Notyf();
+    setTimeout(() => {
+      location.reload();
+    }, 50 * 1800);
+  }, []);
+  const {
+    options,
+    trades,
+    payCurrency,
+    receiveCurrency,
+    pay,
+    receive,
+    sendTo,
+    sendCurrency,
+    sendAmount,
+    depositCurrency,
+    depositAmount,
+    withdrawalCurrency,
+    withdrawalAmount,
+    withdrawalAddress,
+  } = state;
   return (
     <div id="tradeApp" class="container" style="margin-top: 20px">
-      {messages.success && (
+      {messages?.success && (
         <div class="alert alert-success" role="alert">
-          {messages.success}
+          {messages?.success}
         </div>
       )}
-      {messages.error && (
+      {messages?.error && (
         <div class="alert alert-danger" role="alert">
-          {messages.error}
+          {messages?.error}
         </div>
       )}
       <div style="display: flex;flex-direction: row;">
@@ -727,11 +752,7 @@ export default function Index({}) {
               >
                 Close
               </button>
-              <button
-                type="button"
-                class="btn btn-primary"
-                onclick="withdraw"
-              >
+              <button type="button" class="btn btn-primary" onclick="withdraw">
                 Withdraw
               </button>
             </div>

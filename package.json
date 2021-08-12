@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build":"next build",
+    "build": "next build",
     "databaseMigration": "knex migrate:latest",
     "db": "heroku pg:psql postgresql-crystalline-24570 --app wayn1tok1"
   },
@@ -30,6 +30,7 @@
     "next": "^11.0.1",
     "node-cache": "^5.1.2",
     "nodemailer": "^6.6.3",
+    "notyf": "^3.10.0",
     "nprogress": "^0.2.0",
     "pg": "^8.6.0",
     "react": "^17.0.2",
@@ -42,7 +43,10 @@
     "nodemon": "^2.0.12"
   },
   "nodemonConfig": {
-    "ignore": ["test/*","docs/*"],
+    "ignore": [
+      "test/*",
+      "docs/*"
+    ],
     "delay": 1500
   }
 }

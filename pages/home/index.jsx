@@ -1,23 +1,28 @@
+import Layout from '../componets/Layout'
 export async function getServerSideProps({ req }) {
   return {
     props: {
-      message: req.locals?.message,
-      data: req.locals?.data,
+      message: req.locals?.message || {},
+      data: req.locals?.data || {},
+      userName: req.locals?.userName,
+      isAdmin:req.locals?.isAdmin,
+      title:req.locals?.title
     },
   };
 }
 
-export default function Index({}) {
+export default function Index({userName,title,isAdmin,messages,data}) {
   return (
-    <div class="container" style="margin-top: 20px">
-      {messages.success && (
+    <Layout userName={userName} title={title} isAdmin={isAdmin}>
+    <div class="container" style={{marginTop: 20}}>
+      {messages?.success && (
         <div class="alert alert-success" role="alert">
-          {messages.success}
+          {messages?.success}
         </div>
       )}
-      {messages.error && (
+      {messages?.error && (
         <div class="alert alert-danger" role="alert">
-          {messages.error}
+          {messages?.error}
         </div>
       )}
 
@@ -55,5 +60,6 @@ export default function Index({}) {
         </div>
       </div>
     </div>
+    </Layout>
   );
 }

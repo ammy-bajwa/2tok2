@@ -37,7 +37,7 @@ const signup = (request, response) => {
   });
 };
 // app/models/user.js
-const signin = (request, response) => {
+const signin = (request, response,next) => {
   const userReq = request.body;
   let user;
 
@@ -56,10 +56,8 @@ const signin = (request, response) => {
       response.redirect("/home");
     })
     .catch((err) => {
-      response.render("user/login", {
-        messages: { error: "Invalid credentials !" },
-        layout: false,
-      });
+      request.locals.messages = { error: "Invalid credentials !" }
+      next.render(request,response,"user/login",request.query);
       console.error(err);
     });
 };

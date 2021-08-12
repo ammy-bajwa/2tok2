@@ -14,28 +14,27 @@ class Routes {
       if (req.session.loggedIn) {
         res.redirect("/home");
       } else {
-        res.render("user/login", { layout: false });
+        this.next.render(req, res,"/user/login", req.query);
       }
     });
     this.express.post("/user/login",  (req, res) =>{
-      userModels.signin(req, res);
+      userModels.signin(req, res,this.next);
     });
     this.express.get("/user/register",  (req, res) =>{
       if (req.session.loggedIn) {
         res.redirect("/home");
       } else {
-        res.render("user/register", { layout: false });
+        this.next.render(req, res,"/user/register", req.query);
       }
     });
     this.express.post("/user/register",  (req, res) =>{
       const { password, confirmPassword } = req.body;
       if (password == confirmPassword) {
-        userModels.signup(req, res);
-        //res.render('user/register',{messages:{error:'ok'}})
+        userModels.signup(req, res,this.next);
+        //this.next.render('user/register',{messages:{error:'ok'}})
       } else {
-        res.render("user/register", {
-          messages: { error: "Password not match!" },
-        });
+        req.locals.messages = { error: "Password not match!" }
+        this.next.render(req, res,"/user/register", req.query);
       }
     });
     this.express.get("/user/logout",  (req, res) =>{

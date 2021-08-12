@@ -18,7 +18,7 @@ class Routes {
         res.redirect("home");
       } else {
         console.log('c')
-        req.data = { title: "1tok1", layout: false }
+        req.locals = { title: "1tok1", layout: false }
         this.next.render(req, res,"/index",req.query);
       }
     });
@@ -51,7 +51,7 @@ class Routes {
               _data[_r.currency] = 0 - Number(_r.amount);
             }
           });
-          res.render("home/trade", {
+          req.locals = {
             data: _data,
             tradeData: tradeData?.rows,
             userName,
@@ -60,15 +60,17 @@ class Routes {
             token: req.session?.loggedUser?.token,
             userId: req.session?.loggedUser?.id,
             isAdmin: req.session.isAdmin,
-          });
+          }
+          this.next.render(req,res,"/home/trade", req.query);
         } catch (err) {
-          res.render("home/trade", {
+          req.locals = {
             data: [],
             tradeData: [],
             userName,
             title: "trade",
             isAdmin: req.session.isAdmin,
-          });
+          }
+          this.next.render(req,res,"/home/trade", req.query);
           console.error(err);
         }
       } else {
@@ -88,7 +90,7 @@ class Routes {
                 req.session?.loggedUser?.id,
               ])
               .then((trade_data) => {
-                res.render("home/history", {
+                req.locals =  {
                   data: {
                     deposits_data:
                       transaction_data?.rows?.filter(
@@ -103,10 +105,11 @@ class Routes {
                   userName,
                   title: "history",
                   isAdmin: req.session.isAdmin,
-                });
+                }
+                this.next.render(req,res,"home/history", req.query);
               })
               .catch((err) => {
-                res.render("home/history", {
+                req.locals = {
                   data: {
                     deposits_data:
                       transaction_data?.rows?.filter(
@@ -121,17 +124,19 @@ class Routes {
                   userName,
                   title: "history",
                   isAdmin: req.session.isAdmin,
-                });
+                }
+                this.next.render(req,res,"/home/history", req.query);
                 console.error(err);
               });
           })
           .catch((err) => {
-            res.render("home/history", {
+            req.locals = {
               data: [],
               userName,
               title: "history",
               isAdmin: req.session.isAdmin,
-            });
+            }
+            this.next.render(req,res,"home/history", req.query);
             console.error(err);
           });
       } else {
@@ -142,16 +147,12 @@ class Routes {
       const userName = req.session?.loggedUser?.username;
       if (req.session.loggedIn) {
         database
-          .raw(
-            "select transaction.*,users.username as username ,users.email as email from transaction join users on transaction.userId = users.id where transaction.status = 'pending';"
-          )
+          .raw("select transaction.*,users.username as username ,users.email as email from transaction join users on transaction.userId = users.id where transaction.status = 'pending';")
           .then((transaction_data) => {
             database
-              .raw(
-                "select trades.*,users.username as username,users.email as email from trades join users on trades.userId = users.id where trades.status = 'pending';"
-              )
+              .raw("select trades.*,users.username as username,users.email as email from trades join users on trades.userId = users.id where trades.status = 'pending';")
               .then((trade_data) => {
-                res.render("home/adminhistory", {
+                req.locals = {
                   data: {
                     deposits_data:
                       transaction_data?.rows?.filter(
@@ -166,10 +167,11 @@ class Routes {
                   userName,
                   title: "AdminHistory",
                   isAdmin: req.session.isAdmin,
-                });
+                }
+                this.next.render(req,res,"home/adminhistory", req.query);
               })
               .catch((err) => {
-                res.render("home/adminhistory", {
+                req.locals = {
                   data: {
                     deposits_data:
                       transaction_data?.rows?.filter(
@@ -184,21 +186,24 @@ class Routes {
                   userName,
                   title: "AdminHistory",
                   isAdmin: req.session.isAdmin,
-                });
+                }
+                this.next.render(req,res,"home/adminhistory", req.query);
                 console.error(err);
               });
           })
           .catch((err) => {
-            res.render("home/adminhistory", {
+            req.locals = {
               data: [],
               userName,
               title: "AdminHistory",
               isAdmin: req.session.isAdmin,
-            });
+            }
+            this.next.render(req,res,"home/adminhistory", req.query);
             console.error(err);
           });
       } else {
-        res.render("index", { title: "1tok1", layout: false });
+        req.locals = { title: "1tok1", layout: false }
+        this.next.render(req,res,"index", req.query);
       }
     });
     this.express.get("/users",  (req, res) =>{
@@ -207,76 +212,87 @@ class Routes {
         database
           .raw("SELECT * FROM users")
           .then((data) => {
-            res.render("home/users", {
+            req.locals = {
               data: data.rows,
               userName,
               title: "users",
               isAdmin: req.session.isAdmin,
-            });
+            }
+            this.next.render(req,res,"home/users", req.query);
           })
           .catch((err) => {
-            res.render("home/users", {
+            req.locals = {
               data: [],
               userName,
               title: "users",
               isAdmin: req.session.isAdmin,
-            });
+            }
+            this.next.render(req,res,"home/users", req.query);
             console.error(err);
           });
       } else {
-        res.render("index", { title: "1tok1", layout: false });
+        req.locals = { title: "1tok1", layout: false }
+        this.next.render(req,res,"index", req.query);
       }
     });
     this.express.get("/documents",  (req, res) =>{
       const userName = req.session?.loggedUser?.username;
       if (req.session.loggedIn) {
-        res.render("documents", {
+        req.locals = {
           data: [],
           userName,
           title: "documents",
-          isAdmin: req.session.isAdmin,
-        });
+          isAdmin: req.session.isAdmin
+        }
+        this.next.render(req,res,"documents", req.query);
       } else {
-        res.render("index", { title: "1tok1", layout: false });
+        req.locals = { title: "1tok1", layout: false }
+        this.next.render(req,res,"index", req.query);
       }
     });
     this.express.get("/news",  (req, res) =>{
       const userName = req.session?.loggedUser?.username;
       if (req.session.loggedIn) {
-        res.render("news", {
+        req.locals ={
           data: [],
           userName,
           title: "news",
           isAdmin: req.session.isAdmin,
-        });
+        }
+        this.next.render(req,res,"news", req.query);
       } else {
-        res.render("index", { title: "1tok1", layout: false });
+        req.locals = { title: "1tok1", layout: false }
+        this.next.render(req,res,"/index", req.query);
       }
     });
     this.express.get("/settings",  (req, res) =>{
       const userName = req.session?.loggedUser?.username;
       if (req.session.loggedIn) {
-        res.render("settings", {
+        req.locals = {
           data: [],
           userName,
           title: "settings",
           isAdmin: req.session.isAdmin,
-        });
+        }
+        this.next.render(req,res,"/settings", req.query);
       } else {
-        res.render("index", { title: "1tok1", layout: false });
+        req.locals = { title: "1tok1", layout: false }
+        this.next.render(req,res,"/index", req.query);
       }
     });
     this.express.get("/kyc",  (req, res) =>{
       const userName = req.session?.loggedUser?.username;
       if (req.session.loggedIn) {
-        res.render("kyc", {
+        req.locals = {
           data: [],
           userName,
           title: "kyc",
           isAdmin: req.session.isAdmin,
-        });
+        }
+        this.next.render(req,res,"/kyc", req.query);
       } else {
-        res.render("index", { title: "1tok1", layout: false });
+        req.locals = { title: "1tok1", layout: false }
+        this.next.render(req,res,"/index", req.query);
       }
     });
   }
