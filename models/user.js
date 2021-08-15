@@ -56,8 +56,8 @@ const signin = (request, response,next) => {
       response.redirect("/home");
     })
     .catch((err) => {
-      request.locals.messages = { error: "Invalid credentials !" }
-      next.render(request,response,"user/login",request.query);
+      request.locals = {messages : { error: "Invalid credentials !" }}
+      next.render(request,response,"/user/login",request.query);
       console.error(err);
     });
 };

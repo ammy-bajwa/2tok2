@@ -91,7 +91,7 @@ class Routes {
               ])
               .then((trade_data) => {
                 req.locals =  {
-                  data: {
+                  data: JSON.stringify({
                     deposits_data:
                       transaction_data?.rows?.filter(
                         (_d) => _d.type == "credit"
@@ -101,16 +101,16 @@ class Routes {
                         (_d) => _d.type == "debit"
                       ) || [],
                     trade_data: trade_data?.rows || [],
-                  },
+                  }),
                   userName,
                   title: "history",
                   isAdmin: req.session.isAdmin,
                 }
-                this.next.render(req,res,"home/history", req.query);
+                this.next.render(req,res,"/home/history", req.query);
               })
               .catch((err) => {
                 req.locals = {
-                  data: {
+                  data: JSON.stringify({
                     deposits_data:
                       transaction_data?.rows?.filter(
                         (_d) => _d.type == "credit"
@@ -120,7 +120,7 @@ class Routes {
                         (_d) => _d.type == "debit"
                       ) || [],
                     trade_data: [],
-                  },
+                  }),
                   userName,
                   title: "history",
                   isAdmin: req.session.isAdmin,
@@ -136,7 +136,7 @@ class Routes {
               title: "history",
               isAdmin: req.session.isAdmin,
             }
-            this.next.render(req,res,"home/history", req.query);
+            this.next.render(req,res,"/home/history", req.query);
             console.error(err);
           });
       } else {
@@ -187,7 +187,7 @@ class Routes {
                   title: "AdminHistory",
                   isAdmin: req.session.isAdmin,
                 }
-                this.next.render(req,res,"home/adminhistory", req.query);
+                this.next.render(req,res,".home/adminhistory", req.query);
                 console.error(err);
               });
           })
@@ -198,12 +198,11 @@ class Routes {
               title: "AdminHistory",
               isAdmin: req.session.isAdmin,
             }
-            this.next.render(req,res,"home/adminhistory", req.query);
+            this.next.render(req,res,"/home/adminhistory", req.query);
             console.error(err);
           });
       } else {
-        req.locals = { title: "1tok1", layout: false }
-        this.next.render(req,res,"index", req.query);
+        res.redirect("/");
       }
     });
     this.express.get("/users",  (req, res) =>{
@@ -213,26 +212,25 @@ class Routes {
           .raw("SELECT * FROM users")
           .then((data) => {
             req.locals = {
-              data: data.rows,
+              data: JSON.stringify(data.rows),
               userName,
               title: "users",
               isAdmin: req.session.isAdmin,
             }
-            this.next.render(req,res,"home/users", req.query);
+            this.next.render(req,res,"/home/users", req.query);
           })
           .catch((err) => {
             req.locals = {
-              data: [],
+              data: JSON.stringify([]),
               userName,
               title: "users",
               isAdmin: req.session.isAdmin,
             }
-            this.next.render(req,res,"home/users", req.query);
+            this.next.render(req,res,"/home/users", req.query);
             console.error(err);
           });
       } else {
-        req.locals = { title: "1tok1", layout: false }
-        this.next.render(req,res,"index", req.query);
+        res.redirect("/");
       }
     });
     this.express.get("/documents",  (req, res) =>{
@@ -246,8 +244,7 @@ class Routes {
         }
         this.next.render(req,res,"documents", req.query);
       } else {
-        req.locals = { title: "1tok1", layout: false }
-        this.next.render(req,res,"index", req.query);
+        res.redirect("/");
       }
     });
     this.express.get("/news",  (req, res) =>{
@@ -261,8 +258,7 @@ class Routes {
         }
         this.next.render(req,res,"news", req.query);
       } else {
-        req.locals = { title: "1tok1", layout: false }
-        this.next.render(req,res,"/index", req.query);
+        res.redirect("/");
       }
     });
     this.express.get("/settings",  (req, res) =>{
@@ -276,8 +272,7 @@ class Routes {
         }
         this.next.render(req,res,"/settings", req.query);
       } else {
-        req.locals = { title: "1tok1", layout: false }
-        this.next.render(req,res,"/index", req.query);
+        res.redirect("/");
       }
     });
     this.express.get("/kyc",  (req, res) =>{
@@ -291,8 +286,7 @@ class Routes {
         }
         this.next.render(req,res,"/kyc", req.query);
       } else {
-        req.locals = { title: "1tok1", layout: false }
-        this.next.render(req,res,"/index", req.query);
+        res.redirect("/");
       }
     });
   }

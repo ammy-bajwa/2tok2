@@ -539,18 +539,17 @@ export default function Index({}) {
         {/*<!-- End Footer --> */}
 
         <Script src="assets/8/8f271511da/cfd4ba49/jquery.js"></Script>
-        <Script src="assets/8/8f271511da/f91ab1e1/yii.js"></Script>
-        <Script src="assets/8/8f271511da/f91ab1e1/yii.gridView.js"></Script>
+        {/* <Script src="assets/8/8f271511da/f91ab1e1/yii.js"></Script> */}
         <Script src="assets/8/8f271511da/32384b8a/js/sweetalert-dev.js"></Script>
         <Script src="assets/8/8f271511da/315641f9/js/popper.min.js"></Script>
-        <Script src="assets/8/8f271511da/315641f9/js/bootstrap.min.js"></Script>
-        <Script src="assets/8/8f271511da/315641f9/js/owl.carousel.min.js"></Script>
-        <Script src="assets/8/8f271511da/315641f9/js/jquery.magnific-popup.min.js"></Script>
-        <Script src="assets/8/8f271511da/315641f9/js/scrollspy.min.js"></Script>
-        <Script src="assets/8/8f271511da/315641f9/js/jquery.easing.min.js"></Script>
-        <Script src="assets/8/8f271511da/315641f9/js/jquery.simple-text-rotator.js"></Script>
-        <Script src="assets/8/8f271511da/315641f9/js/custom.js"></Script>
-        <Script src="assets/8/8f271511da/315641f9/js/bootstrap.offcanvas.js"></Script>
+        {/* <Script src="assets/8/8f271511da/315641f9/js/bootstrap.min.js"></Script> */}
+        {/* <Script src="assets/8/8f271511da/315641f9/js/owl.carousel.min.js"></Script> */}
+        {/* <Script src="assets/8/8f271511da/315641f9/js/jquery.magnific-popup.min.js"></Script> */}
+        {/* <Script src="assets/8/8f271511da/315641f9/js/scrollspy.min.js"></Script> */}
+        {/* <Script src="assets/8/8f271511da/315641f9/js/jquery.easing.min.js"></Script> */}
+        {/* <Script src="assets/8/8f271511da/315641f9/js/jquery.simple-text-rotator.js"></Script> */}
+        {/* <Script src="assets/8/8f271511da/315641f9/js/custom.js"></Script> */}
+        {/* <Script src="assets/8/8f271511da/315641f9/js/bootstrap.offcanvas.js"></Script> */}
       </div>
     </div>
   );

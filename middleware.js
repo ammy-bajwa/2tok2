@@ -12,13 +12,7 @@ class Middleware {
   }
 
   async init() {
-    
     //this.express.use(favicon(path.join(__dirname, '..', 'public/images', 'favicon-32x32feac.png')));
-    this.express.use(expressLayouts);
-    // this.express.set("views", path.join(__dirname, "views"));
-    // this.express.set("layout", "./layouts/full-width");
-    // this.express.set("view engine", "ejs");
-
     this.express.use(logger("dev"));
     this.express.use(express.json());
 
@@ -35,6 +29,7 @@ class Middleware {
         secret: "secret",
       })
     );
+
     this.initErrors()
   }
 

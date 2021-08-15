@@ -1,3 +1,4 @@
+import Layout from '../componets/Layout'
 export async function getServerSideProps({ req }) {
   return {
     props: {
@@ -7,8 +8,9 @@ export async function getServerSideProps({ req }) {
   };
 }
 
-export default function Index({}) {
+export default function Index({userName,title,isAdmin}) {
   return (
+    <Layout userName={userName} title={title} isAdmin={isAdmin}>
     <div id="admin" class="container" style="margin-top: 20px">
       {messages.success && (
         <div class="alert alert-success" role="alert">
@@ -29,5 +31,5 @@ export default function Index({}) {
         <div class="card-body"></div>
       </div>
     </div>
-  );
+    </Layout>);
 }

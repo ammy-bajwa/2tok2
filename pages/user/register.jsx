@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Script from "next/script";
 import {useEffect} from 'react';
 export async function getServerSideProps({ req }) {
   return {
@@ -22,26 +21,12 @@ export default function Index({messages}) {
     script3.src = "/assets/8/8f271511da/2de337b0/vendor/modernizr.custom.js";
     script3.async = true;
     document.body.appendChild(script3);
-    const script1 = document.createElement("script");
-    script1.src = "/assets/8/8f271511da/2de337b0/hideShowPassword.js";
-    script1.async = true;
-    document.body.appendChild(script1);
+    
     const script4 = document.createElement("script");
     script4.src = "/assets/8/8f271511da/2de337b0/vendor/modernizr.custom.js";
     script4.async = true;
     document.body.appendChild(script4);
-    const script5 = document.createElement("script");
-    script5.src = "/assets/8/8f271511da/2de337b0/hideShowPassword.js";
-    script5.async = true;
-    document.body.appendChild(script5);
-    const script6 = document.createElement("script");
-    script6.src = "/assets/8/8f271511da/f91ab1e1/yii.js";
-    script6.async = true;
-    document.body.appendChild(script6);
-    const script7 = document.createElement("script");
-    script7.src = "/assets/8/8f271511da/f91ab1e1/yii.activeForm.js";
-    script7.async = true;
-    document.body.appendChild(script7);
+  
     const script8 = document.createElement("script");
     script8.src = "/assets/8/8f271511da/32384b8a/js/sweetalert-dev.js";
     script8.async = true;
