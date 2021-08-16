@@ -3,7 +3,7 @@ export async function getServerSideProps({ req }) {
   return {
     props: {
       message: req.locals?.message || '',
-      data: req.locals?.data || [],
+      data: JSON.parse(req.locals?.data || '[]'),
       userName: req.locals?.userName || '',
       title: req.locals?.title || '',
       isAdmin: req.locals?.isAdmin || false,
