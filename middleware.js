@@ -4,7 +4,7 @@ const favicon = require('serve-favicon');
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const session = require("express-session");
-const expressLayouts = require("express-ejs-layouts");
+
 
 class Middleware {
   constructor(express) {

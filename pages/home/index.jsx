@@ -3,15 +3,16 @@ export async function getServerSideProps({ req }) {
   return {
     props: {
       message: req.locals?.message || {},
-      data: req.locals?.data || {},
-      userName: req.locals?.userName,
-      isAdmin:req.locals?.isAdmin,
+      data: JSON.parse(req.locals?.data || '{}'),
+      userName: req.locals?.userName || '',
+      isAdmin:req.locals?.isAdmin || false,
       title:req.locals?.title
     },
   };
 }
 
 export default function Index({userName,title,isAdmin,messages,data}) {
+  console.log('home_data',data)
   return (
     <Layout userName={userName} title={title} isAdmin={isAdmin}>
     <div class="container" style={{marginTop: 20}}>

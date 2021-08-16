@@ -12,12 +12,9 @@ class Routes {
   initRoutes() {
     /* GET home page. */
     this.express.get("/",  (req, res) =>{
-      console.log('a')
       if (req.session.loggedIn) {
-        console.log('b')
         res.redirect("home");
       } else {
-        console.log('c')
         req.locals = { title: "1tok1", layout: false }
         this.next.render(req, res,"/index",req.query);
       }
@@ -51,11 +48,12 @@ class Routes {
               _data[_r.currency] = 0 - Number(_r.amount);
             }
           });
+          console.log('tradeData?.rows',tradeData?.rows)
           req.locals = {
-            data: _data,
-            tradeData: tradeData?.rows,
+            data: JSON.stringify(_data || {}),
+            tradeData: JSON.stringify(tradeData?.rows || []),
             userName,
-            settings: global.settings?.[0],
+            settings: JSON.stringify(global.settings?.[0]),
             title: "trade",
             token: req.session?.loggedUser?.token,
             userId: req.session?.loggedUser?.id,
@@ -64,8 +62,8 @@ class Routes {
           this.next.render(req,res,"/home/trade", req.query);
         } catch (err) {
           req.locals = {
-            data: [],
-            tradeData: [],
+            data: JSON.stringify([]),
+            tradeData: JSON.stringify([]),
             userName,
             title: "trade",
             isAdmin: req.session.isAdmin,
@@ -74,7 +72,7 @@ class Routes {
           console.error(err);
         }
       } else {
-        this.next.render(req, res,"/main",req.query);
+        res.redirect('/')
       }
     });
     this.express.get("/history",  (req, res) =>{
@@ -131,7 +129,7 @@ class Routes {
           })
           .catch((err) => {
             req.locals = {
-              data: [],
+              data: JSON.stringify([]),
               userName,
               title: "history",
               isAdmin: req.session.isAdmin,
@@ -153,7 +151,7 @@ class Routes {
               .raw("select trades.*,users.username as username,users.email as email from trades join users on trades.userId = users.id where trades.status = 'pending';")
               .then((trade_data) => {
                 req.locals = {
-                  data: {
+                  data: JSON.stringify({
                     deposits_data:
                       transaction_data?.rows?.filter(
                         (_d) => _d.type == "credit"
@@ -163,16 +161,16 @@ class Routes {
                         (_d) => _d.type == "debit"
                       ) || [],
                     trade_data: trade_data?.rows || [],
-                  },
+                  }),
                   userName,
                   title: "AdminHistory",
                   isAdmin: req.session.isAdmin,
                 }
-                this.next.render(req,res,"home/adminhistory", req.query);
+                this.next.render(req,res,"/home/adminhistory", req.query);
               })
               .catch((err) => {
                 req.locals = {
-                  data: {
+                  data: JSON.stringify({
                     deposits_data:
                       transaction_data?.rows?.filter(
                         (_d) => _d.type == "credit"
@@ -182,18 +180,18 @@ class Routes {
                         (_d) => _d.type == "debit"
                       ) || [],
                     trade_data: [],
-                  },
+                  }),
                   userName,
                   title: "AdminHistory",
                   isAdmin: req.session.isAdmin,
                 }
-                this.next.render(req,res,".home/adminhistory", req.query);
+                this.next.render(req,res,"/home/adminhistory", req.query);
                 console.error(err);
               });
           })
           .catch((err) => {
             req.locals = {
-              data: [],
+              data: JSON.stringify([]),
               userName,
               title: "AdminHistory",
               isAdmin: req.session.isAdmin,

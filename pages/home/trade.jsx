@@ -1,25 +1,27 @@
 import { useState, useEffect } from "react";
-import { Notyf } from "notyf";
-import "notyf/notyf.min.css";
+import { toast } from 'react-nextjs-toast'
 import Layout from "../componets/Layout";
+import fetch from 'isomorphic-unfetch';
+import {parse, stringify, toJSON, fromJSON} from 'flatted';
+
 export async function getServerSideProps({ req }) {
   return {
     props: {
       message: req.locals?.message || {},
-      data: req.locals?.data,
-      tradeData: [],
+      data: JSON.parse(req.locals?.data || "{}"),
+      tradeData: req.locals?.tradeData,
       userName: req.locals?.userName,
       settings: req.locals?.settings,
-      title: req.locals?.title,
-      token: req.locals?.token,
-      userId: req.locals?.userId,
-      isAdmin: req.locals?.isAdmin,
+      title: req.locals?.title || "",
+      token: req.locals?.token || "",
+      userId: req.locals?.userId || "",
+      isAdmin: req.locals?.isAdmin || false,
     },
   };
 }
 
 export default function Index({
-  messages,
+  message,
   data,
   tradeData,
   userName,
@@ -29,30 +31,35 @@ export default function Index({
   userId,
   isAdmin,
 }) {
-  var notyf = null;
-  const [state, setState] = useState({
-    options: [
-      { label: "Bitcoin", value: "BTC" },
-      { label: "Ethereum", value: "ETH" },
-      { label: "Euro", value: "EUR" },
-      { label: "Tether", value: "USDT" },
-      { label: "W1", value: "W1" },
-      { label: "W2", value: "W2" },
-    ],
-    trades: JSON.stringify(data),
-    payCurrency: "",
-    receiveCurrency: "",
-    pay: "",
-    receive: "",
-    sendTo: "",
-    sendCurrency: "",
-    sendAmount: "",
-    depositCurrency: "",
-    depositAmount: "",
-    withdrawalCurrency: "",
-    withdrawalAmount: "",
-    withdrawalAddress: "",
-  });
+ const ErrToast={
+  duration: 5,
+  type: "error"
+}
+const OkToast={
+  duration: 5,
+  type: "success"
+}
+  const options = [
+    { label: "Bitcoin", value: "BTC" },
+    { label: "Ethereum", value: "ETH" },
+    { label: "Euro", value: "EUR" },
+    { label: "Tether", value: "USDT" },
+    { label: "W1", value: "W1" },
+    { label: "W2", value: "W2" },
+  ];
+  const [payCurrency, setPayCurrency] = useState("");
+  const [receiveCurrency, setReceiveCurrency] = useState("");
+  const [pay, setPay] = useState("");
+  const [receive, setReceive] = useState("");
+  const [sendTo, setSendTo] = useState("");
+  const [sendCurrency, setSendCurrency] = useState("");
+  const [sendAmount, setSendAmount] = useState("");
+  const [depositCurrency, setDepositCurrency] = useState("");
+  const [depositAmount, setDepositAmount] = useState("");
+  const [withdrawalCurrency, setwWthdrawalCurrency] = useState("");
+  const [withdrawalAmount, setWithdrawalAmount] = useState("");
+  const [withdrawalAddress, setWithdrawalAddress] = useState("");
+  const [tradeDataState, setTradeDataState] = useState([]);
 
   const isNumber = (evt) => {
     evt = evt ? evt : window.event;
@@ -64,91 +71,91 @@ export default function Index({
     }
   };
   const exchange = () => {
-    if (!this.receiveCurrency) {
-      notyf.error("Please select buy Currency!");
+    if (!receiveCurrency) {
+      toast.notify("Please select buy Currency!",ErrToast);
       return;
     }
-    if (!this.payCurrency) {
-      notyf.error("Please select pay Currency!");
+    if (!payCurrency) {
+      toast.notify("Please select pay Currency!",ErrToast);
       return;
     }
-    if (!this.pay) {
-      notyf.error("Please enter sell amount!");
+    if (!pay) {
+      toast.notify("Please enter sell amount!",ErrToast);
       return;
     }
-    if (!this.receive) {
-      notyf.error("Please enter buy amount!");
+    if (!receive) {
+      toast.notify("Please enter buy amount!",ErrToast);
       return;
     }
     fetch("/api/Exchange", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        buy: this.receive,
-        buyCurrency: this.receiveCurrency,
-        sell: this.pay,
-        sellCurrency: this.payCurrency,
+        buy: receive.toString(),
+        buyCurrency: receiveCurrency.toString(),
+        sell: pay.toString(),
+        sellCurrency: payCurrency.toString(),
       }),
     })
       .then((response) => response.json())
       .then((data) => {
         if (data?.error) {
-          notyf.error(data?.error);
+          toast.notify(data?.error,ErrToast);
         } else {
-          this.receiveCurrency = "";
-          this.payCurrency = "";
-          this.receive = "";
-          this.pay = "";
-          notyf.success("Exchange Request send !");
+          setReceiveCurrency('')
+          setPayCurrency('');
+          setReceive('');
+          setPay('');
+          toast.notify("Exchange Request send !",OkToast);
           location.reload();
         }
       });
   };
   const deposit = () => {
-    if (!this.depositCurrency) {
-      notyf.error("Please select Currency!");
+    if (!depositCurrency) {
+      toast.notify("Please select Currency!",ErrToast);
       return;
     }
-    if (!this.depositAmount) {
-      notyf.error("Please enter amount!");
+    if (!depositAmount) {
+      toast.notify("Please enter amount!",ErrToast);
       return;
     }
     fetch("/api/deposit", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        currency: this.depositCurrency,
-        amount: this.depositAmount,
+        currency: depositCurrency,
+        amount: depositAmount,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
         if (data?.error) {
-          notyf.error(data?.error);
+          toast.notify(data?.error,ErrToast);
         } else {
-          this.depositCurrency = "";
-          this.depositAmount = "";
+          setDepositCurrency("");
+          setDepositAmount("");
           $("#depositModal").modal("hide");
           location.reload();
         }
       });
   };
   const withdraw = () => {
-    if (!this.withdrawalCurrency) {
-      notyf.error("Please select Currency!");
+    if (!withdrawalCurrency) {
+      toast.notify("Please select Currency!",ErrToast);
       return;
     }
-    if (!this.withdrawalAmount) {
-      notyf.error("Please enter amount!");
+    if (!withdrawalAmount) {
+      toast.notify("Please enter amount!",ErrToast);
       return;
     }
     if (
-      this.withdrawalCurrency == "ETH" ||
-      this.withdrawalCurrency == "W1" ||
-      this.withdrawalCurrency == "W2"
+      withdrawalCurrency == "ETH" ||
+      withdrawalCurrency == "W1" ||
+      withdrawalCurrency == "W2"
     ) {
-      if (!this.withdrawalAddress) {
-        notyf.error("Please enter address!");
+      if (!withdrawalAddress) {
+        toast.notify("Please enter address!",ErrToast);
         return;
       }
     }
@@ -156,53 +163,53 @@ export default function Index({
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        currency: this.withdrawalCurrency,
-        amount: this.withdrawalAmount,
-        address: this.withdrawalAddress,
+        currency: withdrawalCurrency,
+        amount: withdrawalAmount,
+        address: withdrawalAddress,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
         if (data?.error) {
-          notyf.error(data?.error);
+          toast.notify(data?.error,ErrToast);
         } else {
-          this.withdrawalCurrency = "";
-          this.withdrawalAmount = "";
+          setWithdrawalCurrency("");
+          setWithdrawalAmount("");
           $("#withdrawalModal").modal("hide");
           location.reload();
         }
       });
   };
   const send = () => {
-    if (!this.sendTo) {
-      notyf.error("Please enter send to email!");
+    if (!sendTo) {
+      toast.notify("Please enter send to email!",ErrToast);
       return;
     }
-    if (!this.sendCurrency) {
-      notyf.error("Please enter currency!");
+    if (!sendCurrency) {
+      toast.notify("Please enter currency!",ErrToast);
       return;
     }
-    if (!this.sendAmount) {
-      notyf.error("Please enter amount!");
+    if (!sendAmount) {
+      toast.notify("Please enter amount!",ErrToast);
       return;
     }
     fetch("/api/send", {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        currency: this.sendCurrency,
-        amount: this.sendAmount,
-        email: this.sendTo,
+        currency: sendCurrency,
+        amount: sendAmount,
+        email: sendTo,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
         if (data?.error) {
-          notyf.error(data?.error);
+          toast.notify(data?.error,ErrToast);
         } else {
-          this.sendCurrency = "";
-          this.sendAmount = "";
-          this.sendTo = "";
+          setSendCurrency("");
+          setSendAmount("");
+          setSendTo("");
           $("#sendModal").modal("hide");
           location.reload();
         }
@@ -233,7 +240,7 @@ export default function Index({
     // Avoid flash of the white box if rendered for any reason.
     textArea.style.background = "transparent";
 
-    textArea.value = this.token;
+    textArea.value = token;
 
     document.body.appendChild(textArea);
     textArea.focus();
@@ -254,45 +261,32 @@ export default function Index({
       .then((response) => response.json())
       .then((data) => {
         if (data?.error) {
-          notyf.error(data?.error);
+          toast.notify(data?.error,ErrToast);
         } else {
           location.reload();
         }
       });
   };
   useEffect(() => {
-    notyf = new Notyf();
     setTimeout(() => {
       location.reload();
     }, 50 * 1800);
+    setTradeDataState(JSON.parse(tradeData));
+    console.log("tradeData_d1", tradeData);
   }, []);
-  const {
-    options,
-    trades,
-    payCurrency,
-    receiveCurrency,
-    pay,
-    receive,
-    sendTo,
-    sendCurrency,
-    sendAmount,
-    depositCurrency,
-    depositAmount,
-    withdrawalCurrency,
-    withdrawalAmount,
-    withdrawalAddress,
-  } = state;
+  console.log("tradeData_d", tradeDataState);
+
   return (
     <Layout userName={userName} title={title} isAdmin={isAdmin}>
       <div id="tradeApp" class="container" style={{ marginTop: 20 }}>
-        {messages?.success && (
+        {message?.success && (
           <div class="alert alert-success" role="alert">
-            {messages?.success}
+            {message?.success}
           </div>
         )}
-        {messages?.error && (
+        {message?.error && (
           <div class="alert alert-danger" role="alert">
-            {messages?.error}
+            {message?.error}
           </div>
         )}
         <div style={{ display: "flex", flexDirection: "row" }}>
@@ -300,7 +294,7 @@ export default function Index({
             <div class="card-header">
               <ul class="nav nav-pills w-100">
                 <li class="nav-pill active">
-                  <a class="nav-link" onClick="reload">
+                  <a class="nav-link" onClick={reload}>
                     Balances{" "}
                     <ion-icon
                       style={{
@@ -315,6 +309,7 @@ export default function Index({
                 <li class="nav-pill ml-auto">
                   <button
                     type="submit"
+                    style={{marginRight:10}}
                     class="btn btn-primary"
                     data-toggle="modal"
                     data-target="#sendModal"
@@ -323,6 +318,7 @@ export default function Index({
                   </button>
                   <button
                     type="submit"
+                    style={{marginRight:10}}
                     class="btn btn-success"
                     data-toggle="modal"
                     data-target="#depositModal"
@@ -383,7 +379,7 @@ export default function Index({
               <div style={{ display: "flex", flexDirection: "row" }}>
                 <div class="form-group" style={{ flex: 1, marginRight: 10 }}>
                   <label for="exampleFormControlSelect1">From currency</label>
-                  <select class="form-control">
+                  <select class="form-control" onChange={(e)=>setPayCurrency(e.target.value)}>
                     {options.map((option) => (
                       <option value={option.value}>{option.label}</option>
                     ))}
@@ -391,7 +387,7 @@ export default function Index({
                 </div>
                 <div class="form-group" style={{ flex: 1 }}>
                   <label for="exampleFormControlSelect1">To currency</label>
-                  <select class="form-control" v-model="receiveCurrency">
+                  <select class="form-control" onChange={(e)=>setReceiveCurrency(e.target.value)}>
                     {options.map((option) => (
                       <option value={option.value}>{option.label}</option>
                     ))}
@@ -400,7 +396,7 @@ export default function Index({
               </div>
               <div style={{ display: "flex", flexDirection: "row" }}>
                 <div style={{ flex: 1, marginRight: 10 }}>
-                  <label for="basic-url">Your Pay</label>
+                  <label for="basic-url">You Pay</label>
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="basic-addon3">
@@ -410,13 +406,13 @@ export default function Index({
                     <input
                       type="number"
                       class="form-control"
-                      v-model="pay"
+                      onChange={(e)=>setPay(e.target.value)}
                       aria-describedby="basic-addon3"
                     />
                   </div>
                 </div>
                 <div style={{ flex: 1 }}>
-                  <label for="basic-url">Your receive</label>
+                  <label for="basic-url">You receive</label>
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="basic-addon3">
@@ -426,6 +422,7 @@ export default function Index({
                     <input
                       type="number"
                       class="form-control"
+                      onChange={(e)=>setReceive(e.target.value)}
                       aria-describedby="basic-addon3"
                     />
                   </div>
@@ -463,7 +460,7 @@ export default function Index({
             </ul>
           </div>
           <div class="card-body">
-            {tradeData?.length && (
+            {tradeDataState?.length && (
               <table class="table table-dark">
                 <thead>
                   <tr>
@@ -478,7 +475,7 @@ export default function Index({
                   </tr>
                 </thead>
                 <tbody>
-                  {tradeData?.map((_item, index) => (
+                  {tradeDataState?.map((_item, index) => (
                     <tr>
                       <th scope="row">{index + 1}</th>
                       <td>{new Date(_item.createdat).toLocaleString()}</td>
@@ -507,7 +504,7 @@ export default function Index({
                 </tbody>
               </table>
             )}
-            {(!tradeData || tradeData == {}) && (
+            {(!tradeDataState || tradeDataState == {}) && (
               <p class="text-center">No Orders!</p>
             )}
           </div>
@@ -542,7 +539,7 @@ export default function Index({
                       <input
                         type="text"
                         class="form-control"
-                        v-model="sendTo"
+                        onChange={(e)=>setSendTo(e.target.value)}
                         placeholder="email"
                         aria-describedby="basic-addon3"
                       />
@@ -552,7 +549,7 @@ export default function Index({
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   <div class="form-group" style={{ flex: 1, marginRight: 10 }}>
                     <label for="exampleFormControlSelect1">Currency</label>
-                    <select class="form-control" v-model="sendCurrency">
+                    <select class="form-control" onChange={(e)=>setSendCurrency(e.target.value)}>
                       {options.map((option) => (
                         <option value={option.value}>{option.label}</option>
                       ))}
@@ -571,7 +568,7 @@ export default function Index({
                       <input
                         type="number"
                         class="form-control"
-                        v-model="sendAmount"
+                        onChange={(e)=>setSendAmount(e.target.value)}
                         aria-describedby="basic-addon3"
                       />
                     </div>
@@ -586,7 +583,7 @@ export default function Index({
                 >
                   Close
                 </button>
-                <button type="button" class="btn btn-primary" onClick="send">
+                <button type="button" class="btn btn-primary" onClick={send}>
                   Send
                 </button>
               </div>
@@ -619,15 +616,14 @@ export default function Index({
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   <div class="form-group" style={{ flex: 1, marginRight: 10 }}>
                     <label for="exampleFormControlSelect1">Currency</label>
-                    <select class="form-control" v-model="depositCurrency">
+                    <select class="form-control" onChange={(e)=>setDepositCurrency(e.target.value)}>
                       {options.map((option) => (
                         <option value={option.value}>{option.label}</option>
                       ))}
                     </select>
                   </div>
                 </div>
-                <div
-                  v-if="depositCurrency != 'ETH' && depositCurrency != 'W2' && depositCurrency != 'W1'"
+                {depositCurrency != 'ETH' && depositCurrency != 'W2' && depositCurrency != 'W1' && <div
                   style={{ display: "flex", flexDirection: "row" }}
                 >
                   <div style={{ flex: 1, marginRight: 10 }}>
@@ -641,14 +637,13 @@ export default function Index({
                       <input
                         type="number"
                         class="form-control"
-                        v-model="depositAmount"
+                        onChange={(e)=>setDepositAmount(e.target.value)}
                         aria-describedby="basic-addon3"
                       />
                     </div>
                   </div>
-                </div>
-                <div
-                  v-if="depositCurrency == 'ETH' || depositCurrency == 'W2' || depositCurrency == 'W1'"
+                </div>}
+                {(depositCurrency == 'ETH' || depositCurrency == 'W2' || depositCurrency == 'W1' )&& <div
                   style={{ display: "flex", flexDirection: "row" }}
                 >
                   <div style={{ flex: 1, marginRight: 10 }}>
@@ -662,13 +657,13 @@ export default function Index({
                       <input
                         type="text"
                         class="form-control"
-                        v-model="token"
+                        value={token}
                         readonly
                         aria-describedby="basic-addon3"
                       />
                     </div>
                   </div>
-                </div>
+                </div>}
               </div>
               <div class="modal-footer">
                 <button
@@ -678,22 +673,19 @@ export default function Index({
                 >
                   Close
                 </button>
-                <button
-                  v-if="depositCurrency != 'ETH' && depositCurrency != 'W2' && depositCurrency != 'W1'"
+                {depositCurrency != 'ETH' && depositCurrency != 'W2' && depositCurrency != 'W1' && <button
                   type="button"
                   class="btn btn-primary"
-                  onclick="deposit"
+                  onclick={deposit}
                 >
                   Deposit
-                </button>
-                <button
-                  v-if="depositCurrency == 'ETH' || depositCurrency == 'W2' || depositCurrency == 'W1'"
+                </button>}
+                {(depositCurrency == 'ETH' || depositCurrency == 'W2' || depositCurrency == 'W1') && <button
                   type="button"
                   class="btn btn-primary"
-                  onclick="copy"
-                >
+                  onclick={copy}>
                   Copy To ClipBoard
-                </button>
+                </button>}
               </div>
             </div>
           </div>

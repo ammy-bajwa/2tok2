@@ -23,6 +23,7 @@ class Routes {
             "select type,currency,SUM (amount::numeric) as amount from transaction where userId = ? group by type,currency",
             [req.session?.loggedUser?.id]
           );
+          console.log('data/home',data)
           const _rowsDebit = data?.rows?.filter((_r) => _r.type == "debit");
           const _rowsCredit = data?.rows?.filter((_r) => _r.type == "credit");
           let _data = {};
@@ -38,7 +39,7 @@ class Routes {
             }
           });
           req.locals = {
-            data: _data,
+            data: JSON.stringify(_data),
             userName,
             title: "home",
             isAdmin: req.session.isAdmin,

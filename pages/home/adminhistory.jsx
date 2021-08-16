@@ -2,8 +2,11 @@ import Layout from "../componets/Layout";
 export async function getServerSideProps({ req }) {
   return {
     props: {
-      message: req.locals?.message,
-      data: req.locals?.data,
+      message: req.locals?.message || {},
+      data: JSON.parse(req.locals?.data || {}),
+      userName: req.locals?.userName || "",
+      title: req.locals?.title || "",
+      isAdmin: req.locals?.isAdmin || false,
     },
   };
 }
@@ -11,22 +14,22 @@ export async function getServerSideProps({ req }) {
 export default function Index({ userName, title, isAdmin, message, data }) {
   return (
     <Layout userName={userName} title={title} isAdmin={isAdmin}>
-      <div id="admin" class="container" style="margin-top: 20px">
-        {messages.success && (
+      <div id="admin" class="container" style={{marginTop: 20}}>
+        {message.success && (
           <div class="alert alert-success" role="alert">
-            {messages.success}
+            {message.success}
           </div>
         )}
-        {messages.error && (
+        {message.error && (
           <div class="alert alert-danger" role="alert">
-            {messages.error}
+            {message.error}
           </div>
         )}
 
         <div class="card">
           <div
             class="card-header"
-            style="padding: 10px 0px 0px 0px; border-bottom: 0px"
+            style={{paddingTop:10,borderBottom: 0}}
           >
             <nav>
               <div class="nav nav-tabs" id="nav-tab" role="tablist">
@@ -153,7 +156,7 @@ export default function Index({ userName, title, isAdmin, message, data }) {
                           <td>{_item.email}</td>
                           <td>
                             {new Date(
-                              data?.deposits_data[i].createdat
+                              _item.createdat
                             ).toLocaleString()}
                           </td>
                           <td>{_item.ref}</td>
@@ -210,7 +213,7 @@ export default function Index({ userName, title, isAdmin, message, data }) {
                           <th scope="row">{index + 1}</th>
                           <td>
                             {new Date(
-                              data?.withdrawals_data[i].createdat
+                              _item.createdat
                             ).toLocaleString()}
                           </td>
                           <td>{_item.username}</td>
