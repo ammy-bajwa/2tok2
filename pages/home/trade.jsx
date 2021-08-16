@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { toast } from 'react-nextjs-toast'
 import Layout from "../componets/Layout";
 import fetch from 'isomorphic-unfetch';
-import {parse, stringify, toJSON, fromJSON} from 'flatted';
 
 export async function getServerSideProps({ req }) {
   return {
@@ -676,14 +675,14 @@ const OkToast={
                 {depositCurrency != 'ETH' && depositCurrency != 'W2' && depositCurrency != 'W1' && <button
                   type="button"
                   class="btn btn-primary"
-                  onclick={deposit}
+                  onClick={deposit}
                 >
                   Deposit
                 </button>}
                 {(depositCurrency == 'ETH' || depositCurrency == 'W2' || depositCurrency == 'W1') && <button
                   type="button"
                   class="btn btn-primary"
-                  onclick={copy}>
+                  onClick={copy}>
                   Copy To ClipBoard
                 </button>}
               </div>
@@ -716,7 +715,7 @@ const OkToast={
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   <div class="form-group" style={{ flex: 1, marginRight: 10 }}>
                     <label for="exampleFormControlSelect1">Currency</label>
-                    <select class="form-control" v-model="withdrawalCurrency">
+                    <select class="form-control" onChange={(e)=>setWithdrawalCurrency(e.target.value)}>
                       {options.map((option) => (
                         <option value={option.value}>{option.label}</option>
                       ))}
@@ -735,14 +734,13 @@ const OkToast={
                       <input
                         type="number"
                         class="form-control"
-                        v-model="withdrawalAmount"
+                        onChange={(e)=>setWithdrawalAmount(e.target.value)}
                         aria-describedby="basic-addon3"
                       />
                     </div>
                   </div>
                 </div>
-                <div
-                  v-if="withdrawalCurrency == 'ETH' || withdrawalCurrency == 'W2' || withdrawalCurrency == 'W1'"
+                {(withdrawalCurrency == 'ETH' || withdrawalCurrency == 'W2' || withdrawalCurrency == 'W1') && <div
                   style={{ display: "flex", flexDirection: "row" }}
                 >
                   <div style={{ flex: 1, marginRight: 10 }}>
@@ -751,12 +749,12 @@ const OkToast={
                       <input
                         type="text"
                         class="form-control"
-                        v-model="withdrawalAddress"
+                        onChange={(e)=>setWithdrawalAddress(e.target.value)}
                         aria-describedby="basic-addon3"
                       />
                     </div>
                   </div>
-                </div>
+                </div>}
               </div>
               <div class="modal-footer">
                 <button
@@ -769,7 +767,7 @@ const OkToast={
                 <button
                   type="button"
                   class="btn btn-primary"
-                  onclick="withdraw"
+                  onClick={withdraw}
                 >
                   Withdraw
                 </button>
