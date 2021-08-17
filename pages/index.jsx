@@ -1,5 +1,5 @@
-import Head from 'next/head'
-import Script from 'next/script'
+import Head from "next/head";
+import Script from "next/script";
 export async function getServerSideProps({ req }) {
   return {
     props: {},
@@ -188,7 +188,7 @@ export default function Index({}) {
             <a class="navbar-brand logo">
               {/*<!-- <img src="images/csr-live-logo-4.svg" alt="" class="img-fluid logo-light">
                 <img src="images/csr-live-logo-4.svg" alt="" class="img-fluid logo-dark"> --> */}
-              <h4 style={{color: 'white'}}>1Tok1</h4>
+              <h4 style={{ color: "white" }}>1Tok1</h4>
             </a>
 
             <button
@@ -211,7 +211,7 @@ export default function Index({}) {
                   <a class="navbar-brand logo">
                     {/*<!-- <img src="images/csr-live-logo-4.svg" alt="" class="img-fluid logo-light">
                             <img src="images/csr-live-logo-4.svg" alt="" class="img-fluid logo-dark"> --> */}
-                    <h4 style={{color: 'white'}}>1Tok1</h4>
+                    <h4 style={{ color: "white" }}>1Tok1</h4>
                   </a>
                 </div>
               </div>
@@ -356,7 +356,7 @@ export default function Index({}) {
           <div class="container">
             <div class="row">
               <div class="col-lg-12 text-center">
-                <h4 class="section-title" id="why" style={{fontSize:44}}>
+                <h4 class="section-title" id="why" style={{ fontSize: 44 }}>
                   {" "}
                   Why choose 1Tok1?{" "}
                 </h4>

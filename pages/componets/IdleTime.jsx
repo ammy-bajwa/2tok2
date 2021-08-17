@@ -17,7 +17,7 @@ const IdleTime = (props) => {
     function resetTimer() {
       clearTimeout(time);
       if (props?.userName) {
-        time = setTimeout(logout, 1000 * 60);
+        time = setTimeout(logout, 10000 * 60);
       }
     }
   };
