@@ -1,3 +1,4 @@
+import { refLink } from "../../constants/link";
 import Layout from "../componets/Layout";
 export async function getServerSideProps({ req }) {
   return {
@@ -14,7 +15,7 @@ export async function getServerSideProps({ req }) {
 export default function Index({ userName, title, isAdmin, message, data }) {
   return (
     <Layout userName={userName} title={title} isAdmin={isAdmin}>
-      <div id="admin" class="container" style={{marginTop: 20}}>
+      <div id="admin" class="container" style={{ marginTop: 20 }}>
         {message.success && (
           <div class="alert alert-success" role="alert">
             {message.success}
@@ -27,10 +28,7 @@ export default function Index({ userName, title, isAdmin, message, data }) {
         )}
 
         <div class="card">
-          <div
-            class="card-header"
-            style={{paddingTop:10,borderBottom: 0}}
-          >
+          <div class="card-header" style={{ paddingTop: 10, borderBottom: 0 }}>
             <nav>
               <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <a
@@ -154,12 +152,16 @@ export default function Index({ userName, title, isAdmin, message, data }) {
                           <th scope="row">{index + 1}</th>
                           <td>{_item.username}</td>
                           <td>{_item.email}</td>
+                          <td>{new Date(_item.createdat).toLocaleString()}</td>
                           <td>
-                            {new Date(
-                              _item.createdat
-                            ).toLocaleString()}
+                            <a
+                              href={`${refLink}${_item.ref}`}
+                              className="text-light"
+                              target="_blank"
+                            >
+                              {_item.ref}
+                            </a>
                           </td>
-                          <td>{_item.ref}</td>
                           <td>{_item.amount}</td>
                           <td>{_item.fee}</td>
                           <td>{_item.amount}</td>
@@ -211,14 +213,18 @@ export default function Index({ userName, title, isAdmin, message, data }) {
                       {data?.withdrawals_data?.map((_item, index) => (
                         <tr>
                           <th scope="row">{index + 1}</th>
-                          <td>
-                            {new Date(
-                              _item.createdat
-                            ).toLocaleString()}
-                          </td>
+                          <td>{new Date(_item.createdat).toLocaleString()}</td>
                           <td>{_item.username}</td>
                           <td>{_item.email}</td>
-                          <td>{_item.ref}</td>
+                          <td>
+                            <a
+                              href={`${refLink}${_item.ref}`}
+                              className="text-light"
+                              target="_blank"
+                            >
+                              {_item.ref}
+                            </a>
+                          </td>
                           <td>{_item.amount}</td>
                           <td>{_item.fee}</td>
                           <td>{_item.amount}</td>

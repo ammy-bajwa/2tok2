@@ -1,11 +1,12 @@
+import { refLink } from "../../constants/link";
 import Layout from "../componets/Layout";
 export async function getServerSideProps({ req }) {
   return {
     props: {
-      message: req.locals?.message || '',
-      data: JSON.parse(req.locals?.data || '[]'),
-      userName: req.locals?.userName || '',
-      title: req.locals?.title || '',
+      message: req.locals?.message || "",
+      data: JSON.parse(req.locals?.data || "[]"),
+      userName: req.locals?.userName || "",
+      title: req.locals?.title || "",
       isAdmin: req.locals?.isAdmin || false,
     },
   };
@@ -132,7 +133,15 @@ export default function Index({ message, data, userName, title, isAdmin }) {
                         <tr>
                           <th scope="row">{index + 1}</th>
                           <td>{new Date(_item.createdat).toLocaleString()}</td>
-                          <td>{_item.ref}</td>
+                          <td>
+                            <a
+                              href={`${refLink}${_item.ref}`}
+                              className="text-light"
+                              target="_blank"
+                            >
+                              {_item.ref}
+                            </a>
+                          </td>
                           <td>{_item.amount}</td>
                           <td>{_item.fee}</td>
                           <td>{_item.amount}</td>
@@ -173,7 +182,15 @@ export default function Index({ message, data, userName, title, isAdmin }) {
                         <tr>
                           <th scope="row">{index + 1}</th>
                           <td>{new Date(_item.createdat).toLocaleString()}</td>
-                          <td>{_item.ref}</td>
+                          <td>
+                            <a
+                              href={`${refLink}${_item.ref}`}
+                              className="text-light"
+                              target="_blank"
+                            >
+                              {_item.ref}
+                            </a>
+                          </td>
                           <td>{_item.amount}</td>
                           <td>{_item.fee}</td>
                           <td>{_item.amount}</td>
