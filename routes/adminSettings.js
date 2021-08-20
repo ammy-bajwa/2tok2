@@ -1,7 +1,9 @@
+const { ADMIN_SETTINGS } = require("../constants/logs");
 const {
   updateAdminSettings,
   getLatestAdminSettings,
 } = require("../models/adminSettings");
+const { logThis } = require("../models/logs");
 
 const catchHandler = (err, res, msg) => {
   res.json({ error: msg || "Something went wrong !", err });
@@ -22,9 +24,13 @@ class Routes {
       const { idleTimeLogout } = req.body;
       updateAdminSettings(idleTimeLogout)
         .then((data) => {
+          logThis(ADMIN_SETTINGS, "Admin Settings Updated Sucessfully", true);
           res.json({ data });
         })
-        .catch((err) => catchHandler(err, res));
+        .catch((err) => {
+          logThis(ADMIN_SETTINGS, "Admin Settings Not Updated", false);
+          catchHandler(err, res);
+        });
     });
 
     this.express.get("/admin-settings/get", function (req, res) {

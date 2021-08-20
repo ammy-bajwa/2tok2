@@ -1,3 +1,5 @@
+const { LOGGED_IN } = require("../constants/logs");
+const { logThis } = require("../models/logs");
 const userModels = require("../models/user");
 /* GET users listing. */
 class Routes {

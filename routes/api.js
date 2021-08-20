@@ -1,3 +1,9 @@
+const {
+  SENDING_CURENCY,
+  DEPOSIT_CURRENCY,
+  WITHDRAW_CURRENCY,
+  TRADE_CURRENCY,
+} = require("../constants/logs");
 const database = require("../db");
 const eth = require("../ethProvider");
 const {
@@ -56,16 +62,47 @@ class Routes {
                       )
                       .then((data) => {
                         res.json({ ok: true });
+                        logThis(
+                          SENDING_CURENCY,
+                          `${loggedUser?.email} user send ${amount}-${currency} to ${email} successfully`,
+                          true
+                        );
                       })
-                      .catch((err) => catchHandler(err, res));
+                      .catch((err) => {
+                        logThis(
+                          SENDING_CURENCY,
+                          `${loggedUser?.email} user send ${amount}-${currency} to ${email} unsuccessful`,
+                          false
+                        );
+                        catchHandler(err, res);
+                      });
                   }
                 })
-                .catch((err) => catchHandler(err, res));
+                .catch((err) => {
+                  logThis(
+                    SENDING_CURENCY,
+                    `${loggedUser?.email} user send ${amount}-${currency} to ${email} unsuccessful`,
+                    false
+                  );
+                  catchHandler(err, res);
+                });
             } else {
+              logThis(
+                SENDING_CURENCY,
+                `${loggedUser?.email} user send ${amount}-${currency} to ${email} unsuccessful`,
+                false
+              );
               res.json({ error: "Invalid recipient!", err });
             }
           })
-          .catch((err) => catchHandler(err, res, "Invalid Send to"));
+          .catch((err) => {
+            logThis(
+              SENDING_CURENCY,
+              `${loggedUser?.email} user send ${amount}-${currency} to ${email} unsuccessful`,
+              false
+            );
+            catchHandler(err, res, "Invalid Send to");
+          });
       } else {
         res.json({ error: "401" });
       }
@@ -91,9 +128,21 @@ class Routes {
             ]
           )
           .then((data) => {
+            logThis(
+              DEPOSIT_CURRENCY,
+              `${loggedUser?.email} user deposit ${amount}-${currency} successful`,
+              false
+            );
             res.json({ ok: true });
           })
-          .catch((err) => catchHandler(err, res));
+          .catch((err) => {
+            logThis(
+              DEPOSIT_CURRENCY,
+              `${loggedUser?.email} user deposit ${amount}-${currency} unsuccessful`,
+              false
+            );
+            catchHandler(err, res);
+          });
       } else {
         res.json({ error: "401" });
       }
@@ -125,10 +174,29 @@ class Routes {
                 )
                 .then((data) => {
                   res.json({ ok: true });
+                  logThis(
+                    WITHDRAW_CURRENCY,
+                    `${loggedUser?.email} user withdraw ${amount}-${currency} to ${address} successful`,
+                    true
+                  );
                 })
-                .catch((err) => catchHandler(err, res));
+                .catch((err) => {
+                  logThis(
+                    WITHDRAW_CURRENCY,
+                    `${loggedUser?.email} user withdraw ${amount}-${currency} to ${address} Unsuccessful`,
+                    false
+                  );
+                  catchHandler(err, res);
+                });
             })
-            .catch((err) => catchHandler(err, res));
+            .catch((err) => {
+              logThis(
+                WITHDRAW_CURRENCY,
+                `${loggedUser?.email} user withdraw ${amount}-${currency} to ${address} Unsuccessful`,
+                false
+              );
+              catchHandler(err, res);
+            });
         } else if (currency == "W1" || currency == "W2") {
           eth
             .transferToken(address, amount, currency)
@@ -150,10 +218,29 @@ class Routes {
                 )
                 .then((data) => {
                   res.json({ ok: true });
+                  logThis(
+                    WITHDRAW_CURRENCY,
+                    `${loggedUser?.email} user withdraw ${amount}-${currency} to ${address} is successful`,
+                    true
+                  );
                 })
-                .catch((err) => catchHandler(err, res));
+                .catch((err) => {
+                  logThis(
+                    WITHDRAW_CURRENCY,
+                    `${loggedUser?.email} user withdraw ${amount}-${currency} to ${address} is Unsuccessful`,
+                    false
+                  );
+                  catchHandler(err, res);
+                });
             })
-            .catch((err) => catchHandler(err, res));
+            .catch((err) => {
+              logThis(
+                WITHDRAW_CURRENCY,
+                `${loggedUser?.email} user withdraw ${amount}-${currency} to ${address} is Unsuccessful`,
+                false
+              );
+              catchHandler(err, res);
+            });
         } else {
           database
             .raw(
@@ -170,8 +257,20 @@ class Routes {
             )
             .then((data) => {
               res.json({ ok: true });
+              logThis(
+                WITHDRAW_CURRENCY,
+                `${loggedUser?.email} user withdraw ${amount}-${currency} to ${address} is successful`,
+                true
+              );
             })
-            .catch((err) => catchHandler(err, res));
+            .catch((err) => {
+              logThis(
+                WITHDRAW_CURRENCY,
+                `${loggedUser?.email} user withdraw ${amount}-${currency} to ${address} is Unsuccessful`,
+                false
+              );
+              catchHandler(err, res);
+            });
         }
       } else {
         res.json({ error: "401" });
@@ -198,9 +297,26 @@ class Routes {
           )
           .then((data) => {
             res.json({ ok: true });
+            logThis(
+              TRADE_CURRENCY,
+              `${loggedUser?.email} user do trade and buy ${buycurrency} and sell ${sellcurrency} is successfull`,
+              true
+            );
           })
-          .catch((err) => catchHandler(err, res));
+          .catch((err) => {
+            logThis(
+              TRADE_CURRENCY,
+              `${loggedUser?.email} user do trade and buy ${buycurrency} and sell ${sellcurrency} is unsuccessfull`,
+              false
+            );
+            catchHandler(err, res);
+          });
       } else {
+        logThis(
+          TRADE_CURRENCY,
+          `${loggedUser?.email} user do trade and buy ${buycurrency} and sell ${sellcurrency} is unsuccessfull`,
+          false
+        );
         res.json({ error: "401" });
       }
     });
@@ -238,9 +354,19 @@ class Routes {
               new Date(),
             ]
           );
+          logThis(
+            TRADE_CURRENCY,
+            `${loggedUser?.email} user do trade and buy ${action?.buycurrency} and sell ${action?.sellcurrency} is successfull`,
+            true
+          );
           res.json({ ok: true });
         } catch (error) {
           catchHandler(error, res);
+          logThis(
+            TRADE_CURRENCY,
+            `${loggedUser?.email} user do trade and buy ${action?.buycurrency} and sell ${action?.sellcurrency} is unsuccessfull`,
+            false
+          );
         }
       } else {
         res.json({ error: "401" });

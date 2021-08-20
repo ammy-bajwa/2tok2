@@ -3,6 +3,13 @@ const bcrypt = require("bcrypt"); // bcrypt will encrypt passwords to be saved i
 const crypto = require("crypto");
 const ethWallet = require("ethereumjs-wallet");
 var eth = require("../ethProvider");
+const { logThis } = require("./logs");
+const {
+  LOGGED_IN,
+  TOKEN_CHANGE,
+  USER_AUTH,
+  NEW_USER,
+} = require("../constants/logs");
 
 const signup = (request, response) => {
   const user = request.body;
@@ -54,11 +61,13 @@ const signin = (request, response, next) => {
       request.session.isAdmin = loggedUser.admin == 1;
       request.session.loggedUser = loggedUser;
       response.redirect("/home");
+      logThis(LOGGED_IN, "User Logged In Successfully", true);
     })
     .catch((err) => {
       request.locals = { messages: { error: "Invalid credentials !" } };
       next.render(request, response, "/user/login", request.query);
       console.error(err);
+      logThis(LOGGED_IN, "User Logged In Unsucessfull", false);
     });
 };
 const findUser = (userReq) => {
@@ -89,7 +98,13 @@ const updateUserToken = (token, user) => {
       "UPDATE users SET token = ? WHERE id = ? RETURNING id,email,admin, username, token",
       [token, user.id]
     )
-    .then((data) => data.rows[0]);
+    .then((data) => {
+      logThis(TOKEN_CHANGE, "User Token Updated Successfully", true);
+      return data.rows[0];
+    })
+    .catch(() => {
+      logThis(TOKEN_CHANGE, "User Token Updated Unsuccessfully", false);
+    });
 };
 const authenticate = (userReq) => {
   findByToken(userReq.token).then((user) => {
@@ -108,7 +123,17 @@ const findByToken = (token) => {
 const userTransactions = (request, response) => {
   const userReq = request.body;
   if (authenticate(userReq)) {
+    logThis(
+      USER_AUTH,
+      `User ${userReq?.username} Authenticated Successfully`,
+      true
+    );
   } else {
+    logThis(
+      USER_AUTH,
+      `User ${userReq?.username} Is Not Authenticated !!`,
+      true
+    );
     response.status(404);
   }
 };
@@ -142,7 +167,13 @@ const createUser = (user) => {
         new Date(),
       ]
     )
-    .then((data) => data.rows[0]);
+    .then((data) => {
+      logThis(NEW_USER, "New User created successfully", true);
+      return data.rows[0];
+    })
+    .catch(() => {
+      logThis(NEW_USER, "New User not created successfully", false);
+    });
 };
 // crypto ships with node - we're leveraging it to create a random, secure token
 const createToken = () => {
