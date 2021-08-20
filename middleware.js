@@ -1,14 +1,13 @@
-var express = require('express')
-const path = require('path')
-const favicon = require('serve-favicon');
+var express = require("express");
+const path = require("path");
+const favicon = require("serve-favicon");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const session = require("express-session");
 
-
 class Middleware {
   constructor(express) {
-    this.express = express
+    this.express = express;
   }
 
   async init() {
@@ -30,17 +29,16 @@ class Middleware {
       })
     );
 
-    this.initErrors()
+    this.initErrors();
   }
 
   initErrors() {
     this.express.use(async (err, req, res, next) => {
       /* This will be the first error handler to be called */
-      console.error("Unexpected error")
-      return next(err)
-    })
+      console.error("Unexpected error");
+      return next(err);
+    });
   }
-
 }
 
-module.exports = Middleware
+module.exports = Middleware;

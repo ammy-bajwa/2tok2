@@ -37,7 +37,7 @@ const signup = (request, response) => {
   });
 };
 // app/models/user.js
-const signin = (request, response,next) => {
+const signin = (request, response, next) => {
   const userReq = request.body;
   let user;
 
@@ -56,8 +56,8 @@ const signin = (request, response,next) => {
       response.redirect("/home");
     })
     .catch((err) => {
-      request.locals = {messages : { error: "Invalid credentials !" }}
-      next.render(request,response,"/user/login",request.query);
+      request.locals = { messages: { error: "Invalid credentials !" } };
+      next.render(request, response, "/user/login", request.query);
       console.error(err);
     });
 };
@@ -133,7 +133,14 @@ const createUser = (user) => {
   return database
     .raw(
       "INSERT INTO users (username,email, password_digest, token,eth_block, createdAt) VALUES (?,?, ?, ?,?, ?) RETURNING id, username,email, createdAt, token,eth_block",
-      [user.username, user.email, user.password_digest, user.token,user.eth_block, new Date()]
+      [
+        user.username,
+        user.email,
+        user.password_digest,
+        user.token,
+        user.eth_block,
+        new Date(),
+      ]
     )
     .then((data) => data.rows[0]);
 };

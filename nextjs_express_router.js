@@ -9,6 +9,7 @@ class NextjsExpressRouter {
     this.initRoutes();
     this.initHome();
     this.initUser();
+    this.initAdminSettings();
     this.initErrors();
   }
 
@@ -28,6 +29,13 @@ class NextjsExpressRouter {
     return new (require("./routes/user.js"))(this.express, this.next).init();
   }
 
+  initAdminSettings() {
+    return new (require("./routes/adminSettings.js"))(
+      this.express,
+      this.next
+    ).init();
+  }
+
   initErrors() {
     this.express.use((req, res, next) => {
       const err = new Error("Not Found");
@@ -37,8 +45,8 @@ class NextjsExpressRouter {
 
     this.express.use((err, req, res, next) => {
       res.status(err.status || 500);
-      res.locals.error = err
-      res.locals.errorDescription = err.message
+      res.locals.error = err;
+      res.locals.errorDescription = err.message;
       this.next.render(req, res, "/_error", {});
     });
   }
