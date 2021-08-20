@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { refLink } from "../../constants/link";
 import Layout from "../componets/Layout";
 export async function getServerSideProps({ req }) {
@@ -13,6 +14,7 @@ export async function getServerSideProps({ req }) {
 }
 
 export default function Index({ message, data, userName, title, isAdmin }) {
+
   return (
     <Layout userName={userName} title={title} isAdmin={isAdmin}>
       <div class="container" style={{ marginTop: 20 }}>

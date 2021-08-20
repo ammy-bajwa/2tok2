@@ -1,4 +1,4 @@
-const { LOGGED_IN } = require("../constants/logs");
+const { LOGGED_IN, LOGOUT } = require("../constants/logs");
 const { logThis } = require("../models/logs");
 const userModels = require("../models/user");
 /* GET users listing. */
@@ -40,6 +40,7 @@ class Routes {
       }
     });
     this.express.get("/user/logout", (req, res) => {
+      logThis(LOGOUT, `${req.session.loggedIn?.email} logout successfully`, true);
       req.session.loggedIn = false;
       req.session.loggedUser = null;
       res.redirect("/");

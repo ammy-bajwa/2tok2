@@ -11,11 +11,13 @@ import { ErrorToast, InfoToast, SucessToast } from "../helpers/toastTypes";
 
 export async function getServerSideProps({ req }) {
   return {
-    props: {},
+    props: {
+      isAdmin: req.locals?.isAdmin,
+    },
   };
 }
 
-export default function Index({}) {
+export default function Index({ isAdmin }) {
   const [timeOutDuration, setTimeOutDuration] = useState(0);
 
   useEffect(() => {
@@ -49,19 +51,21 @@ export default function Index({}) {
   return (
     <Layout>
       {/* Admin settings */}
-      <form onSubmit={handleSubmit} className="p-3">
-        <FormInput
-          label="Enter idle time out duration in minutes"
-          placeHolder={2}
-          type="number"
-          isRequired
-          value={timeOutDuration}
-          onChange={onTimeOutChangeHandler}
-        />
-        <button className="btn btn-primary" type="submit">
-          Submit
-        </button>
-      </form>
+      {isAdmin && (
+        <form onSubmit={handleSubmit} className="p-3">
+          <FormInput
+            label="Enter idle time out duration in minutes"
+            placeHolder={2}
+            type="number"
+            isRequired
+            value={timeOutDuration}
+            onChange={onTimeOutChangeHandler}
+          />
+          <button className="btn btn-primary" type="submit">
+            Submit
+          </button>
+        </form>
+      )}
     </Layout>
   );
 }

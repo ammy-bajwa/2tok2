@@ -7,6 +7,7 @@ const SENDING_CURENCY = "Sending Currency";
 const DEPOSIT_CURRENCY = "Deposit Currency";
 const WITHDRAW_CURRENCY = "Withdraw Currency";
 const TRADE_CURRENCY = "Trade Currency";
+const LOGOUT = "User Logout";
 
 module.exports = {
   LOGGED_IN,
@@ -18,4 +19,5 @@ module.exports = {
   DEPOSIT_CURRENCY,
   ADMIN_SETTINGS,
   SENDING_CURENCY,
+  LOGOUT,
 };

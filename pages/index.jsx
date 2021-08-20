@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Script from "next/script";
+import { useEffect } from "react";
 export async function getServerSideProps({ req }) {
   return {
     props: {},
@@ -7,6 +8,12 @@ export async function getServerSideProps({ req }) {
 }
 
 export default function Index({}) {
+  useEffect(() => {
+    fetch("/api/logs/get")
+      .then((data) => data.json())
+      .then(console.log);
+  }, []);
+
   return (
     <div>
       <Head>

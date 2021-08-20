@@ -390,28 +390,18 @@ class Routes {
       }
     });
 
-    // this.express.post("/api/admin-settings/post", function (req, res) {
-    //   const { idleTimeLogout } = req.body;
-    //   updateAdminSettings(idleTimeLogout)
-    //     .then((data) => {
-    //       res.json({ data });
-    //     })
-    //     .catch((err) => catchHandler(err, res));
-    // });
-
-    // this.express.get("/api/admin-settings/get", function (req, res) {
-    //   getLatestAdminSettings()
-    //     .then((data) => {
-    //       console.log("Get Data: ", data);
-    //       const latestSettings = data?.rows[0];
-    //       if (latestSettings) {
-    //         res.json({ latestSettings });
-    //       } else {
-    //         catchHandler("No admin settings record found", res);
-    //       }
-    //     })
-    //     .catch((err) => catchHandler(err, res));
-    // });
+    this.express.get("/api/logs/get", function (req, res) {
+      database
+        .raw("SELECT * FROM logs LIMIT 6")
+        .then((data) => {
+          console.log("Get Data: ", data);
+          res.json({ data });
+        })
+        .catch((err) => {
+          console.error(err);
+          catchHandler(err, res);
+        });
+    });
   }
 }
 
