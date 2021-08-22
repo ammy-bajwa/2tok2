@@ -10,7 +10,8 @@ class Routes {
     this.initRoutes();
   }
   initRoutes() {
-    this.express.get("/home", async (req, res) =>{
+    this.express.get("/home", async (req, res) => {
+      console.log("req.session?.loggedUser: ", req.session?.loggedUser);
       const userName = req.session?.loggedUser?.username;
       console.log("req.session?.loggedUser?.id", req.session?.loggedUser);
       if (req.session.loggedIn) {
@@ -23,7 +24,7 @@ class Routes {
             "select type,currency,SUM (amount::numeric) as amount from transaction where userId = ? group by type,currency",
             [req.session?.loggedUser?.id]
           );
-          console.log('data/home',data)
+          console.log("data/home", data);
           const _rowsDebit = data?.rows?.filter((_r) => _r.type == "debit");
           const _rowsCredit = data?.rows?.filter((_r) => _r.type == "credit");
           let _data = {};
@@ -43,16 +44,16 @@ class Routes {
             userName,
             title: "home",
             isAdmin: req.session.isAdmin,
-          }
-          this.next.render(req,res,"/home", req.query);
+          };
+          this.next.render(req, res, "/home", req.query);
         } catch (error) {
           req.locals = {
             data: [],
             userName,
             title: "home",
             isAdmin: req.session.isAdmin,
-          }
-          this.next.render(req,res,"/home", req.query);
+          };
+          this.next.render(req, res, "/home", req.query);
           console.error(err);
         }
       } else {

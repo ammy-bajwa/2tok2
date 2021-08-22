@@ -1,1 +1,1 @@
-const database = require('../db')
+const database = require("../db");

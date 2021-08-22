@@ -22,31 +22,43 @@ export default function Index({ isAdmin, title }) {
 
         <div className="collapse navbar-collapse" id="navbarsExampleDefault">
           <ul className="nav navbar-nav nav-flex-icons ml-auto">
-            <li className={`nav-item ${title == 'home'? 'active':'' }`}>
+            <li className={`nav-item ${title == "home" ? "active" : ""}`}>
               <a className="nav-link" href="/home">
                 Home
                 <span className="sr-only">(current)</span>
               </a>
             </li>
-            <li className={`nav-item ${title == 'trade'? 'active':'' }`}>
+            <li className={`nav-item ${title == "trade" ? "active" : ""}`}>
               <a className="nav-link" href="/trade">
                 Trade
               </a>
             </li>
-            <li className={`nav-item ${title == 'history'? 'active':'' }`}>
+            <li className={`nav-item ${title == "history" ? "active" : ""}`}>
               <a className="nav-link" href="/history">
                 History
               </a>
             </li>
+
+            <li className={`nav-item ${title == "logs" ? "active" : ""}`}>
+              <a className="nav-link" href="/logs">
+                Logs
+              </a>
+            </li>
             {isAdmin && (
-              <li className={`nav-item ${title == 'users'? 'active':'' }`}>
-                <a className="nav-link" href="/users">
-                  Users
-                </a>
-              </li>
+              <>
+                <li className={`nav-item ${title == "users" ? "active" : ""}`}>
+                  <a className="nav-link" href="/users">
+                    Users
+                  </a>
+                </li>
+              </>
             )}
             {isAdmin && (
-              <li className={`nav-item ${title == 'AdminHistory'? 'active':'' }`}>
+              <li
+                className={`nav-item ${
+                  title == "AdminHistory" ? "active" : ""
+                }`}
+              >
                 <a className="nav-link" href="/admin/history">
                   AdminHistory
                 </a>

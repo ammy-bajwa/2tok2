@@ -1,11 +1,10 @@
-
 import Head from "next/head";
 import Script from "next/script";
 import Header from "./partails/header";
-import {useEffect} from 'react';
-import { ToastContainer } from 'react-nextjs-toast'
+import { useEffect } from "react";
+import { ToastContainer } from "react-nextjs-toast";
 
-export default function Index({ userName, title,isAdmin, children }) {
+export default function Index({ userName, title, isAdmin, children }) {
   return (
     <div>
       <Head>
@@ -32,10 +31,10 @@ export default function Index({ userName, title,isAdmin, children }) {
       <div>
         <div className="wrapper">
           <Header title={title} isAdmin={isAdmin}></Header>
-          <ToastContainer align={"right"}   />
+          <ToastContainer align={"right"} />
           <div>
-            <p style={{color: '#fff',textAlign:'center',marginTop:20}}>
-             Hello {userName}
+            <p style={{ color: "#fff", textAlign: "center", marginTop: 20 }}>
+              Hello {userName}
             </p>
           </div>
         </div>
