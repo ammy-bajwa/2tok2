@@ -10,6 +10,8 @@
     "db": "heroku pg:psql postgresql-crystalline-24570 --app wayn1tok1"
   },
   "dependencies": {
+    "ag-grid-community": "^26.0.0",
+    "ag-grid-react": "^26.0.0",
     "axios": "^0.21.1",
     "bcrypt": "^5.0.1",
     "cookie-parser": "~1.4.4",
@@ -34,10 +36,12 @@
     "nprogress": "^0.2.0",
     "pg": "^8.6.0",
     "react": "^17.0.2",
+    "react-data-table-component": "^6.11.8",
     "react-dom": "^17.0.2",
     "react-nextjs-toast": "^1.2.5",
     "react-render-html": "^0.6.0",
     "serve-favicon": "^2.5.0",
+    "styled-components": "^5.3.0",
     "web3": "^1.4.0"
   },
   "devDependencies": {

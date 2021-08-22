@@ -1,7 +1,27 @@
 import { useState, useEffect } from "react";
-import { toast } from 'react-nextjs-toast'
+import { toast } from "react-nextjs-toast";
 import Layout from "../componets/Layout";
-import fetch from 'isomorphic-unfetch';
+import fetch from "isomorphic-unfetch";
+import { AgGridColumn, AgGridReact } from "ag-grid-react";
+import "ag-grid-community/dist/styles/ag-grid.css";
+import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
+
+const ErrToast = {
+  duration: 5,
+  type: "error",
+};
+const OkToast = {
+  duration: 5,
+  type: "success",
+};
+const options = [
+  { label: "Bitcoin", value: "BTC" },
+  { label: "Ethereum", value: "ETH" },
+  { label: "Euro", value: "EUR" },
+  { label: "Tether", value: "USDT" },
+  { label: "W1", value: "W1" },
+  { label: "W2", value: "W2" },
+];
 
 export async function getServerSideProps({ req }) {
   return {
@@ -30,22 +50,6 @@ export default function Index({
   userId,
   isAdmin,
 }) {
- const ErrToast={
-  duration: 5,
-  type: "error"
-}
-const OkToast={
-  duration: 5,
-  type: "success"
-}
-  const options = [
-    { label: "Bitcoin", value: "BTC" },
-    { label: "Ethereum", value: "ETH" },
-    { label: "Euro", value: "EUR" },
-    { label: "Tether", value: "USDT" },
-    { label: "W1", value: "W1" },
-    { label: "W2", value: "W2" },
-  ];
   const [payCurrency, setPayCurrency] = useState("");
   const [receiveCurrency, setReceiveCurrency] = useState("");
   const [pay, setPay] = useState("");
@@ -71,19 +75,19 @@ const OkToast={
   };
   const exchange = () => {
     if (!receiveCurrency) {
-      toast.notify("Please select buy Currency!",ErrToast);
+      toast.notify("Please select buy Currency!", ErrToast);
       return;
     }
     if (!payCurrency) {
-      toast.notify("Please select pay Currency!",ErrToast);
+      toast.notify("Please select pay Currency!", ErrToast);
       return;
     }
     if (!pay) {
-      toast.notify("Please enter sell amount!",ErrToast);
+      toast.notify("Please enter sell amount!", ErrToast);
       return;
     }
     if (!receive) {
-      toast.notify("Please enter buy amount!",ErrToast);
+      toast.notify("Please enter buy amount!", ErrToast);
       return;
     }
     fetch("/api/Exchange", {
@@ -99,24 +103,24 @@ const OkToast={
       .then((response) => response.json())
       .then((data) => {
         if (data?.error) {
-          toast.notify(data?.error,ErrToast);
+          toast.notify(data?.error, ErrToast);
         } else {
-          setReceiveCurrency('')
-          setPayCurrency('');
-          setReceive('');
-          setPay('');
-          toast.notify("Exchange Request send !",OkToast);
+          setReceiveCurrency("");
+          setPayCurrency("");
+          setReceive("");
+          setPay("");
+          toast.notify("Exchange Request send !", OkToast);
           location.reload();
         }
       });
   };
   const deposit = () => {
     if (!depositCurrency) {
-      toast.notify("Please select Currency!",ErrToast);
+      toast.notify("Please select Currency!", ErrToast);
       return;
     }
     if (!depositAmount) {
-      toast.notify("Please enter amount!",ErrToast);
+      toast.notify("Please enter amount!", ErrToast);
       return;
     }
     fetch("/api/deposit", {
@@ -130,7 +134,7 @@ const OkToast={
       .then((response) => response.json())
       .then((data) => {
         if (data?.error) {
-          toast.notify(data?.error,ErrToast);
+          toast.notify(data?.error, ErrToast);
         } else {
           setDepositCurrency("");
           setDepositAmount("");
@@ -141,11 +145,11 @@ const OkToast={
   };
   const withdraw = () => {
     if (!withdrawalCurrency) {
-      toast.notify("Please select Currency!",ErrToast);
+      toast.notify("Please select Currency!", ErrToast);
       return;
     }
     if (!withdrawalAmount) {
-      toast.notify("Please enter amount!",ErrToast);
+      toast.notify("Please enter amount!", ErrToast);
       return;
     }
     if (
@@ -154,7 +158,7 @@ const OkToast={
       withdrawalCurrency == "W2"
     ) {
       if (!withdrawalAddress) {
-        toast.notify("Please enter address!",ErrToast);
+        toast.notify("Please enter address!", ErrToast);
         return;
       }
     }
@@ -170,7 +174,7 @@ const OkToast={
       .then((response) => response.json())
       .then((data) => {
         if (data?.error) {
-          toast.notify(data?.error,ErrToast);
+          toast.notify(data?.error, ErrToast);
         } else {
           setWithdrawalCurrency("");
           setWithdrawalAmount("");
@@ -181,15 +185,15 @@ const OkToast={
   };
   const send = () => {
     if (!sendTo) {
-      toast.notify("Please enter send to email!",ErrToast);
+      toast.notify("Please enter send to email!", ErrToast);
       return;
     }
     if (!sendCurrency) {
-      toast.notify("Please enter currency!",ErrToast);
+      toast.notify("Please enter currency!", ErrToast);
       return;
     }
     if (!sendAmount) {
-      toast.notify("Please enter amount!",ErrToast);
+      toast.notify("Please enter amount!", ErrToast);
       return;
     }
     fetch("/api/send", {
@@ -204,7 +208,7 @@ const OkToast={
       .then((response) => response.json())
       .then((data) => {
         if (data?.error) {
-          toast.notify(data?.error,ErrToast);
+          toast.notify(data?.error, ErrToast);
         } else {
           setSendCurrency("");
           setSendAmount("");
@@ -260,7 +264,7 @@ const OkToast={
       .then((response) => response.json())
       .then((data) => {
         if (data?.error) {
-          toast.notify(data?.error,ErrToast);
+          toast.notify(data?.error, ErrToast);
         } else {
           location.reload();
         }
@@ -274,7 +278,26 @@ const OkToast={
     console.log("tradeData_d1", tradeData);
   }, []);
   console.log("tradeData_d", tradeDataState);
-
+  const actionRenderer = ({ data }) => {
+    return (
+      <>
+        {data.userid != userId && (
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-success" onClick={approveTrade(data.id)}>
+              Trade
+            </label>
+          </div>
+        )}
+        {data.userid == userId && (
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-success" onClick={approveTrade(data.id)}>
+              Cancel
+            </label>
+          </div>
+        )}
+      </>
+    );
+  };
   return (
     <Layout userName={userName} title={title} isAdmin={isAdmin}>
       <div id="tradeApp" class="container" style={{ marginTop: 20 }}>
@@ -308,7 +331,7 @@ const OkToast={
                 <li class="nav-pill ml-auto">
                   <button
                     type="submit"
-                    style={{marginRight:10}}
+                    style={{ marginRight: 10 }}
                     class="btn btn-primary"
                     data-toggle="modal"
                     data-target="#sendModal"
@@ -317,7 +340,7 @@ const OkToast={
                   </button>
                   <button
                     type="submit"
-                    style={{marginRight:10}}
+                    style={{ marginRight: 10 }}
                     class="btn btn-success"
                     data-toggle="modal"
                     data-target="#depositModal"
@@ -336,28 +359,39 @@ const OkToast={
               </ul>
             </div>
             <div class="card-body">
-              {data && (
-                <table class="table table-dark">
-                  <thead>
-                    <tr>
-                      <th scope="col">Currency</th>
-                      <th scope="col">Total</th>
-                      <th width="200px">Valuation</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {Object.keys(data).forEach(function (prop) {
-                      <tr>
-                        <td>{prop}</td>
-                        <td>{data[prop]}</td>
-                        <td></td>
-                      </tr>;
-                    })}
-                  </tbody>
-                </table>
-              )}
-
-              {(!data || data == {}) && <p class="text-center">No Balance!</p>}
+            <div
+              className="ag-theme-alpine-dark"
+              style={{ height: 300, width: "100%" }} >
+              <AgGridReact
+                rowData={Object.keys(data).map((key) => {return {currency:key,balance:data[key]}})}
+                defaultColDef={{
+                  resizable: true,
+                  filter: "agTextColumnFilter",
+                }}
+                frameworkComponents={{ actionRenderer }}
+              >
+                <AgGridColumn
+                  field="currency"
+                  sortable={true}
+                  filter={true}
+                  flex={1}
+                ></AgGridColumn>
+                <AgGridColumn
+                  field="Total"
+                  field="balance"
+                  sortable={true}
+                  filter={true}
+                  flex={1}
+                ></AgGridColumn>
+                <AgGridColumn
+                  headerName="Available"
+                  field="balance"
+                  sortable={true}
+                  filter={true}
+                  flex={1}
+                ></AgGridColumn>
+                </AgGridReact>
+                </div>
             </div>
           </div>
           <div class="card" style={{ flex: 1, marginLeft: 20 }}>
@@ -378,7 +412,10 @@ const OkToast={
               <div style={{ display: "flex", flexDirection: "row" }}>
                 <div class="form-group" style={{ flex: 1, marginRight: 10 }}>
                   <label for="exampleFormControlSelect1">From currency</label>
-                  <select class="form-control" onChange={(e)=>setPayCurrency(e.target.value)}>
+                  <select
+                    class="form-control"
+                    onChange={(e) => setPayCurrency(e.target.value)}
+                  >
                     {options.map((option) => (
                       <option value={option.value}>{option.label}</option>
                     ))}
@@ -386,7 +423,10 @@ const OkToast={
                 </div>
                 <div class="form-group" style={{ flex: 1 }}>
                   <label for="exampleFormControlSelect1">To currency</label>
-                  <select class="form-control" onChange={(e)=>setReceiveCurrency(e.target.value)}>
+                  <select
+                    class="form-control"
+                    onChange={(e) => setReceiveCurrency(e.target.value)}
+                  >
                     {options.map((option) => (
                       <option value={option.value}>{option.label}</option>
                     ))}
@@ -405,7 +445,7 @@ const OkToast={
                     <input
                       type="number"
                       class="form-control"
-                      onChange={(e)=>setPay(e.target.value)}
+                      onChange={(e) => setPay(e.target.value)}
                       aria-describedby="basic-addon3"
                     />
                   </div>
@@ -421,7 +461,7 @@ const OkToast={
                     <input
                       type="number"
                       class="form-control"
-                      onChange={(e)=>setReceive(e.target.value)}
+                      onChange={(e) => setReceive(e.target.value)}
                       aria-describedby="basic-addon3"
                     />
                   </div>
@@ -459,53 +499,75 @@ const OkToast={
             </ul>
           </div>
           <div class="card-body">
-            {tradeDataState?.length && (
-              <table class="table table-dark">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Datetime</th>
-                    <th scope="col">Buy Amount</th>
-                    <th width="col">Currency</th>
-                    <th scope="col">Sell Amount</th>
-                    <th width="col">Currency</th>
-                    <th width="col">Fee</th>
-                    <th width="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {tradeDataState?.map((_item, index) => (
-                    <tr>
-                      <th scope="row">{index + 1}</th>
-                      <td>{new Date(_item.createdat).toLocaleString()}</td>
-                      <td>{_item.buy}</td>
-                      <td>{_item.buycurrency}</td>
-                      <td>{_item.sell}</td>
-                      <td>{_item.sellcurrency}</td>
-                      <td>{_item.fee}</td>
-                      <td>
-                        {_item.userid != userId && (
-                          <div
-                            class="btn-group btn-group-toggle"
-                            data-toggle="buttons"
-                          >
-                            <label
-                              class="btn btn-success"
-                              onClick={approveTrade(_item.id)}
-                            >
-                              Trade
-                            </label>
-                          </div>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-            {(!tradeDataState || tradeDataState == {}) && (
-              <p class="text-center">No Orders!</p>
-            )}
+            <div
+              className="ag-theme-alpine-dark"
+              style={{ height: "70vh", width: "100%" }}
+            >
+              <AgGridReact
+                rowData={tradeDataState}
+                pagination
+                defaultColDef={{
+                  resizable: true,
+                  filter: "agTextColumnFilter",
+                }}
+                frameworkComponents={{ actionRenderer }}>
+                <AgGridColumn
+                  headerName="DateTime"
+                  field="createdat"
+                  cellRenderer={({ data }) =>
+                    new Date(data.createdat).toLocaleString()
+                  }
+                  sortable={true}
+                  filter={true}
+                  flex={1}
+                ></AgGridColumn>
+                <AgGridColumn
+                  width={100}
+                  field="buy"
+                  sortable={true}
+                  filter={true}
+                ></AgGridColumn>
+                <AgGridColumn
+                  headerName="Currency"
+                  field="buycurrency"
+                  sortable={true}
+                  filter={true}
+                  width={120}
+                ></AgGridColumn>
+                <AgGridColumn
+                  field="sell"
+                  sortable={true}
+                  filter={true}
+                  width={100}
+                ></AgGridColumn>
+                <AgGridColumn
+                  headerName="Currency"
+                  field="sellcurrency"
+                  sortable={true}
+                  filter={true}
+                  width={120}
+                ></AgGridColumn>
+                <AgGridColumn
+                  field="fee"
+                  sortable={true}
+                  filter={true}
+                  width={100}
+                ></AgGridColumn>
+                <AgGridColumn
+                  field="status"
+                  sortable={true}
+                  filter={true}
+                  width={120}
+                ></AgGridColumn>
+                <AgGridColumn
+                  headerName="Action"
+                  cellRenderer="actionRenderer"
+                  sortable={true}
+                  filter={true}
+                  width={140}
+                ></AgGridColumn>
+              </AgGridReact>
+            </div>
           </div>
         </div>
         <div
@@ -538,7 +600,7 @@ const OkToast={
                       <input
                         type="text"
                         class="form-control"
-                        onChange={(e)=>setSendTo(e.target.value)}
+                        onChange={(e) => setSendTo(e.target.value)}
                         placeholder="email"
                         aria-describedby="basic-addon3"
                       />
@@ -548,7 +610,10 @@ const OkToast={
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   <div class="form-group" style={{ flex: 1, marginRight: 10 }}>
                     <label for="exampleFormControlSelect1">Currency</label>
-                    <select class="form-control" onChange={(e)=>setSendCurrency(e.target.value)}>
+                    <select
+                      class="form-control"
+                      onChange={(e) => setSendCurrency(e.target.value)}
+                    >
                       {options.map((option) => (
                         <option value={option.value}>{option.label}</option>
                       ))}
@@ -567,7 +632,7 @@ const OkToast={
                       <input
                         type="number"
                         class="form-control"
-                        onChange={(e)=>setSendAmount(e.target.value)}
+                        onChange={(e) => setSendAmount(e.target.value)}
                         aria-describedby="basic-addon3"
                       />
                     </div>
@@ -615,54 +680,61 @@ const OkToast={
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   <div class="form-group" style={{ flex: 1, marginRight: 10 }}>
                     <label for="exampleFormControlSelect1">Currency</label>
-                    <select class="form-control" onChange={(e)=>setDepositCurrency(e.target.value)}>
+                    <select
+                      class="form-control"
+                      onChange={(e) => setDepositCurrency(e.target.value)}
+                    >
                       {options.map((option) => (
                         <option value={option.value}>{option.label}</option>
                       ))}
                     </select>
                   </div>
                 </div>
-                {depositCurrency != 'ETH' && depositCurrency != 'W2' && depositCurrency != 'W1' && <div
-                  style={{ display: "flex", flexDirection: "row" }}
-                >
-                  <div style={{ flex: 1, marginRight: 10 }}>
-                    <label for="basic-url">Amount</label>
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon3">
-                          {depositCurrency}
-                        </span>
+                {depositCurrency != "ETH" &&
+                  depositCurrency != "W2" &&
+                  depositCurrency != "W1" && (
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                      <div style={{ flex: 1, marginRight: 10 }}>
+                        <label for="basic-url">Amount</label>
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">
+                              {depositCurrency}
+                            </span>
+                          </div>
+                          <input
+                            type="number"
+                            class="form-control"
+                            onChange={(e) => setDepositAmount(e.target.value)}
+                            aria-describedby="basic-addon3"
+                          />
+                        </div>
                       </div>
-                      <input
-                        type="number"
-                        class="form-control"
-                        onChange={(e)=>setDepositAmount(e.target.value)}
-                        aria-describedby="basic-addon3"
-                      />
+                    </div>
+                  )}
+                {(depositCurrency == "ETH" ||
+                  depositCurrency == "W2" ||
+                  depositCurrency == "W1") && (
+                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    <div style={{ flex: 1, marginRight: 10 }}>
+                      <label for="basic-url">Address</label>
+                      <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="basic-addon3">
+                            {depositCurrency}
+                          </span>
+                        </div>
+                        <input
+                          type="text"
+                          class="form-control"
+                          value={token}
+                          readonly
+                          aria-describedby="basic-addon3"
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>}
-                {(depositCurrency == 'ETH' || depositCurrency == 'W2' || depositCurrency == 'W1' )&& <div
-                  style={{ display: "flex", flexDirection: "row" }}
-                >
-                  <div style={{ flex: 1, marginRight: 10 }}>
-                    <label for="basic-url">Address</label>
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon3">
-                          {depositCurrency}
-                        </span>
-                      </div>
-                      <input
-                        type="text"
-                        class="form-control"
-                        value={token}
-                        readonly
-                        aria-describedby="basic-addon3"
-                      />
-                    </div>
-                  </div>
-                </div>}
+                )}
               </div>
               <div class="modal-footer">
                 <button
@@ -672,19 +744,24 @@ const OkToast={
                 >
                   Close
                 </button>
-                {depositCurrency != 'ETH' && depositCurrency != 'W2' && depositCurrency != 'W1' && <button
-                  type="button"
-                  class="btn btn-primary"
-                  onClick={deposit}
-                >
-                  Deposit
-                </button>}
-                {(depositCurrency == 'ETH' || depositCurrency == 'W2' || depositCurrency == 'W1') && <button
-                  type="button"
-                  class="btn btn-primary"
-                  onClick={copy}>
-                  Copy To ClipBoard
-                </button>}
+                {depositCurrency != "ETH" &&
+                  depositCurrency != "W2" &&
+                  depositCurrency != "W1" && (
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      onClick={deposit}
+                    >
+                      Deposit
+                    </button>
+                  )}
+                {(depositCurrency == "ETH" ||
+                  depositCurrency == "W2" ||
+                  depositCurrency == "W1") && (
+                  <button type="button" class="btn btn-primary" onClick={copy}>
+                    Copy To ClipBoard
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -715,7 +792,10 @@ const OkToast={
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   <div class="form-group" style={{ flex: 1, marginRight: 10 }}>
                     <label for="exampleFormControlSelect1">Currency</label>
-                    <select class="form-control" onChange={(e)=>setWithdrawalCurrency(e.target.value)}>
+                    <select
+                      class="form-control"
+                      onChange={(e) => setWithdrawalCurrency(e.target.value)}
+                    >
                       {options.map((option) => (
                         <option value={option.value}>{option.label}</option>
                       ))}
@@ -734,27 +814,29 @@ const OkToast={
                       <input
                         type="number"
                         class="form-control"
-                        onChange={(e)=>setWithdrawalAmount(e.target.value)}
+                        onChange={(e) => setWithdrawalAmount(e.target.value)}
                         aria-describedby="basic-addon3"
                       />
                     </div>
                   </div>
                 </div>
-                {(withdrawalCurrency == 'ETH' || withdrawalCurrency == 'W2' || withdrawalCurrency == 'W1') && <div
-                  style={{ display: "flex", flexDirection: "row" }}
-                >
-                  <div style={{ flex: 1, marginRight: 10 }}>
-                    <label for="basic-url">Address</label>
-                    <div class="input-group mb-3">
-                      <input
-                        type="text"
-                        class="form-control"
-                        onChange={(e)=>setWithdrawalAddress(e.target.value)}
-                        aria-describedby="basic-addon3"
-                      />
+                {(withdrawalCurrency == "ETH" ||
+                  withdrawalCurrency == "W2" ||
+                  withdrawalCurrency == "W1") && (
+                  <div style={{ display: "flex", flexDirection: "row" }}>
+                    <div style={{ flex: 1, marginRight: 10 }}>
+                      <label for="basic-url">Address</label>
+                      <div class="input-group mb-3">
+                        <input
+                          type="text"
+                          class="form-control"
+                          onChange={(e) => setWithdrawalAddress(e.target.value)}
+                          aria-describedby="basic-addon3"
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>}
+                )}
               </div>
               <div class="modal-footer">
                 <button

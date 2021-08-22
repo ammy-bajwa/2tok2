@@ -1,20 +1,40 @@
+import { AgGridColumn, AgGridReact } from "ag-grid-react";
+import "ag-grid-community/dist/styles/ag-grid.css";
+import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
+
 import Layout from "../componets/Layout";
 export async function getServerSideProps({ req }) {
   return {
     props: {
       message: req.locals?.message || {},
-      data: JSON.parse(req.locals?.data || '[]'),
-      userName:req.locals?.userName || '',
-      isAdmin:req.locals?.isAdmin || false,
-      title:req.locals?.title || ''
+      data: JSON.parse(req.locals?.data || "[]"),
+      userName: req.locals?.userName || "",
+      isAdmin: req.locals?.isAdmin || false,
+      title: req.locals?.title || "",
     },
   };
 }
 
-export default function Index({ message,data,userName, title, isAdmin }) {
+export default function Index({ message, data, userName, title, isAdmin }) {
+  const actionRenderer = ({ data }) => {
+    return (
+      <>
+        {data.admin != 1 && data.active != 0 && (
+          <a
+            class="btn btn-danger delete"
+            onclick="return alert('Are You sure?')"
+            href={`user/delete/${data.id}`}
+          >
+            Deactivate
+          </a>
+        )}
+        {data.admin == 1 && "Admin"}
+      </>
+    );
+  };
   return (
     <Layout userName={userName} title={title} isAdmin={isAdmin}>
-      <div class="container" style={{marginTop: 20}}>
+      <div class="container" style={{ marginTop: 20 }}>
         {message.success && (
           <div class="alert alert-success" role="alert">
             {message.success}
@@ -35,42 +55,48 @@ export default function Index({ message,data,userName, title, isAdmin }) {
             </ul>
           </div>
           <div class="card-body">
-            {data.length && (
-              <table class="table table-dark">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">ETH Address</th>
-                    <th width="200px">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {data.map((_item, index) => (
-                    <tr>
-                      <th scope="row">{index + 1}</th>
-                      <td>{_item.username}</td>
-                      <td>{_item.email}</td>
-                      <td>{_item.token}</td>
-                      <td>
-                        {_item.admin != 1 && _item.active != 0 && (
-                          <a
-                            class="btn btn-danger delete"
-                            onclick="return alert('Are You sure?')"
-                            href={`user/delete/${_item.id}`}
-                          >
-                            Deactivate
-                          </a>
-                        )}
-                        {_item.admin == 1 && "Admin"}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-            {!data.length && <p class="text-center">No user found!</p>}
+            <div
+              className="ag-theme-alpine-dark"
+              style={{ height: "70vh", width: "100%" }}
+            >
+              <AgGridReact
+                rowData={data}
+                pagination
+                defaultColDef={{
+                  resizable: true,
+                  filter: "agTextColumnFilter",
+                }}
+                frameworkComponents={{ actionRenderer }}
+              >
+                <AgGridColumn
+                  headerName="Name"
+                  field="username"
+                  sortable={true}
+                  filter={true}
+                  flex={1}
+                ></AgGridColumn>
+                <AgGridColumn
+                  flex={1}
+                  field="email"
+                  sortable={true}
+                  filter={true}
+                ></AgGridColumn>
+                <AgGridColumn
+                  headerName="ETH Address"
+                  field="token"
+                  sortable={true}
+                  filter={true}
+                  flex={1}
+                ></AgGridColumn>
+                <AgGridColumn
+                  headerName="Action"
+                  cellRenderer="actionRenderer"
+                  sortable={true}
+                  filter={true}
+                  width={140}
+                ></AgGridColumn>
+              </AgGridReact>
+            </div>
           </div>
         </div>
       </div>

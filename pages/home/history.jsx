@@ -1,11 +1,15 @@
+import { AgGridColumn, AgGridReact } from "ag-grid-react";
+import "ag-grid-community/dist/styles/ag-grid.css";
+import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
+
 import Layout from "../componets/Layout";
 export async function getServerSideProps({ req }) {
   return {
     props: {
-      message: req.locals?.message || '',
-      data: JSON.parse(req.locals?.data || '[]'),
-      userName: req.locals?.userName || '',
-      title: req.locals?.title || '',
+      message: req.locals?.message || "",
+      data: JSON.parse(req.locals?.data || "[]"),
+      userName: req.locals?.userName || "",
+      title: req.locals?.title || "",
       isAdmin: req.locals?.isAdmin || false,
     },
   };
@@ -73,39 +77,68 @@ export default function Index({ message, data, userName, title, isAdmin }) {
                 role="tabpanel"
                 aria-labelledby="nav-trades-tab"
               >
-                {data?.trade_data?.length && (
-                  <table class="table table-dark">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Datetime</th>
-                        <th scope="col">Buy Amount</th>
-                        <th width="col">Currency</th>
-                        <th scope="col">Sell Amount</th>
-                        <th width="col">Currency</th>
-                        <th width="col">Fee</th>
-                        <th width="col">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data?.trade_data?.map((_item, index) => (
-                        <tr>
-                          <th scope="row">{index + 1}</th>
-                          <td>{new Date(_item.createdat).toLocaleString()}</td>
-                          <td>{_item.buy}</td>
-                          <td>{_item.buycurrency}</td>
-                          <td>{_item.sell}</td>
-                          <td>{_item.sellcurrency}</td>
-                          <td>{_item.fee}</td>
-                          <td>{_item.status}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
-                {!data?.trade_data?.length && (
-                  <p class="text-center">No Trades!</p>
-                )}
+                <div
+                  className="ag-theme-alpine-dark"
+                  style={{ height: "70vh", width: "100%" }}
+                >
+                  <AgGridReact
+                    rowData={data?.trade_data}
+                    pagination
+                    defaultColDef={{
+                      resizable: true,
+                      filter: "agTextColumnFilter",
+                    }}
+                  >
+                    <AgGridColumn
+                      headerName="DateTime"
+                      field="createdat"
+                      cellRenderer={({ data }) =>
+                        new Date(data.createdat).toLocaleString()
+                      }
+                      sortable={true}
+                      filter={true}
+                      flex={1}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      width={100}
+                      field="buy"
+                      sortable={true}
+                      filter={true}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      headerName="Currency"
+                      field="buycurrency"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="sell"
+                      sortable={true}
+                      filter={true}
+                      width={100}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      headerName="Currency"
+                      field="sellcurrency"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="fee"
+                      sortable={true}
+                      filter={true}
+                      width={100}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="status"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                  </AgGridReact>
+                </div>
               </div>
               <div
                 class="tab-pane fade"
@@ -113,80 +146,120 @@ export default function Index({ message, data, userName, title, isAdmin }) {
                 role="tabpanel"
                 aria-labelledby="nav-deposits-tab"
               >
-                {data?.deposits_data?.length && (
-                  <table class="table table-dark">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">DateTime</th>
-                        <th scope="col">Reference</th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Fee</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Currency</th>
-                        <th scope="col">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data?.deposits_data?.map((_item, index) => (
-                        <tr>
-                          <th scope="row">{index + 1}</th>
-                          <td>{new Date(_item.createdat).toLocaleString()}</td>
-                          <td>{_item.ref}</td>
-                          <td>{_item.amount}</td>
-                          <td>{_item.fee}</td>
-                          <td>{_item.amount}</td>
-                          <td>{_item.currency}</td>
-                          <td>{_item.status}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
-
-                {!data?.deposits_data?.length && (
-                  <p class="text-center">No Deposits!</p>
-                )}
+                <div
+                  className="ag-theme-alpine-dark"
+                  style={{ height: "70vh", width: "100%" }}
+                >
+                  <AgGridReact
+                    rowData={data?.deposits_data}
+                    pagination
+                    defaultColDef={{
+                      resizable: true,
+                      filter: "agTextColumnFilter",
+                    }}
+                  >
+                    <AgGridColumn
+                      headerName="DateTime"
+                      field="createdat"
+                      cellRenderer={({ data }) =>
+                        new Date(data.createdat).toLocaleString()
+                      }
+                      sortable={true}
+                      filter={true}
+                      flex={1}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      headerName="Reference"
+                      field="ref"
+                      sortable={true}
+                      filter={true}
+                      flex={1}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="amount"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="fee"
+                      sortable={true}
+                      filter={true}
+                      width={100}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="amount"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="currency"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="status"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                  </AgGridReact>
+                </div>
               </div>
-              <div
-                class="tab-pane fade"
-                id="nav-withdrawals"
-                role="tabpanel"
-                aria-labelledby="nav-withdrawals-tab"
-              >
-                {data?.withdrawals_data?.length && (
-                  <table class="table table-dark">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">DateTime</th>
-                        <th scope="col">Reference</th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Fee</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Currency</th>
-                        <th scope="col">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data?.withdrawals_data?.map((_item, index) => (
-                        <tr>
-                          <th scope="row">{index + 1}</th>
-                          <td>{new Date(_item.createdat).toLocaleString()}</td>
-                          <td>{_item.ref}</td>
-                          <td>{_item.amount}</td>
-                          <td>{_item.fee}</td>
-                          <td>{_item.amount}</td>
-                          <td>{_item.currency}</td>
-                          <td>{_item.status}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
-                {!data?.withdrawals_data?.length && (
-                  <p class="text-center">No withdrawals!</p>
-                )}
+              <div class="tab-pane fade" id="nav-withdrawals" role="tabpanel" aria-labelledby="nav-withdrawals-tab">
+                <div className="ag-theme-alpine-dark" style={{ height: "70vh", width: "100%" }}>
+                  <AgGridReact rowData={data?.withdrawals_data} pagination defaultColDef={{ resizable: true, filter: "agTextColumnFilter" }}>
+                     <AgGridColumn
+                      headerName="DateTime"
+                      field="createdat"
+                      cellRenderer={({ data }) =>
+                        new Date(data.createdat).toLocaleString()
+                      }
+                      sortable={true}
+                      filter={true}
+                      flex={1}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      headerName="Reference"
+                      field="ref"
+                      sortable={true}
+                      filter={true}
+                      flex={1}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="amount"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="fee"
+                      sortable={true}
+                      filter={true}
+                      width={100}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="amount"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="currency"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="status"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                  </AgGridReact>
+                </div>
               </div>
             </div>
           </div>

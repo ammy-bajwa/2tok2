@@ -1,3 +1,15 @@
+import { AgGridColumn, AgGridReact } from "ag-grid-react";
+import "ag-grid-community/dist/styles/ag-grid.css";
+import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
+import { toast } from "react-nextjs-toast";
+const ErrToast = {
+  duration: 5,
+  type: "error",
+};
+const OkToast = {
+  duration: 5,
+  type: "success",
+};
 import Layout from "../componets/Layout";
 export async function getServerSideProps({ req }) {
   return {
@@ -12,9 +24,61 @@ export async function getServerSideProps({ req }) {
 }
 
 export default function Index({ userName, title, isAdmin, message, data }) {
+  const approveTrade = (id) => {
+    fetch(`/api/trade/approve/${id}`, { method: "put" })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data?.error) {
+          toast.notify(data?.error, ErrToast);
+        } else {
+          location.reload();
+        }
+      });
+  };
+  const approveTransaction = (id) => {
+    fetch(`/api/transaction/approve/${id}`, { method: "put" })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data?.error) {
+          toast.notify(data?.error, ErrToast);
+        } else {
+          location.reload();
+        }
+      });
+  };
+  const cancelTrade = (id) => {
+    fetch(`/api/trade/cancel/${id}`, { method: "put" })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data?.error) {
+          toast.notify(data?.error, ErrToast);
+        } else {
+          location.reload();
+        }
+      });
+  };
+  const cancelTransaction = (id) => {
+    fetch(`/api/transaction/cancel/${id}`, { method: "put" })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data?.error) {
+          toast.notify(data?.error, ErrToast);
+        } else {
+          location.reload();
+        }
+      });
+  };
+  const actionRenderer = ({ data }) => {
+    return (
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-success ">Approve</label>
+        <label class="btn btn-danger">Cancel</label>
+      </div>
+    );
+  };
   return (
     <Layout userName={userName} title={title} isAdmin={isAdmin}>
-      <div id="admin" class="container" style={{marginTop: 20}}>
+      <div id="admin" class="container" style={{ marginTop: 20 }}>
         {message.success && (
           <div class="alert alert-success" role="alert">
             {message.success}
@@ -27,10 +91,7 @@ export default function Index({ userName, title, isAdmin, message, data }) {
         )}
 
         <div class="card">
-          <div
-            class="card-header"
-            style={{paddingTop:10,borderBottom: 0}}
-          >
+          <div class="card-header" style={{ paddingTop: 10, borderBottom: 0 }}>
             <nav>
               <div class="nav nav-tabs" id="nav-tab" role="tablist">
                 <a
@@ -77,53 +138,90 @@ export default function Index({ userName, title, isAdmin, message, data }) {
                 role="tabpanel"
                 aria-labelledby="nav-trades-tab"
               >
-                {data?.trade_data?.length && (
-                  <table class="table table-dark">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">User</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Datetime</th>
-                        <th scope="col">Buy Amount</th>
-                        <th width="col">Currency</th>
-                        <th scope="col">Sell Amount</th>
-                        <th width="col">Currency</th>
-                        <th width="col">Fee</th>
-                        <th width="col">Status</th>
-                        <th width="col">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data?.trade_data?.map((_item, index) => (
-                        <tr>
-                          <th scope="row">{index + 1}</th>
-                          <td>{_item.username}</td>
-                          <td>{_item.email}</td>
-                          <td>{new Date(_item.createdat).toLocaleString()}</td>
-                          <td>{_item.buy}</td>
-                          <td>{_item.buycurrency}</td>
-                          <td>{_item.sell}</td>
-                          <td>{_item.sellcurrency}</td>
-                          <td>{_item.fee}</td>
-                          <td>{_item.status}</td>
-                          <td>
-                            <div
-                              class="btn-group btn-group-toggle"
-                              data-toggle="buttons"
-                            >
-                              <label class="btn btn-success ">Approve</label>
-                              <label class="btn btn-danger">Cancel</label>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
-                {!data?.trade_data?.length && (
-                  <p class="text-center">No Trades!</p>
-                )}
+                <div
+                  className="ag-theme-alpine-dark"
+                  style={{ height: "70vh", width: "100%" }}
+                >
+                  <AgGridReact
+                    rowData={data?.trade_data}
+                    pagination
+                    defaultColDef={{
+                      resizable: true,
+                      filter: "agTextColumnFilter",
+                    }}
+                    frameworkComponents={{ actionRenderer }}
+                  >
+
+                    <AgGridColumn
+                     flex={1}
+                      field="username"
+                      sortable={true}
+                      filter={true}
+                    ></AgGridColumn>
+                     <AgGridColumn
+                      flex={1}
+                      field="email"
+                      sortable={true}
+                      filter={true}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      headerName="DateTime"
+                      field="createdat"
+                      cellRenderer={({ data }) =>
+                        new Date(data.createdat).toLocaleString()
+                      }
+                      sortable={true}
+                      filter={true}
+                      flex={1}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      width={100}
+                      field="buy"
+                      sortable={true}
+                      filter={true}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      headerName="Currency"
+                      field="buycurrency"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="sell"
+                      sortable={true}
+                      filter={true}
+                      width={100}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      headerName="Currency"
+                      field="sellcurrency"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="fee"
+                      sortable={true}
+                      filter={true}
+                      width={100}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="status"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                  headerName="Action"
+                  cellRenderer="actionRenderer"
+                  sortable={true}
+                  filter={true}
+                  width={140}
+                ></AgGridColumn>
+                    
+                  </AgGridReact>
+                </div>
               </div>
               <div
                 class="tab-pane fade"
@@ -131,58 +229,79 @@ export default function Index({ userName, title, isAdmin, message, data }) {
                 role="tabpanel"
                 aria-labelledby="nav-deposits-tab"
               >
-                {data?.deposits_data?.length && (
-                  <table class="table table-dark">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">User</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">DateTime</th>
-                        <th scope="col">Reference</th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Fee</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Currency</th>
-                        <th scope="col">Status</th>
-                        <th width="col">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data?.deposits_data?.map((_item, index) => (
-                        <tr>
-                          <th scope="row">{index + 1}</th>
-                          <td>{_item.username}</td>
-                          <td>{_item.email}</td>
-                          <td>
-                            {new Date(
-                              _item.createdat
-                            ).toLocaleString()}
-                          </td>
-                          <td>{_item.ref}</td>
-                          <td>{_item.amount}</td>
-                          <td>{_item.fee}</td>
-                          <td>{_item.amount}</td>
-                          <td>{_item.currency}</td>
-                          <td>{_item.status}</td>
-                          <td>
-                            <div
-                              class="btn-group btn-group-toggle"
-                              data-toggle="buttons"
-                            >
-                              <label class="btn btn-success">Approve</label>
-                              <label class="btn btn-danger">Cancel</label>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
-
-                {!data?.deposits_data?.length && (
-                  <p class="text-center">No Deposits!</p>
-                )}
+                <div
+                  className="ag-theme-alpine-dark"
+                  style={{ height: "70vh", width: "100%" }}
+                >
+                  <AgGridReact
+                    rowData={data?.deposits_data}
+                    pagination
+                    defaultColDef={{
+                      resizable: true,
+                      filter: "agTextColumnFilter",
+                    }}
+                  >
+                     <AgGridColumn
+                     flex={1}
+                      field="username"
+                      sortable={true}
+                      filter={true}
+                    ></AgGridColumn>
+                     <AgGridColumn
+                      flex={1}
+                      field="email"
+                      sortable={true}
+                      filter={true}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      headerName="DateTime"
+                      field="createdat"
+                      cellRenderer={({ data }) =>
+                        new Date(data.createdat).toLocaleString()
+                      }
+                      sortable={true}
+                      filter={true}
+                      flex={1}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      headerName="Reference"
+                      field="ref"
+                      sortable={true}
+                      filter={true}
+                      flex={1}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="amount"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="fee"
+                      sortable={true}
+                      filter={true}
+                      width={100}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="amount"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="currency"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="status"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                  </AgGridReact>
+                </div>
               </div>
               <div
                 class="tab-pane fade"
@@ -190,88 +309,83 @@ export default function Index({ userName, title, isAdmin, message, data }) {
                 role="tabpanel"
                 aria-labelledby="nav-withdrawals-tab"
               >
-                {data?.withdrawals_data?.length && (
-                  <table class="table table-dark">
-                    <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">User</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">DateTime</th>
-                        <th scope="col">Reference</th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Fee</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Currency</th>
-                        <th scope="col">Status</th>
-                        <th width="col">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data?.withdrawals_data?.map((_item, index) => (
-                        <tr>
-                          <th scope="row">{index + 1}</th>
-                          <td>
-                            {new Date(
-                              _item.createdat
-                            ).toLocaleString()}
-                          </td>
-                          <td>{_item.username}</td>
-                          <td>{_item.email}</td>
-                          <td>{_item.ref}</td>
-                          <td>{_item.amount}</td>
-                          <td>{_item.fee}</td>
-                          <td>{_item.amount}</td>
-                          <td>{_item.currency}</td>
-                          <td>{_item.status}</td>
-                          <td>
-                            <div class="btn-group btn-group-toggle">
-                              <label class="btn btn-success ">Approve</label>
-                              <label class="btn btn-danger">Cancel</label>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
-                {!data?.withdrawals_data?.length && (
-                  <p class="text-center">No withdrawals!</p>
-                )}
+                <div
+                  className="ag-theme-alpine-dark"
+                  style={{ height: "70vh", width: "100%" }}
+                >
+                  <AgGridReact
+                    rowData={data?.withdrawals_data}
+                    pagination
+                    defaultColDef={{
+                      resizable: true,
+                      filter: "agTextColumnFilter",
+                    }}
+                  >
+                     <AgGridColumn
+                     flex={1}
+                      field="username"
+                      sortable={true}
+                      filter={true}
+                    ></AgGridColumn>
+                     <AgGridColumn
+                      flex={1}
+                      field="email"
+                      sortable={true}
+                      filter={true}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      headerName="DateTime"
+                      field="createdat"
+                      cellRenderer={({ data }) =>
+                        new Date(data.createdat).toLocaleString()
+                      }
+                      sortable={true}
+                      filter={true}
+                      flex={1}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      headerName="Reference"
+                      field="ref"
+                      sortable={true}
+                      filter={true}
+                      flex={1}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="amount"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="fee"
+                      sortable={true}
+                      filter={true}
+                      width={100}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="amount"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="currency"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                    <AgGridColumn
+                      field="status"
+                      sortable={true}
+                      filter={true}
+                      width={120}
+                    ></AgGridColumn>
+                  </AgGridReact>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        {/* <Script>
-  var notyf = new Notyf(); 
-  var app = new Vue({
-    el: '#admin', 
-    data: {
-    }, 
-    methods: {
-      approveTrade: function (id) {
-        fetch(`/api/trade/approve/${id}`,{method:'put'})
-        .then(response => response.json())
-        .then(data => {if(data?.error){notyf.error(data?.error)}else{location.reload()}});
-      },
-      approveTransaction: function (id) {
-        fetch(`/api/transaction/approve/${id}`,{method:'put'})
-        .then(response => response.json())
-        .then(data => {if(data?.error){notyf.error(data?.error)}else{location.reload()}});
-      },
-      cancelTrade: function (id) {
-        fetch(`/api/trade/cancel/${id}`,{method:'put'})
-        .then(response => response.json())
-        .then(data => {if(data?.error){notyf.error(data?.error)}else{location.reload()}});
-      },
-      cancelTransaction: function (id) {
-        fetch(`/api/transaction/cancel/${id}`,{method:'put'})
-        .then(response => response.json())
-        .then(data => {if(data?.error){notyf.error(data?.error)}else{location.reload()}});
-      },
-     }
-  })
-</Script> */}
       </div>
     </Layout>
   );
