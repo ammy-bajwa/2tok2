@@ -10,7 +10,7 @@ const {
   updateAdminSettings,
   getLatestAdminSettings,
 } = require("../models/adminSettings");
-
+const { logThis } = require("../models/logs");
 const catchHandler = (err, res, msg) => {
   res.json({ error: msg || "Something went wrong !", err });
   //console.error(err);
