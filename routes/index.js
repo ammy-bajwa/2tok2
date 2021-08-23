@@ -295,7 +295,8 @@ class Routes {
 
     this.express.get("/logs", async (req, res) => {
       const userName = req.session?.loggedUser?.username;
-      if (req.session.loggedIn) {
+      const isAdmin = req.session?.loggedUser?.admin;
+      if (req.session.loggedIn && isAdmin) {
         try {
           const logsData = await getLogsData();
           console.log("logsData: ", logsData);

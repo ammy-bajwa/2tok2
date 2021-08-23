@@ -49,7 +49,7 @@ export default function Index({ isAdmin }) {
 
   // Make a settings form
   return (
-    <Layout>
+    <Layout isAdmin={isAdmin}>
       {/* Admin settings */}
       {isAdmin && (
         <form onSubmit={handleSubmit} className="p-3">

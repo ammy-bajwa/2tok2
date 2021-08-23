@@ -14,18 +14,14 @@ export async function getServerSideProps({ req }) {
   };
 }
 
-export default function Index({ data }) {
+export default function Index({ data, isAdmin }) {
   console.log("data: ", data);
   return (
-    <Layout>
+    <Layout isAdmin={isAdmin}>
       <div className="text-center">
         <div class="card">
           <div class="card-header">
-            <ul class="nav nav-pills w-100">
-              <li class="nav-pill active">
-                <a class="nav-link">Logs</a>
-              </li>
-            </ul>
+            <h1>Logs</h1>
           </div>
           <div class="card-body">
             <div
@@ -34,6 +30,8 @@ export default function Index({ data }) {
             >
               <AgGridReact
                 rowData={data}
+                pagination
+                paginationPageSize={30}
                 defaultColDef={{
                   resizable: true,
                   filter: "agTextColumnFilter",
@@ -64,6 +62,9 @@ export default function Index({ data }) {
                 <AgGridColumn
                   headerName="Log Time"
                   field="created_at"
+                  cellRenderer={({ data }) =>
+                    new Date(data.created_at).toLocaleString()
+                  }
                   sortable={true}
                   filter={true}
                   flex={1}

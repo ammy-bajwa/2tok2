@@ -1,15 +1,16 @@
 import Head from "next/head";
-import {useEffect} from 'react';
+import { useEffect } from "react";
 export async function getServerSideProps({ req }) {
   return {
     props: { messages: req.locals?.messages || {} },
   };
 }
 
-export default function Index({messages}) {
+export default function Index({ messages }) {
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = "http://www.google.com/recaptcha/api.js?hl=en&amp;render=explicit&amp;onload=recaptchaOnloadCallback";
+    script.src =
+      "http://www.google.com/recaptcha/api.js?hl=en&amp;render=explicit&amp;onload=recaptchaOnloadCallback";
     script.async = true;
     document.body.appendChild(script);
     const script2 = document.createElement("script");
@@ -32,7 +33,7 @@ export default function Index({messages}) {
     script9.src = `jQuery(function ($) {jQuery(".password-hide-show").hidePassword(true)});`;
     script9.async = true;
     document.body.appendChild(script9);
-  },[])
+  }, []);
   return (
     <div>
       <Head>
@@ -250,7 +251,10 @@ export default function Index({messages}) {
                         name="LoginForm[rememberMe]"
                         value="1"
                       />
-                      <label className="control-label" for="loginform-rememberme">
+                      <label
+                        className="control-label"
+                        for="loginform-rememberme"
+                      >
                         Remember me
                       </label>
                       <p className="help-block help-block-error"></p>
@@ -263,7 +267,7 @@ export default function Index({messages}) {
                     value="Log In"
                   ></input>
                 </form>
-                <div style={{height:20}}></div>
+                <div style={{ height: 20 }}></div>
                 {messages.error && (
                   <div className="alert alert-danger" role="alert">
                     {" "}
@@ -292,7 +296,10 @@ export default function Index({messages}) {
                   <div className="col-lg-12 text-center">
                     <ul className="list-unstyled footer_menu_list list-inline">
                       <li className="list-inline-item">
-                        <a className="nav-link" href="token-sale-agreement.html">
+                        <a
+                          className="nav-link"
+                          href="token-sale-agreement.html"
+                        >
                           Token Sale Agreement
                         </a>
                       </li>

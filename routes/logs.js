@@ -11,8 +11,7 @@ class Routes {
   }
   initRoutes() {
     this.express.get("/logs", async (req, res) => {
-      console.log("req.session?.loggedUser: ", req.session?.loggedUser);
-      if (req.session.loggedIn) {
+      if (req.session.loggedIn && request.session.isAdmin) {
         this.next.render(req, res, "/logs", req.query);
       } else {
         res.redirect("/");

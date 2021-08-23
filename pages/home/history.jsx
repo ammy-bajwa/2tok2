@@ -18,7 +18,6 @@ export async function getServerSideProps({ req }) {
 }
 
 export default function Index({ message, data, userName, title, isAdmin }) {
-
   return (
     <Layout userName={userName} title={title} isAdmin={isAdmin}>
       <div class="container" style={{ marginTop: 20 }}>
@@ -211,10 +210,25 @@ export default function Index({ message, data, userName, title, isAdmin }) {
                   </AgGridReact>
                 </div>
               </div>
-              <div class="tab-pane fade" id="nav-withdrawals" role="tabpanel" aria-labelledby="nav-withdrawals-tab">
-                <div className="ag-theme-alpine-dark" style={{ height: "70vh", width: "100%" }}>
-                  <AgGridReact rowData={data?.withdrawals_data} pagination defaultColDef={{ resizable: true, filter: "agTextColumnFilter" }}>
-                     <AgGridColumn
+              <div
+                class="tab-pane fade"
+                id="nav-withdrawals"
+                role="tabpanel"
+                aria-labelledby="nav-withdrawals-tab"
+              >
+                <div
+                  className="ag-theme-alpine-dark"
+                  style={{ height: "70vh", width: "100%" }}
+                >
+                  <AgGridReact
+                    rowData={data?.withdrawals_data}
+                    pagination
+                    defaultColDef={{
+                      resizable: true,
+                      filter: "agTextColumnFilter",
+                    }}
+                  >
+                    <AgGridColumn
                       headerName="DateTime"
                       field="createdat"
                       cellRenderer={({ data }) =>

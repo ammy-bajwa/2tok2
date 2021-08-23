@@ -1,4 +1,5 @@
 export default function Index({ isAdmin, title }) {
+  console.log("isAdmin: ", isAdmin);
   return (
     <nav
       className="navbar navbar-expand-md navbar-dark bg-dark sidebarNavigation"
@@ -39,11 +40,13 @@ export default function Index({ isAdmin, title }) {
               </a>
             </li>
 
-            <li className={`nav-item ${title == "logs" ? "active" : ""}`}>
-              <a className="nav-link" href="/logs">
-                Logs
-              </a>
-            </li>
+            {isAdmin && (
+              <li className={`nav-item ${title == "logs" ? "active" : ""}`}>
+                <a className="nav-link" href="/logs">
+                  Logs
+                </a>
+              </li>
+            )}
             {isAdmin && (
               <>
                 <li className={`nav-item ${title == "users" ? "active" : ""}`}>

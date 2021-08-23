@@ -40,7 +40,11 @@ class Routes {
       }
     });
     this.express.get("/user/logout", (req, res) => {
-      logThis(LOGOUT, `${req.session.loggedIn?.email} logout successfully`, true);
+      logThis(
+        LOGOUT,
+        `${req.session.loggedUser?.email} logout successfully`,
+        true
+      );
       req.session.loggedIn = false;
       req.session.loggedUser = null;
       res.redirect("/");

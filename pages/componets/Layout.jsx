@@ -32,11 +32,6 @@ export default function Index({ userName, title, isAdmin, children }) {
         <div className="wrapper">
           <Header title={title} isAdmin={isAdmin}></Header>
           <ToastContainer align={"right"} />
-          <div>
-            <p style={{ color: "#fff", textAlign: "center", marginTop: 20 }}>
-              Hello {userName}
-            </p>
-          </div>
         </div>
         <main>{children}</main>
       </div>

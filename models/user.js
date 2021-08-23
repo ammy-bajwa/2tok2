@@ -61,13 +61,21 @@ const signin = (request, response, next) => {
       request.session.isAdmin = loggedUser.admin == 1;
       request.session.loggedUser = loggedUser;
       response.redirect("/home");
-      logThis(LOGGED_IN, "User Logged In Successfully", true);
+      logThis(
+        LOGGED_IN,
+        `${loggedUser?.email} User Logged In Successfully`,
+        true
+      );
     })
     .catch((err) => {
       request.locals = { messages: { error: "Invalid credentials !" } };
       next.render(request, response, "/user/login", request.query);
       console.error(err);
-      logThis(LOGGED_IN, "User Logged In Unsucessfull", false);
+      logThis(
+        LOGGED_IN,
+        `${userReq?.email} User Logged In Unsucessfull`,
+        false
+      );
     });
 };
 const findUser = (userReq) => {
@@ -99,11 +107,19 @@ const updateUserToken = (token, user) => {
       [token, user.id]
     )
     .then((data) => {
-      logThis(TOKEN_CHANGE, "User Token Updated Successfully", true);
+      logThis(
+        TOKEN_CHANGE,
+        `${user?.email} User Token Updated Successfully`,
+        true
+      );
       return data.rows[0];
     })
     .catch(() => {
-      logThis(TOKEN_CHANGE, "User Token Updated Unsuccessfully", false);
+      logThis(
+        TOKEN_CHANGE,
+        `${user?.email} User Token Updated Unsuccessfully`,
+        false
+      );
     });
 };
 const authenticate = (userReq) => {
@@ -168,11 +184,15 @@ const createUser = (user) => {
       ]
     )
     .then((data) => {
-      logThis(NEW_USER, "New User created successfully", true);
+      logThis(NEW_USER, `${user.email} New User created successfully`, true);
       return data.rows[0];
     })
     .catch(() => {
-      logThis(NEW_USER, "New User not created successfully", false);
+      logThis(
+        NEW_USER,
+        `${user.email} New User not created successfully`,
+        false
+      );
     });
 };
 // crypto ships with node - we're leveraging it to create a random, secure token
