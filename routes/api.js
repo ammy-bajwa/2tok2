@@ -299,14 +299,14 @@ class Routes {
             res.json({ ok: true });
             logThis(
               TRADE_CURRENCY,
-              `${loggedUser?.email} user do trade and buy ${buycurrency} and sell ${sellcurrency} is successfull`,
+              `${loggedUser?.email} user do trade and buy ${buyCurrency} and sell ${sellCurrency} is successfull`,
               true
             );
           })
           .catch((err) => {
             logThis(
               TRADE_CURRENCY,
-              `${loggedUser?.email} user do trade and buy ${buycurrency} and sell ${sellcurrency} is unsuccessfull`,
+              `${loggedUser?.email} user do trade and buy ${buyCurrency} and sell ${sellCurrency} is unsuccessfull`,
               false
             );
             catchHandler(err, res);
@@ -314,7 +314,7 @@ class Routes {
       } else {
         logThis(
           TRADE_CURRENCY,
-          `${loggedUser?.email} user do trade and buy ${buycurrency} and sell ${sellcurrency} is unsuccessfull`,
+          `${loggedUser?.email} user do trade and buy ${buyCurrency} and sell ${sellCurrency} is unsuccessfull`,
           false
         );
         res.json({ error: "401" });
