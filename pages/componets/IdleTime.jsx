@@ -52,7 +52,6 @@ const IdleTime = (props) => {
     function resetTimer() {
       clearTimeout(time);
       clearLogOutTimeOut();
-      console.log("timeOutDuration applied: ", timeOutDuration);
       if (props?.userName && timeOutDuration !== 0) {
         time = setTimeout(logout, timeOutDuration * 1000 * 60);
         setMyTimeout(time);

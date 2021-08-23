@@ -12,6 +12,16 @@ const logThis = (action, description, succeed) => {
   });
 };
 
+const getLogsData = () => {
+  return new Promise((resolve, reject) => {
+    database
+      .raw("SELECT * FROM logs")
+      .then((data) => resolve(data?.rows))
+      .catch(reject);
+  });
+};
+
 module.exports = {
   logThis,
+  getLogsData,
 };

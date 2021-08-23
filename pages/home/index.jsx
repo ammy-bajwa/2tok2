@@ -81,4 +81,3 @@ export default function Index({ userName, title, isAdmin, messages, data }) {
     </Layout>
   );
 }
- 
