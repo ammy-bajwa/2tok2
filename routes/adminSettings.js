@@ -22,13 +22,23 @@ class Routes {
   initRoutes() {
     this.express.post("/admin-settings/post", function (req, res) {
       const { idleTimeLogout } = req.body;
+      const userName = req.session?.loggedUser?.username;
+
       updateAdminSettings(idleTimeLogout)
         .then((data) => {
-          logThis(ADMIN_SETTINGS, "Admin Settings Updated Sucessfully", true);
+          logThis(
+            ADMIN_SETTINGS,
+            `${userName} Updated Admin Settings Successfully`,
+            true
+          );
           res.json({ data });
         })
         .catch((err) => {
-          logThis(ADMIN_SETTINGS, "Admin Settings Not Updated", false);
+          logThis(
+            ADMIN_SETTINGS,
+            `${userName} Updated Admin Settings Unsuccessfully`,
+            false
+          );
           catchHandler(err, res);
         });
     });
