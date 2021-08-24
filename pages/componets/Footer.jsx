@@ -1,11 +1,10 @@
 export default function Index({ isBottom }) {
   return (
     <footer
-      className="footer_section footer_detail footer_background"
+      className="footer_section footer_detail footer_background w-100"
       style={{
         bottom: "0px",
         position: isBottom ? "relative" : "absolute",
-        width: "100vw",
       }}
     >
       <div className="container">

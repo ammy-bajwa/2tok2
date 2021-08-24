@@ -152,7 +152,7 @@ export default function Index({ messages }) {
                 </p>
               </div>
             </div>
-            <Footer />
+            <Footer isBottom />
           </div>
         </div>
       </div>
