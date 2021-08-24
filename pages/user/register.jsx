@@ -46,7 +46,7 @@ export default function Index({ messages }) {
         <div id="video-bg">
           <div id="container">
             <div className="simple-page-wrap">
-              <div className="simple-page-logo">
+              <div className="simple-page-logo text-light">
                 <a>
                   <h1>1Tok1</h1>
                 </a>
