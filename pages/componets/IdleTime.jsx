@@ -8,7 +8,7 @@ const IdleTime = (props) => {
   const [myTimeout, setMyTimeout] = useState(null);
 
   useEffect(() => {
-    if (props?.userName) {
+    if (props?.userName || props?.isAdmin) {
       getLatestAdminSettings()
         .then((latestSettings) => {
           const timeOutDuration = latestSettings?.idle_time_logout || 0;
@@ -21,7 +21,7 @@ const IdleTime = (props) => {
           );
         });
     }
-  }, [props?.userName]);
+  }, [props]);
 
   useEffect(() => {
     if (timeOutDuration > 0) {
@@ -52,11 +52,13 @@ const IdleTime = (props) => {
     function resetTimer() {
       clearTimeout(time);
       clearLogOutTimeOut();
-      if (props?.userName && timeOutDuration !== 0) {
-        time = setTimeout(logout, timeOutDuration * 1000 * 60);
+      if ((props?.userName || props?.isAdmin) && timeOutDuration !== 0) {
+        time = setTimeout(logout, timeOutDuration * 60 * 1000);
+        // time = setTimeout(logout, 5 * 1000);
         setMyTimeout(time);
       }
     }
+    resetTimer();
   };
 
   const clearLogOutTimeOut = () => {

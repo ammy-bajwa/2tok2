@@ -1,7 +1,5 @@
 import Head from "next/head";
-import Script from "next/script";
 import Header from "./partails/header";
-import { useEffect } from "react";
 import { ToastContainer } from "react-nextjs-toast";
 
 export default function Index({ userName, title, isAdmin, children }) {

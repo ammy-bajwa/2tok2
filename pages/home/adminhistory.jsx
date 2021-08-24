@@ -152,14 +152,13 @@ export default function Index({ userName, title, isAdmin, message, data }) {
                     }}
                     frameworkComponents={{ actionRenderer }}
                   >
-
                     <AgGridColumn
-                     flex={1}
+                      flex={1}
                       field="username"
                       sortable={true}
                       filter={true}
                     ></AgGridColumn>
-                     <AgGridColumn
+                    <AgGridColumn
                       flex={1}
                       field="email"
                       sortable={true}
@@ -214,13 +213,12 @@ export default function Index({ userName, title, isAdmin, message, data }) {
                       width={120}
                     ></AgGridColumn>
                     <AgGridColumn
-                  headerName="Action"
-                  cellRenderer="actionRenderer"
-                  sortable={true}
-                  filter={true}
-                  width={140}
-                ></AgGridColumn>
-                    
+                      headerName="Action"
+                      cellRenderer="actionRenderer"
+                      sortable={true}
+                      filter={true}
+                      width={140}
+                    ></AgGridColumn>
                   </AgGridReact>
                 </div>
               </div>
@@ -242,13 +240,13 @@ export default function Index({ userName, title, isAdmin, message, data }) {
                       filter: "agTextColumnFilter",
                     }}
                   >
-                     <AgGridColumn
-                     flex={1}
+                    <AgGridColumn
+                      flex={1}
                       field="username"
                       sortable={true}
                       filter={true}
                     ></AgGridColumn>
-                     <AgGridColumn
+                    <AgGridColumn
                       flex={1}
                       field="email"
                       sortable={true}
@@ -322,13 +320,13 @@ export default function Index({ userName, title, isAdmin, message, data }) {
                       filter: "agTextColumnFilter",
                     }}
                   >
-                     <AgGridColumn
-                     flex={1}
+                    <AgGridColumn
+                      flex={1}
                       field="username"
                       sortable={true}
                       filter={true}
                     ></AgGridColumn>
-                     <AgGridColumn
+                    <AgGridColumn
                       flex={1}
                       field="email"
                       sortable={true}

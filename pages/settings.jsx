@@ -13,11 +13,12 @@ export async function getServerSideProps({ req }) {
   return {
     props: {
       isAdmin: req.locals?.isAdmin,
+      userName: req.locals?.userName,
     },
   };
 }
 
-export default function Index({ isAdmin }) {
+export default function Index({ isAdmin, userName }) {
   const [timeOutDuration, setTimeOutDuration] = useState(0);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function Index({ isAdmin }) {
 
   // Make a settings form
   return (
-    <Layout isAdmin={isAdmin}>
+    <Layout userName={userName} isAdmin={isAdmin}>
       {/* Admin settings */}
       {isAdmin && (
         <form onSubmit={handleSubmit} className="p-3">
