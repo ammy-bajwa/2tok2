@@ -2,10 +2,11 @@ import { AgGridColumn, AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
 
-import { useEffect } from "react";
-import { refLink } from "../../constants/link";
 import Layout from "../componets/Layout";
 import handleRefCellRenderer from "../helpers/refCellRenderer";
+import HistoryTradeTable from "../componets/HistoryTradeTable";
+import HistoryDepWidTable from "../componets/HistoryDepWidTable";
+
 export async function getServerSideProps({ req }) {
   return {
     props: {
@@ -84,63 +85,7 @@ export default function Index({ message, data, userName, title, isAdmin }) {
                   className="ag-theme-alpine-dark"
                   style={{ height: "70vh", width: "100%" }}
                 >
-                  <AgGridReact
-                    rowData={data?.trade_data}
-                    pagination
-                    defaultColDef={{
-                      resizable: true,
-                      filter: "agTextColumnFilter",
-                    }}
-                  >
-                    <AgGridColumn
-                      headerName="DateTime"
-                      field="createdat"
-                      cellRenderer={({ data }) =>
-                        new Date(data.createdat).toLocaleString()
-                      }
-                      sortable={true}
-                      filter={true}
-                      flex={1}
-                    ></AgGridColumn>
-                    <AgGridColumn
-                      width={100}
-                      field="buy"
-                      sortable={true}
-                      filter={true}
-                    ></AgGridColumn>
-                    <AgGridColumn
-                      headerName="Currency"
-                      field="buycurrency"
-                      sortable={true}
-                      filter={true}
-                      width={120}
-                    ></AgGridColumn>
-                    <AgGridColumn
-                      field="sell"
-                      sortable={true}
-                      filter={true}
-                      width={100}
-                    ></AgGridColumn>
-                    <AgGridColumn
-                      headerName="Currency"
-                      field="sellcurrency"
-                      sortable={true}
-                      filter={true}
-                      width={120}
-                    ></AgGridColumn>
-                    <AgGridColumn
-                      field="fee"
-                      sortable={true}
-                      filter={true}
-                      width={100}
-                    ></AgGridColumn>
-                    <AgGridColumn
-                      field="status"
-                      sortable={true}
-                      filter={true}
-                      width={120}
-                    ></AgGridColumn>
-                  </AgGridReact>
+                  <HistoryTradeTable data={data?.trade_data} />
                 </div>
               </div>
               <div
@@ -153,63 +98,7 @@ export default function Index({ message, data, userName, title, isAdmin }) {
                   className="ag-theme-alpine-dark"
                   style={{ height: "70vh", width: "100%" }}
                 >
-                  <AgGridReact
-                    rowData={data?.deposits_data}
-                    pagination
-                    defaultColDef={{
-                      resizable: true,
-                      filter: "agTextColumnFilter",
-                    }}
-                  >
-                    <AgGridColumn
-                      headerName="DateTime"
-                      field="createdat"
-                      cellRenderer={({ data }) =>
-                        new Date(data.createdat).toLocaleString()
-                      }
-                      sortable={true}
-                      filter={true}
-                      flex={1}
-                    ></AgGridColumn>
-                    <AgGridColumn
-                      headerName="Reference"
-                      field="ref"
-                      cellRenderer={handleRefCellRenderer}
-                      sortable={true}
-                      filter={true}
-                      flex={1}
-                    ></AgGridColumn>
-                    <AgGridColumn
-                      field="amount"
-                      sortable={true}
-                      filter={true}
-                      width={120}
-                    ></AgGridColumn>
-                    <AgGridColumn
-                      field="fee"
-                      sortable={true}
-                      filter={true}
-                      width={100}
-                    ></AgGridColumn>
-                    <AgGridColumn
-                      field="amount"
-                      sortable={true}
-                      filter={true}
-                      width={120}
-                    ></AgGridColumn>
-                    <AgGridColumn
-                      field="currency"
-                      sortable={true}
-                      filter={true}
-                      width={120}
-                    ></AgGridColumn>
-                    <AgGridColumn
-                      field="status"
-                      sortable={true}
-                      filter={true}
-                      width={120}
-                    ></AgGridColumn>
-                  </AgGridReact>
+                  <HistoryDepWidTable data={data?.deposits_data} />
                 </div>
               </div>
               <div
@@ -222,63 +111,7 @@ export default function Index({ message, data, userName, title, isAdmin }) {
                   className="ag-theme-alpine-dark"
                   style={{ height: "70vh", width: "100%" }}
                 >
-                  <AgGridReact
-                    rowData={data?.withdrawals_data}
-                    pagination
-                    defaultColDef={{
-                      resizable: true,
-                      filter: "agTextColumnFilter",
-                    }}
-                  >
-                    <AgGridColumn
-                      headerName="DateTime"
-                      field="createdat"
-                      cellRenderer={({ data }) =>
-                        new Date(data.createdat).toLocaleString()
-                      }
-                      sortable={true}
-                      filter={true}
-                      flex={1}
-                    ></AgGridColumn>
-                    <AgGridColumn
-                      headerName="Reference"
-                      field="ref"
-                      cellRenderer={handleRefCellRenderer}
-                      sortable={true}
-                      filter={true}
-                      flex={1}
-                    ></AgGridColumn>
-                    <AgGridColumn
-                      field="amount"
-                      sortable={true}
-                      filter={true}
-                      width={120}
-                    ></AgGridColumn>
-                    <AgGridColumn
-                      field="fee"
-                      sortable={true}
-                      filter={true}
-                      width={100}
-                    ></AgGridColumn>
-                    <AgGridColumn
-                      field="amount"
-                      sortable={true}
-                      filter={true}
-                      width={120}
-                    ></AgGridColumn>
-                    <AgGridColumn
-                      field="currency"
-                      sortable={true}
-                      filter={true}
-                      width={120}
-                    ></AgGridColumn>
-                    <AgGridColumn
-                      field="status"
-                      sortable={true}
-                      filter={true}
-                      width={120}
-                    ></AgGridColumn>
-                  </AgGridReact>
+                  <HistoryDepWidTable data={data?.withdrawals_data} />
                 </div>
               </div>
             </div>
