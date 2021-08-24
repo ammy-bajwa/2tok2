@@ -63,3 +63,11 @@ body {
 /* .ag-header-cell-label{
     color: white;
 } */
+
+.h-90 {
+  height: 90% !important;
+}
+
+.overflow {
+  overflow: auto;
+}

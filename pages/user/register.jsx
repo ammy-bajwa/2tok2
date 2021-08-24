@@ -44,7 +44,7 @@ export default function Index({ messages }) {
       <UserRegisterHead />
       <div className="simple-page bg-oxygen ">
         <div id="video-bg">
-          <div id="container">
+          <div className="h-90 overflow">
             <div className="simple-page-wrap">
               <div className="simple-page-logo text-light">
                 <a>
@@ -152,8 +152,8 @@ export default function Index({ messages }) {
                 </p>
               </div>
             </div>
-            <Footer isBottom />
           </div>
+          <Footer isBottom />
         </div>
       </div>
     </div>
