@@ -1,7 +1,5 @@
 import Layout from "./componets/Layout";
-import { AgGridColumn, AgGridReact } from "ag-grid-react";
-import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
+import LogsTable from "./componets/LogsTable";
 
 export async function getServerSideProps({ req }) {
   return {
@@ -28,56 +26,7 @@ export default function Index({ data, isAdmin }) {
               className="ag-theme-alpine-dark"
               style={{ height: "65vh", width: "100%" }}
             >
-              <AgGridReact
-                rowData={data}
-                pagination
-                paginationPageSize={30}
-                defaultColDef={{
-                  resizable: true,
-                  filter: "agTextColumnFilter",
-                }}
-              >
-                <AgGridColumn
-                  headerName="Id"
-                  field="id"
-                  sortable={true}
-                  filter={true}
-                  flex={1}
-                ></AgGridColumn>
-                <AgGridColumn
-                  headerName="Action"
-                  field="action"
-                  sortable={true}
-                  filter={true}
-                  flex={1}
-                ></AgGridColumn>
-                <AgGridColumn
-                  headerName="Description"
-                  field="description"
-                  sortable={true}
-                  filter={true}
-                  flex={1}
-                ></AgGridColumn>
-
-                <AgGridColumn
-                  headerName="Log Time"
-                  field="created_at"
-                  cellRenderer={({ data }) =>
-                    new Date(data.created_at).toLocaleString()
-                  }
-                  sortable={true}
-                  filter={true}
-                  flex={1}
-                ></AgGridColumn>
-
-                <AgGridColumn
-                  headerName="Status"
-                  field="succeed"
-                  sortable={true}
-                  filter={true}
-                  flex={1}
-                ></AgGridColumn>
-              </AgGridReact>
+              <LogsTable data={data} />
             </div>
           </div>
         </div>
