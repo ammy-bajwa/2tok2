@@ -359,39 +359,42 @@ export default function Index({
               </ul>
             </div>
             <div class="card-body">
-            <div
-              className="ag-theme-alpine-dark"
-              style={{ height: 300, width: "100%" }} >
-              <AgGridReact
-                rowData={Object.keys(data).map((key) => {return {currency:key,balance:data[key]}})}
-                defaultColDef={{
-                  resizable: true,
-                  filter: "agTextColumnFilter",
-                }}
-                frameworkComponents={{ actionRenderer }}
+              <div
+                className="ag-theme-alpine-dark"
+                style={{ height: 300, width: "100%" }}
               >
-                <AgGridColumn
-                  field="currency"
-                  sortable={true}
-                  filter={true}
-                  flex={1}
-                ></AgGridColumn>
-                <AgGridColumn
-                  field="Total"
-                  field="balance"
-                  sortable={true}
-                  filter={true}
-                  flex={1}
-                ></AgGridColumn>
-                <AgGridColumn
-                  headerName="Available"
-                  field="balance"
-                  sortable={true}
-                  filter={true}
-                  flex={1}
-                ></AgGridColumn>
+                <AgGridReact
+                  rowData={Object.keys(data).map((key) => {
+                    return { currency: key, balance: data[key] };
+                  })}
+                  defaultColDef={{
+                    resizable: true,
+                    filter: "agTextColumnFilter",
+                  }}
+                  frameworkComponents={{ actionRenderer }}
+                >
+                  <AgGridColumn
+                    field="currency"
+                    sortable={true}
+                    filter={true}
+                    flex={1}
+                  ></AgGridColumn>
+                  <AgGridColumn
+                    field="Total"
+                    field="balance"
+                    sortable={true}
+                    filter={true}
+                    flex={1}
+                  ></AgGridColumn>
+                  <AgGridColumn
+                    headerName="Available"
+                    field="balance"
+                    sortable={true}
+                    filter={true}
+                    flex={1}
+                  ></AgGridColumn>
                 </AgGridReact>
-                </div>
+              </div>
             </div>
           </div>
           <div class="card" style={{ flex: 1, marginLeft: 20 }}>
@@ -510,7 +513,8 @@ export default function Index({
                   resizable: true,
                   filter: "agTextColumnFilter",
                 }}
-                frameworkComponents={{ actionRenderer }}>
+                frameworkComponents={{ actionRenderer }}
+              >
                 <AgGridColumn
                   headerName="DateTime"
                   field="createdat"
