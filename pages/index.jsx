@@ -30,7 +30,7 @@ export default function Index({}) {
         {/*<!-- Work Process --> */}
         <WorkProcessSection />
         {/*<!-- Start Footer --> */}
-        <Footer />
+        <Footer isBottom />
         {/*<!-- End Footer --> */}
 
         <Script src="assets/8/8f271511da/cfd4ba49/jquery.js"></Script>
