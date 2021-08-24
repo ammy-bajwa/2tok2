@@ -2,6 +2,7 @@ import { AgGridColumn, AgGridReact } from "ag-grid-react";
 
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
+import handleRefCellRenderer from "../helpers/refCellRenderer";
 
 export default function Index({ data }) {
   return (
@@ -36,6 +37,7 @@ export default function Index({ data }) {
       <AgGridColumn
         headerName="Reference"
         field="ref"
+        cellRenderer={handleRefCellRenderer}
         sortable={true}
         filter={true}
         flex={1}

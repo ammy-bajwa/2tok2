@@ -5,6 +5,7 @@ import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
 import { useEffect } from "react";
 import { refLink } from "../../constants/link";
 import Layout from "../componets/Layout";
+import handleRefCellRenderer from "../helpers/refCellRenderer";
 export async function getServerSideProps({ req }) {
   return {
     props: {
@@ -173,6 +174,7 @@ export default function Index({ message, data, userName, title, isAdmin }) {
                     <AgGridColumn
                       headerName="Reference"
                       field="ref"
+                      cellRenderer={handleRefCellRenderer}
                       sortable={true}
                       filter={true}
                       flex={1}
@@ -241,6 +243,7 @@ export default function Index({ message, data, userName, title, isAdmin }) {
                     <AgGridColumn
                       headerName="Reference"
                       field="ref"
+                      cellRenderer={handleRefCellRenderer}
                       sortable={true}
                       filter={true}
                       flex={1}
