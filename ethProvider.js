@@ -58,7 +58,7 @@ database.raw("Select id,token from users").then((data) => {
   console.log("all_users", global.users);
 });
 database.raw("Select * from settings").then((data) => {
-    global.settings = data.rows;
+  global.settings = data.rows;
   console.log("settings", global.settings);
 });
 const ADMIN_ADDRESS = "0xB426971b6378FB6Ce32DBce35E21304B233602A9";
@@ -149,13 +149,13 @@ async function transferToken(recieverAddress, amountToSend, tokenType) {
         const data = contract.methods
           .transfer(recieverAddress, web3.utils.toHex(amountToSend))
           .encodeABI();
-          console.log('data',data)
+        console.log("data", data);
         const gasPrices = await getCurrentGasPrices();
-        console.log('gasPrices',gasPrices)
+        console.log("gasPrices", gasPrices);
         const rawTransaction = {
           from: ADMIN_ADDRESS,
           nonce: nonce,
-          gasLimit: web3.utils.toHex(21000),
+          gasLimit: web3.utils.toHex(22000),
           gasPrice: web3.utils.toHex(gasPrices.high * 1000000000),
           to: recieverAddress,
           value: "0x0",
