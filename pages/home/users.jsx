@@ -21,7 +21,7 @@ export default function Index({ message, data, userName, title, isAdmin }) {
       <>
         {data.admin != 1 && data.active != 0 && (
           <a
-            class="btn btn-danger delete"
+            className="btn btn-danger delete"
             onclick="return alert('Are You sure?')"
             href={`user/delete/${data.id}`}
           >
@@ -34,27 +34,27 @@ export default function Index({ message, data, userName, title, isAdmin }) {
   };
   return (
     <Layout userName={userName} title={title} isAdmin={isAdmin}>
-      <div class="container" style={{ marginTop: 20 }}>
+      <div className="container" style={{ marginTop: 20 }}>
         {message.success && (
-          <div class="alert alert-success" role="alert">
+          <div className="alert alert-success" role="alert">
             {message.success}
           </div>
         )}
         {message.error && (
-          <div class="alert alert-danger" role="alert">
+          <div className="alert alert-danger" role="alert">
             {message.error}
           </div>
         )}
 
-        <div class="card">
-          <div class="card-header">
-            <ul class="nav nav-pills w-100">
-              <li class="nav-pill active">
-                <a class="nav-link">Users</a>
+        <div className="card">
+          <div className="card-header">
+            <ul className="nav nav-pills w-100">
+              <li className="nav-pill active">
+                <a className="nav-link">Users</a>
               </li>
             </ul>
           </div>
-          <div class="card-body">
+          <div className="card-body">
             <div
               className="ag-theme-alpine-dark"
               style={{ height: "70vh", width: "100%" }}

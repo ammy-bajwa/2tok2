@@ -282,15 +282,15 @@ export default function Index({
     return (
       <>
         {data.userid != userId && (
-          <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            <label class="btn btn-success" onClick={approveTrade(data.id)}>
+          <div className="btn-group btn-group-toggle" data-toggle="buttons">
+            <label className="btn btn-success" onClick={approveTrade(data.id)}>
               Trade
             </label>
           </div>
         )}
         {data.userid == userId && (
-          <div class="btn-group btn-group-toggle" data-toggle="buttons">
-            <label class="btn btn-success" onClick={approveTrade(data.id)}>
+          <div className="btn-group btn-group-toggle" data-toggle="buttons">
+            <label className="btn btn-success" onClick={approveTrade(data.id)}>
               Cancel
             </label>
           </div>
@@ -300,23 +300,23 @@ export default function Index({
   };
   return (
     <Layout userName={userName} title={title} isAdmin={isAdmin}>
-      <div id="tradeApp" class="container" style={{ marginTop: 20 }}>
+      <div id="tradeApp" className="container" style={{ marginTop: 20 }}>
         {message?.success && (
-          <div class="alert alert-success" role="alert">
+          <div className="alert alert-success" role="alert">
             {message?.success}
           </div>
         )}
         {message?.error && (
-          <div class="alert alert-danger" role="alert">
+          <div className="alert alert-danger" role="alert">
             {message?.error}
           </div>
         )}
         <div style={{ display: "flex", flexDirection: "row" }}>
-          <div class="card" style={{ flex: 1 }}>
-            <div class="card-header">
-              <ul class="nav nav-pills w-100">
-                <li class="nav-pill active">
-                  <a class="nav-link" onClick={reload}>
+          <div className="card" style={{ flex: 1 }}>
+            <div className="card-header">
+              <ul className="nav nav-pills w-100">
+                <li className="nav-pill active">
+                  <a className="nav-link" onClick={reload}>
                     Balances{" "}
                     <ion-icon
                       style={{
@@ -328,11 +328,11 @@ export default function Index({
                     ></ion-icon>
                   </a>
                 </li>
-                <li class="nav-pill ml-auto">
+                <li className="nav-pill ml-auto">
                   <button
                     type="submit"
                     style={{ marginRight: 10 }}
-                    class="btn btn-primary"
+                    className="btn btn-primary"
                     data-toggle="modal"
                     data-target="#sendModal"
                   >
@@ -341,7 +341,7 @@ export default function Index({
                   <button
                     type="submit"
                     style={{ marginRight: 10 }}
-                    class="btn btn-success"
+                    className="btn btn-success"
                     data-toggle="modal"
                     data-target="#depositModal"
                   >
@@ -349,7 +349,7 @@ export default function Index({
                   </button>
                   <button
                     type="submit"
-                    class="btn btn-warning"
+                    className="btn btn-warning"
                     data-toggle="modal"
                     data-target="#withdrawalModal"
                   >
@@ -358,7 +358,7 @@ export default function Index({
                 </li>
               </ul>
             </div>
-            <div class="card-body">
+            <div className="card-body">
               <div
                 className="ag-theme-alpine-dark"
                 style={{ height: 300, width: "100%" }}
@@ -397,15 +397,15 @@ export default function Index({
               </div>
             </div>
           </div>
-          <div class="card" style={{ flex: 1, marginLeft: 20 }}>
-            <div class="card-header">
-              <ul class="nav nav-pills w-100">
-                <li class="nav-pill active">
-                  <a class="nav-link">Exchange</a>
+          <div className="card" style={{ flex: 1, marginLeft: 20 }}>
+            <div className="card-header">
+              <ul className="nav nav-pills w-100">
+                <li className="nav-pill active">
+                  <a className="nav-link">Exchange</a>
                 </li>
               </ul>
             </div>
-            <div class="card-body">
+            <div className="card-body">
               <center>
                 <h3>Cryptocurrency exchange</h3>
               </center>
@@ -413,10 +413,13 @@ export default function Index({
                 style={{ height: 10, width: "100%", display: "block" }}
               ></span>
               <div style={{ display: "flex", flexDirection: "row" }}>
-                <div class="form-group" style={{ flex: 1, marginRight: 10 }}>
+                <div
+                  className="form-group"
+                  style={{ flex: 1, marginRight: 10 }}
+                >
                   <label for="exampleFormControlSelect1">From currency</label>
                   <select
-                    class="form-control"
+                    className="form-control"
                     onChange={(e) => setPayCurrency(e.target.value)}
                   >
                     {options.map((option) => (
@@ -424,10 +427,10 @@ export default function Index({
                     ))}
                   </select>
                 </div>
-                <div class="form-group" style={{ flex: 1 }}>
+                <div className="form-group" style={{ flex: 1 }}>
                   <label for="exampleFormControlSelect1">To currency</label>
                   <select
-                    class="form-control"
+                    className="form-control"
                     onChange={(e) => setReceiveCurrency(e.target.value)}
                   >
                     {options.map((option) => (
@@ -439,15 +442,15 @@ export default function Index({
               <div style={{ display: "flex", flexDirection: "row" }}>
                 <div style={{ flex: 1, marginRight: 10 }}>
                   <label for="basic-url">You Pay</label>
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="basic-addon3">
+                  <div className="input-group mb-3">
+                    <div className="input-group-prepend">
+                      <span className="input-group-text" id="basic-addon3">
                         {payCurrency}
                       </span>
                     </div>
                     <input
                       type="number"
-                      class="form-control"
+                      className="form-control"
                       onChange={(e) => setPay(e.target.value)}
                       aria-describedby="basic-addon3"
                     />
@@ -455,15 +458,15 @@ export default function Index({
                 </div>
                 <div style={{ flex: 1 }}>
                   <label for="basic-url">You receive</label>
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text" id="basic-addon3">
+                  <div className="input-group mb-3">
+                    <div className="input-group-prepend">
+                      <span className="input-group-text" id="basic-addon3">
                         {receiveCurrency}
                       </span>
                     </div>
                     <input
                       type="number"
-                      class="form-control"
+                      className="form-control"
                       onChange={(e) => setReceive(e.target.value)}
                       aria-describedby="basic-addon3"
                     />
@@ -476,7 +479,7 @@ export default function Index({
               <center>
                 <button
                   type="button"
-                  class="btn btn-outline-primary"
+                  className="btn btn-outline-primary"
                   onClick={exchange}
                 >
                   Exchange
@@ -491,17 +494,17 @@ export default function Index({
             </div>
           </div>
         </div>
-        <div class="card" style={{ flex: 1, marginTop: 20 }}>
-          <div class="card-header">
-            <ul class="nav nav-pills w-100">
-              <li class="nav-pill active">
-                <a class="nav-link" onClick={reload}>
+        <div className="card" style={{ flex: 1, marginTop: 20 }}>
+          <div className="card-header">
+            <ul className="nav nav-pills w-100">
+              <li className="nav-pill active">
+                <a className="nav-link" onClick={reload}>
                   Order Book
                 </a>
               </li>
             </ul>
           </div>
-          <div class="card-body">
+          <div className="card-body">
             <div
               className="ag-theme-alpine-dark"
               style={{ height: "70vh", width: "100%" }}
@@ -575,35 +578,35 @@ export default function Index({
           </div>
         </div>
         <div
-          class="modal fade"
+          className="modal fade"
           id="sendModal"
           tabindex="-1"
           role="dialog"
           aria-hidden="true"
         >
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">
                   Send any currency to other members
                 </h5>
                 <button
                   type="button"
-                  class="close"
+                  className="close"
                   data-dismiss="modal"
                   aria-label="Close"
                 >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
+              <div className="modal-body">
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   <div style={{ flex: 1, marginRight: 10 }}>
                     <label for="basic-url">Send to:</label>
-                    <div class="input-group mb-3">
+                    <div className="input-group mb-3">
                       <input
                         type="text"
-                        class="form-control"
+                        className="form-control"
                         onChange={(e) => setSendTo(e.target.value)}
                         placeholder="email"
                         aria-describedby="basic-addon3"
@@ -612,10 +615,13 @@ export default function Index({
                   </div>
                 </div>
                 <div style={{ display: "flex", flexDirection: "row" }}>
-                  <div class="form-group" style={{ flex: 1, marginRight: 10 }}>
+                  <div
+                    className="form-group"
+                    style={{ flex: 1, marginRight: 10 }}
+                  >
                     <label for="exampleFormControlSelect1">Currency</label>
                     <select
-                      class="form-control"
+                      className="form-control"
                       onChange={(e) => setSendCurrency(e.target.value)}
                     >
                       {options.map((option) => (
@@ -627,15 +633,15 @@ export default function Index({
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   <div style={{ flex: 1, marginRight: 10 }}>
                     <label for="basic-url">Amount</label>
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon3">
+                    <div className="input-group mb-3">
+                      <div className="input-group-prepend">
+                        <span className="input-group-text" id="basic-addon3">
                           {sendCurrency}
                         </span>
                       </div>
                       <input
                         type="number"
-                        class="form-control"
+                        className="form-control"
                         onChange={(e) => setSendAmount(e.target.value)}
                         aria-describedby="basic-addon3"
                       />
@@ -643,15 +649,19 @@ export default function Index({
                   </div>
                 </div>
               </div>
-              <div class="modal-footer">
+              <div className="modal-footer">
                 <button
                   type="button"
-                  class="btn btn-secondary"
+                  className="btn btn-secondary"
                   data-dismiss="modal"
                 >
                   Close
                 </button>
-                <button type="button" class="btn btn-primary" onClick={send}>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={send}
+                >
                   Send
                 </button>
               </div>
@@ -659,33 +669,36 @@ export default function Index({
           </div>
         </div>
         <div
-          class="modal fade"
+          className="modal fade"
           id="depositModal"
           tabindex="-1"
           role="dialog"
           aria-hidden="true"
         >
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">
                   Deposit
                 </h5>
                 <button
                   type="button"
-                  class="close"
+                  className="close"
                   data-dismiss="modal"
                   aria-label="Close"
                 >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
+              <div className="modal-body">
                 <div style={{ display: "flex", flexDirection: "row" }}>
-                  <div class="form-group" style={{ flex: 1, marginRight: 10 }}>
+                  <div
+                    className="form-group"
+                    style={{ flex: 1, marginRight: 10 }}
+                  >
                     <label for="exampleFormControlSelect1">Currency</label>
                     <select
-                      class="form-control"
+                      className="form-control"
                       onChange={(e) => setDepositCurrency(e.target.value)}
                     >
                       {options.map((option) => (
@@ -700,15 +713,18 @@ export default function Index({
                     <div style={{ display: "flex", flexDirection: "row" }}>
                       <div style={{ flex: 1, marginRight: 10 }}>
                         <label for="basic-url">Amount</label>
-                        <div class="input-group mb-3">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon3">
+                        <div className="input-group mb-3">
+                          <div className="input-group-prepend">
+                            <span
+                              className="input-group-text"
+                              id="basic-addon3"
+                            >
                               {depositCurrency}
                             </span>
                           </div>
                           <input
                             type="number"
-                            class="form-control"
+                            className="form-control"
                             onChange={(e) => setDepositAmount(e.target.value)}
                             aria-describedby="basic-addon3"
                           />
@@ -722,15 +738,15 @@ export default function Index({
                   <div style={{ display: "flex", flexDirection: "row" }}>
                     <div style={{ flex: 1, marginRight: 10 }}>
                       <label for="basic-url">Address</label>
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text" id="basic-addon3">
+                      <div className="input-group mb-3">
+                        <div className="input-group-prepend">
+                          <span className="input-group-text" id="basic-addon3">
                             {depositCurrency}
                           </span>
                         </div>
                         <input
                           type="text"
-                          class="form-control"
+                          className="form-control"
                           value={token}
                           readonly
                           aria-describedby="basic-addon3"
@@ -740,10 +756,10 @@ export default function Index({
                   </div>
                 )}
               </div>
-              <div class="modal-footer">
+              <div className="modal-footer">
                 <button
                   type="button"
-                  class="btn btn-secondary"
+                  className="btn btn-secondary"
                   data-dismiss="modal"
                 >
                   Close
@@ -753,7 +769,7 @@ export default function Index({
                   depositCurrency != "W1" && (
                     <button
                       type="button"
-                      class="btn btn-primary"
+                      className="btn btn-primary"
                       onClick={deposit}
                     >
                       Deposit
@@ -762,7 +778,11 @@ export default function Index({
                 {(depositCurrency == "ETH" ||
                   depositCurrency == "W2" ||
                   depositCurrency == "W1") && (
-                  <button type="button" class="btn btn-primary" onClick={copy}>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={copy}
+                  >
                     Copy To ClipBoard
                   </button>
                 )}
@@ -771,33 +791,36 @@ export default function Index({
           </div>
         </div>
         <div
-          class="modal fade"
+          className="modal fade"
           id="withdrawalModal"
           tabindex="-1"
           role="dialog"
           aria-hidden="true"
         >
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLabel">
                   Withdrawal
                 </h5>
                 <button
                   type="button"
-                  class="close"
+                  className="close"
                   data-dismiss="modal"
                   aria-label="Close"
                 >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body">
+              <div className="modal-body">
                 <div style={{ display: "flex", flexDirection: "row" }}>
-                  <div class="form-group" style={{ flex: 1, marginRight: 10 }}>
+                  <div
+                    className="form-group"
+                    style={{ flex: 1, marginRight: 10 }}
+                  >
                     <label for="exampleFormControlSelect1">Currency</label>
                     <select
-                      class="form-control"
+                      className="form-control"
                       onChange={(e) => setWithdrawalCurrency(e.target.value)}
                     >
                       {options.map((option) => (
@@ -809,15 +832,15 @@ export default function Index({
                 <div style={{ display: "flex", flexDirection: "row" }}>
                   <div style={{ flex: 1, marginRight: 10 }}>
                     <label for="basic-url">Amount</label>
-                    <div class="input-group mb-3">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon3">
+                    <div className="input-group mb-3">
+                      <div className="input-group-prepend">
+                        <span className="input-group-text" id="basic-addon3">
                           {withdrawalCurrency}
                         </span>
                       </div>
                       <input
                         type="number"
-                        class="form-control"
+                        className="form-control"
                         onChange={(e) => setWithdrawalAmount(e.target.value)}
                         aria-describedby="basic-addon3"
                       />
@@ -830,10 +853,10 @@ export default function Index({
                   <div style={{ display: "flex", flexDirection: "row" }}>
                     <div style={{ flex: 1, marginRight: 10 }}>
                       <label for="basic-url">Address</label>
-                      <div class="input-group mb-3">
+                      <div className="input-group mb-3">
                         <input
                           type="text"
-                          class="form-control"
+                          className="form-control"
                           onChange={(e) => setWithdrawalAddress(e.target.value)}
                           aria-describedby="basic-addon3"
                         />
@@ -842,17 +865,17 @@ export default function Index({
                   </div>
                 )}
               </div>
-              <div class="modal-footer">
+              <div className="modal-footer">
                 <button
                   type="button"
-                  class="btn btn-secondary"
+                  className="btn btn-secondary"
                   data-dismiss="modal"
                 >
                   Close
                 </button>
                 <button
                   type="button"
-                  class="btn btn-primary"
+                  className="btn btn-primary"
                   onClick={withdraw}
                 >
                   Withdraw

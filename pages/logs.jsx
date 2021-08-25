@@ -17,11 +17,11 @@ export default function Index({ data, isAdmin }) {
   return (
     <Layout isAdmin={isAdmin}>
       <div className="text-center">
-        <div class="card">
-          <div class="card-header">
+        <div className="card">
+          <div className="card-header">
             <h1>Logs</h1>
           </div>
-          <div class="card-body">
+          <div className="card-body">
             <div
               className="ag-theme-alpine-dark"
               style={{ height: "65vh", width: "100%" }}

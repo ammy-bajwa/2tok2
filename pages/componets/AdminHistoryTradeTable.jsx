@@ -7,9 +7,9 @@ export default function Index({ data }) {
   console.log("data: ", data);
   const actionRenderer = ({ data }) => {
     return (
-      <div class="btn-group btn-group-toggle" data-toggle="buttons">
-        <label class="btn btn-success ">Approve</label>
-        <label class="btn btn-danger">Cancel</label>
+      <div className="btn-group btn-group-toggle" data-toggle="buttons">
+        <label className="btn btn-success ">Approve</label>
+        <label className="btn btn-danger">Cancel</label>
       </div>
     );
   };

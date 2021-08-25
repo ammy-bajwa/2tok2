@@ -1,9 +1,9 @@
 export default function Index() {
   return (
     <nav>
-      <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <div className="nav nav-tabs" id="nav-tab" role="tablist">
         <a
-          class="nav-item nav-link active"
+          className="nav-item nav-link active"
           id="nav-trades-tab"
           data-toggle="tab"
           href="#nav-trades"
@@ -14,7 +14,7 @@ export default function Index() {
           Trades
         </a>
         <a
-          class="nav-item nav-link"
+          className="nav-item nav-link"
           id="nav-deposits-tab"
           data-toggle="tab"
           href="#nav-deposits"
@@ -25,7 +25,7 @@ export default function Index() {
           Deposits
         </a>
         <a
-          class="nav-item nav-link"
+          className="nav-item nav-link"
           id="nav-withdrawals-tab"
           data-toggle="tab"
           href="#nav-withdrawals"

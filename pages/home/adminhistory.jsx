@@ -1,12 +1,8 @@
-import { AgGridColumn, AgGridReact } from "ag-grid-react";
 import { toast } from "react-nextjs-toast";
 
 import AdminHistoryTradeTable from "../componets/AdminHistoryTradeTable";
 import AdminHistoryDepWidTable from "../componets/AdminHistoryDepWidTable";
 import TradeNavTabs from "../componets/TradeNavTabs";
-
-import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
 
 const ErrToast = {
   duration: 5,
@@ -16,7 +12,6 @@ const OkToast = {
   duration: 5,
   type: "success",
 };
-import { refLink } from "../../constants/link";
 import Layout from "../componets/Layout";
 export async function getServerSideProps({ req }) {
   return {
@@ -78,26 +73,29 @@ export default function Index({ userName, title, isAdmin, message, data }) {
 
   return (
     <Layout userName={userName} title={title} isAdmin={isAdmin}>
-      <div id="admin" class="container" style={{ marginTop: 20 }}>
+      <div id="admin" className="container" style={{ marginTop: 20 }}>
         {message.success && (
-          <div class="alert alert-success" role="alert">
+          <div className="alert alert-success" role="alert">
             {message.success}
           </div>
         )}
         {message.error && (
-          <div class="alert alert-danger" role="alert">
+          <div className="alert alert-danger" role="alert">
             {message.error}
           </div>
         )}
 
-        <div class="card">
-          <div class="card-header" style={{ paddingTop: 10, borderBottom: 0 }}>
+        <div className="card">
+          <div
+            className="card-header"
+            style={{ paddingTop: 10, borderBottom: 0 }}
+          >
             <TradeNavTabs />
           </div>
-          <div class="card-body">
-            <div class="tab-content" id="nav-tabContent">
+          <div className="card-body">
+            <div className="tab-content" id="nav-tabContent">
               <div
-                class="tab-pane fade show active"
+                className="tab-pane fade show active"
                 id="nav-trades"
                 role="tabpanel"
                 aria-labelledby="nav-trades-tab"
@@ -110,7 +108,7 @@ export default function Index({ userName, title, isAdmin, message, data }) {
                 </div>
               </div>
               <div
-                class="tab-pane fade"
+                className="tab-pane fade"
                 id="nav-deposits"
                 role="tabpanel"
                 aria-labelledby="nav-deposits-tab"
@@ -123,7 +121,7 @@ export default function Index({ userName, title, isAdmin, message, data }) {
                 </div>
               </div>
               <div
-                class="tab-pane fade"
+                className="tab-pane fade"
                 id="nav-withdrawals"
                 role="tabpanel"
                 aria-labelledby="nav-withdrawals-tab"

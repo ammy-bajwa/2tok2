@@ -6,6 +6,7 @@ import Layout from "../componets/Layout";
 import handleRefCellRenderer from "../helpers/refCellRenderer";
 import HistoryTradeTable from "../componets/HistoryTradeTable";
 import HistoryDepWidTable from "../componets/HistoryDepWidTable";
+import HistoryNav from "../componets/HistoryNav";
 
 export async function getServerSideProps({ req }) {
   return {
@@ -22,61 +23,28 @@ export async function getServerSideProps({ req }) {
 export default function Index({ message, data, userName, title, isAdmin }) {
   return (
     <Layout userName={userName} title={title} isAdmin={isAdmin}>
-      <div class="container" style={{ marginTop: 20 }}>
+      <div className="container" style={{ marginTop: 20 }}>
         {message.success && (
-          <div class="alert alert-success" role="alert">
+          <div className="alert alert-success" role="alert">
             {message.success}
           </div>
         )}
         {message.error && (
-          <div class="alert alert-danger" role="alert">
+          <div className="alert alert-danger" role="alert">
             {message.error}
           </div>
         )}
-        <div class="card">
-          <div class="card-header" style={{ paddingTop: 10, borderBottom: 0 }}>
-            <nav>
-              <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                <a
-                  class="nav-item nav-link active"
-                  id="nav-trades-tab"
-                  data-toggle="tab"
-                  href="#nav-trades"
-                  role="tab"
-                  aria-controls="nav-trades"
-                  aria-selected="true"
-                >
-                  Trades
-                </a>
-                <a
-                  class="nav-item nav-link"
-                  id="nav-deposits-tab"
-                  data-toggle="tab"
-                  href="#nav-deposits"
-                  role="tab"
-                  aria-controls="nav-deposits"
-                  aria-selected="false"
-                >
-                  Deposits
-                </a>
-                <a
-                  class="nav-item nav-link"
-                  id="nav-withdrawals-tab"
-                  data-toggle="tab"
-                  href="#nav-withdrawals"
-                  role="tab"
-                  aria-controls="nav-withdrawals"
-                  aria-selected="false"
-                >
-                  Withdrawals
-                </a>
-              </div>
-            </nav>
+        <div className="card">
+          <div
+            className="card-header"
+            style={{ paddingTop: 10, borderBottom: 0 }}
+          >
+            <HistoryNav />
           </div>
-          <div class="card-body">
-            <div class="tab-content" id="nav-tabContent">
+          <div className="card-body">
+            <div className="tab-content" id="nav-tabContent">
               <div
-                class="tab-pane fade show active"
+                className="tab-pane fade show active"
                 id="nav-trades"
                 role="tabpanel"
                 aria-labelledby="nav-trades-tab"
@@ -89,7 +57,7 @@ export default function Index({ message, data, userName, title, isAdmin }) {
                 </div>
               </div>
               <div
-                class="tab-pane fade"
+                className="tab-pane fade"
                 id="nav-deposits"
                 role="tabpanel"
                 aria-labelledby="nav-deposits-tab"
@@ -102,7 +70,7 @@ export default function Index({ message, data, userName, title, isAdmin }) {
                 </div>
               </div>
               <div
-                class="tab-pane fade"
+                className="tab-pane fade"
                 id="nav-withdrawals"
                 role="tabpanel"
                 aria-labelledby="nav-withdrawals-tab"

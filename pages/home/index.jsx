@@ -19,27 +19,27 @@ export default function Index({ userName, title, isAdmin, messages, data }) {
   console.log("home_data", data);
   return (
     <Layout userName={userName} title={title} isAdmin={isAdmin}>
-      <div class="container" style={{ marginTop: 20 }}>
+      <div className="container" style={{ marginTop: 20 }}>
         {messages?.success && (
-          <div class="alert alert-success" role="alert">
+          <div className="alert alert-success" role="alert">
             {messages?.success}
           </div>
         )}
         {messages?.error && (
-          <div class="alert alert-danger" role="alert">
+          <div className="alert alert-danger" role="alert">
             {messages?.error}
           </div>
         )}
 
-        <div class="card">
-          <div class="card-header">
-            <ul class="nav nav-pills w-100">
-              <li class="nav-pill active">
-                <a class="nav-link">Balances</a>
+        <div className="card">
+          <div className="card-header">
+            <ul className="nav nav-pills w-100">
+              <li className="nav-pill active">
+                <a className="nav-link">Balances</a>
               </li>
             </ul>
           </div>
-          <div class="card-body">
+          <div className="card-body">
             <div
               className="ag-theme-alpine-dark"
               style={{ height: "65vh", width: "100%" }}
