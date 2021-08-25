@@ -1,7 +1,4 @@
-import { AgGridColumn, AgGridReact } from "ag-grid-react";
-import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
-
+import HomeDataTable from "../componets/HomeDataTable";
 import Layout from "../componets/Layout";
 export async function getServerSideProps({ req }) {
   return {
@@ -44,36 +41,7 @@ export default function Index({ userName, title, isAdmin, messages, data }) {
               className="ag-theme-alpine-dark"
               style={{ height: "65vh", width: "100%" }}
             >
-              <AgGridReact
-                rowData={Object.keys(data).map((key) => {
-                  return { currency: key, balance: data[key] };
-                })}
-                defaultColDef={{
-                  resizable: true,
-                  filter: "agTextColumnFilter",
-                }}
-              >
-                <AgGridColumn
-                  field="currency"
-                  sortable={true}
-                  filter={true}
-                  flex={1}
-                ></AgGridColumn>
-                <AgGridColumn
-                  field="Total"
-                  field="balance"
-                  sortable={true}
-                  filter={true}
-                  flex={1}
-                ></AgGridColumn>
-                <AgGridColumn
-                  headerName="Available"
-                  field="balance"
-                  sortable={true}
-                  filter={true}
-                  flex={1}
-                ></AgGridColumn>
-              </AgGridReact>
+              <HomeDataTable data={data} />
             </div>
           </div>
         </div>
