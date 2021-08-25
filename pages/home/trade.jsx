@@ -256,6 +256,19 @@ export default function Index({
     textArea.select();
 
     try {
+      if (!navigator.clipboard) {
+        console.error("No clipboard found");
+        return;
+      } else {
+        navigator.clipboard.writeText(token).then(
+          function () {
+            console.log("Copying to clipboard was successful!");
+          },
+          function (err) {
+            console.error("Could not copy text: ", err);
+          }
+        );
+      }
       var successful = document.execCommand("copy");
       var msg = successful ? "successful" : "unsuccessful";
       console.log("Copying text command was " + msg);
@@ -438,6 +451,7 @@ export default function Index({
             copy={copy}
             setDepositCurrency={setDepositCurrency}
             setDepositAmount={setDepositAmount}
+            token={token}
           />
         </div>
         <div
@@ -453,7 +467,7 @@ export default function Index({
             setWithdrawalAmount={setWithdrawalAmount}
             setWithdrawalAddress={setWithdrawalAddress}
             withdraw={withdraw}
-            withdrawalCurrency ={withdrawalCurrency }
+            withdrawalCurrency={withdrawalCurrency}
           />
         </div>
       </div>

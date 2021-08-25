@@ -6,14 +6,16 @@ const {
 } = require("../constants/logs");
 const database = require("../db");
 const eth = require("../ethProvider");
-const {
-  updateAdminSettings,
-  getLatestAdminSettings,
-} = require("../models/adminSettings");
+// const {
+//   updateAdminSettings,
+//   getLatestAdminSettings,
+// } = require("../models/adminSettings");
+
 const { logThis } = require("../models/logs");
+
 const catchHandler = (err, res, msg) => {
   res.json({ error: msg || "Something went wrong !", err });
-  //console.error(err);
+  console.error(err);
 };
 class Routes {
   constructor(express) {

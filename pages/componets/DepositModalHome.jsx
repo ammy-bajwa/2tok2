@@ -5,6 +5,7 @@ const DepositModalHome = ({
   setDepositAmount,
   deposit,
   copy,
+  token,
 }) => (
   <div className="modal-dialog" role="document">
     <div className="modal-content">
