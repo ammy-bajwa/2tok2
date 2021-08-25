@@ -4,6 +4,7 @@ const WithdrawModalHome = ({
   setWithdrawalAmount,
   setWithdrawalAddress,
   withdraw,
+  withdrawalCurrency,
 }) => (
   <div className="modal-dialog" role="document">
     <div className="modal-content">

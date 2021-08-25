@@ -453,6 +453,7 @@ export default function Index({
             setWithdrawalAmount={setWithdrawalAmount}
             setWithdrawalAddress={setWithdrawalAddress}
             withdraw={withdraw}
+            withdrawalCurrency ={withdrawalCurrency }
           />
         </div>
       </div>
