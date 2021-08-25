@@ -1,10 +1,16 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-nextjs-toast";
 import Layout from "../componets/Layout";
+import UserBalanceTableHome from "../componets/UserBalanceTableHome";
 import fetch from "isomorphic-unfetch";
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
+import HomeExchange from "../componets/HomeExchange";
+import OrderBookHome from "../componets/OrderBookHome";
+import SendModalHome from "../componets/SendModalHome";
+import DepositModalHome from "../componets/DepositModalHome";
+import WithdrawModalHome from "../componets/WithdrawModalHome";
 
 const ErrToast = {
   duration: 5,
@@ -363,135 +369,24 @@ export default function Index({
                 className="ag-theme-alpine-dark"
                 style={{ height: 300, width: "100%" }}
               >
-                <AgGridReact
-                  rowData={Object.keys(data).map((key) => {
-                    return { currency: key, balance: data[key] };
-                  })}
-                  defaultColDef={{
-                    resizable: true,
-                    filter: "agTextColumnFilter",
-                  }}
-                  frameworkComponents={{ actionRenderer }}
-                >
-                  <AgGridColumn
-                    field="currency"
-                    sortable={true}
-                    filter={true}
-                    flex={1}
-                  ></AgGridColumn>
-                  <AgGridColumn
-                    field="Total"
-                    field="balance"
-                    sortable={true}
-                    filter={true}
-                    flex={1}
-                  ></AgGridColumn>
-                  <AgGridColumn
-                    headerName="Available"
-                    field="balance"
-                    sortable={true}
-                    filter={true}
-                    flex={1}
-                  ></AgGridColumn>
-                </AgGridReact>
+                <UserBalanceTableHome
+                  data={data}
+                  actionRenderer={actionRenderer}
+                />
               </div>
             </div>
           </div>
           <div className="card" style={{ flex: 1, marginLeft: 20 }}>
-            <div className="card-header">
-              <ul className="nav nav-pills w-100">
-                <li className="nav-pill active">
-                  <a className="nav-link">Exchange</a>
-                </li>
-              </ul>
-            </div>
-            <div className="card-body">
-              <center>
-                <h3>Cryptocurrency exchange</h3>
-              </center>
-              <span
-                style={{ height: 10, width: "100%", display: "block" }}
-              ></span>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <div
-                  className="form-group"
-                  style={{ flex: 1, marginRight: 10 }}
-                >
-                  <label for="exampleFormControlSelect1">From currency</label>
-                  <select
-                    className="form-control"
-                    onChange={(e) => setPayCurrency(e.target.value)}
-                  >
-                    {options.map((option) => (
-                      <option value={option.value}>{option.label}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="form-group" style={{ flex: 1 }}>
-                  <label for="exampleFormControlSelect1">To currency</label>
-                  <select
-                    className="form-control"
-                    onChange={(e) => setReceiveCurrency(e.target.value)}
-                  >
-                    {options.map((option) => (
-                      <option value={option.value}>{option.label}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <div style={{ flex: 1, marginRight: 10 }}>
-                  <label for="basic-url">You Pay</label>
-                  <div className="input-group mb-3">
-                    <div className="input-group-prepend">
-                      <span className="input-group-text" id="basic-addon3">
-                        {payCurrency}
-                      </span>
-                    </div>
-                    <input
-                      type="number"
-                      className="form-control"
-                      onChange={(e) => setPay(e.target.value)}
-                      aria-describedby="basic-addon3"
-                    />
-                  </div>
-                </div>
-                <div style={{ flex: 1 }}>
-                  <label for="basic-url">You receive</label>
-                  <div className="input-group mb-3">
-                    <div className="input-group-prepend">
-                      <span className="input-group-text" id="basic-addon3">
-                        {receiveCurrency}
-                      </span>
-                    </div>
-                    <input
-                      type="number"
-                      className="form-control"
-                      onChange={(e) => setReceive(e.target.value)}
-                      aria-describedby="basic-addon3"
-                    />
-                  </div>
-                </div>
-              </div>
-              <span
-                style={{ height: 10, width: "100%", display: "block" }}
-              ></span>
-              <center>
-                <button
-                  type="button"
-                  className="btn btn-outline-primary"
-                  onClick={exchange}
-                >
-                  Exchange
-                </button>
-              </center>
-              <span
-                style={{ height: 10, width: "100%", display: "block" }}
-              ></span>
-              <center>
-                <p style={{ fontSize: 10 }}>Included fee is: (0.80 %)</p>
-              </center>
-            </div>
+            <HomeExchange
+              setPayCurrency={setPayCurrency}
+              setReceiveCurrency={setReceiveCurrency}
+              setPay={setPay}
+              setReceive={setReceive}
+              options={options}
+              payCurrency={payCurrency}
+              receiveCurrency={receiveCurrency}
+              exchange={exchange}
+            />
           </div>
         </div>
         <div className="card" style={{ flex: 1, marginTop: 20 }}>
@@ -509,71 +404,7 @@ export default function Index({
               className="ag-theme-alpine-dark"
               style={{ height: "70vh", width: "100%" }}
             >
-              <AgGridReact
-                rowData={tradeDataState}
-                pagination
-                defaultColDef={{
-                  resizable: true,
-                  filter: "agTextColumnFilter",
-                }}
-                frameworkComponents={{ actionRenderer }}
-              >
-                <AgGridColumn
-                  headerName="DateTime"
-                  field="createdat"
-                  cellRenderer={({ data }) =>
-                    new Date(data.createdat).toLocaleString()
-                  }
-                  sortable={true}
-                  filter={true}
-                  flex={1}
-                ></AgGridColumn>
-                <AgGridColumn
-                  width={100}
-                  field="buy"
-                  sortable={true}
-                  filter={true}
-                ></AgGridColumn>
-                <AgGridColumn
-                  headerName="Currency"
-                  field="buycurrency"
-                  sortable={true}
-                  filter={true}
-                  width={120}
-                ></AgGridColumn>
-                <AgGridColumn
-                  field="sell"
-                  sortable={true}
-                  filter={true}
-                  width={100}
-                ></AgGridColumn>
-                <AgGridColumn
-                  headerName="Currency"
-                  field="sellcurrency"
-                  sortable={true}
-                  filter={true}
-                  width={120}
-                ></AgGridColumn>
-                <AgGridColumn
-                  field="fee"
-                  sortable={true}
-                  filter={true}
-                  width={100}
-                ></AgGridColumn>
-                <AgGridColumn
-                  field="status"
-                  sortable={true}
-                  filter={true}
-                  width={120}
-                ></AgGridColumn>
-                <AgGridColumn
-                  headerName="Action"
-                  cellRenderer="actionRenderer"
-                  sortable={true}
-                  filter={true}
-                  width={140}
-                ></AgGridColumn>
-              </AgGridReact>
+              <OrderBookHome tradeDataState={tradeDataState} />
             </div>
           </div>
         </div>
@@ -584,89 +415,14 @@ export default function Index({
           role="dialog"
           aria-hidden="true"
         >
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">
-                  Send any currency to other members
-                </h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <div style={{ flex: 1, marginRight: 10 }}>
-                    <label for="basic-url">Send to:</label>
-                    <div className="input-group mb-3">
-                      <input
-                        type="text"
-                        className="form-control"
-                        onChange={(e) => setSendTo(e.target.value)}
-                        placeholder="email"
-                        aria-describedby="basic-addon3"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <div
-                    className="form-group"
-                    style={{ flex: 1, marginRight: 10 }}
-                  >
-                    <label for="exampleFormControlSelect1">Currency</label>
-                    <select
-                      className="form-control"
-                      onChange={(e) => setSendCurrency(e.target.value)}
-                    >
-                      {options.map((option) => (
-                        <option value={option.value}>{option.label}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <div style={{ flex: 1, marginRight: 10 }}>
-                    <label for="basic-url">Amount</label>
-                    <div className="input-group mb-3">
-                      <div className="input-group-prepend">
-                        <span className="input-group-text" id="basic-addon3">
-                          {sendCurrency}
-                        </span>
-                      </div>
-                      <input
-                        type="number"
-                        className="form-control"
-                        onChange={(e) => setSendAmount(e.target.value)}
-                        aria-describedby="basic-addon3"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={send}
-                >
-                  Send
-                </button>
-              </div>
-            </div>
-          </div>
+          <SendModalHome
+            setSendTo={setSendTo}
+            setSendCurrency={setSendCurrency}
+            options={options}
+            setSendAmount={setSendAmount}
+            sendCurrency={sendCurrency}
+            send={send}
+          />
         </div>
         <div
           className="modal fade"
@@ -675,120 +431,14 @@ export default function Index({
           role="dialog"
           aria-hidden="true"
         >
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">
-                  Deposit
-                </h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <div
-                    className="form-group"
-                    style={{ flex: 1, marginRight: 10 }}
-                  >
-                    <label for="exampleFormControlSelect1">Currency</label>
-                    <select
-                      className="form-control"
-                      onChange={(e) => setDepositCurrency(e.target.value)}
-                    >
-                      {options.map((option) => (
-                        <option value={option.value}>{option.label}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                {depositCurrency != "ETH" &&
-                  depositCurrency != "W2" &&
-                  depositCurrency != "W1" && (
-                    <div style={{ display: "flex", flexDirection: "row" }}>
-                      <div style={{ flex: 1, marginRight: 10 }}>
-                        <label for="basic-url">Amount</label>
-                        <div className="input-group mb-3">
-                          <div className="input-group-prepend">
-                            <span
-                              className="input-group-text"
-                              id="basic-addon3"
-                            >
-                              {depositCurrency}
-                            </span>
-                          </div>
-                          <input
-                            type="number"
-                            className="form-control"
-                            onChange={(e) => setDepositAmount(e.target.value)}
-                            aria-describedby="basic-addon3"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                {(depositCurrency == "ETH" ||
-                  depositCurrency == "W2" ||
-                  depositCurrency == "W1") && (
-                  <div style={{ display: "flex", flexDirection: "row" }}>
-                    <div style={{ flex: 1, marginRight: 10 }}>
-                      <label for="basic-url">Address</label>
-                      <div className="input-group mb-3">
-                        <div className="input-group-prepend">
-                          <span className="input-group-text" id="basic-addon3">
-                            {depositCurrency}
-                          </span>
-                        </div>
-                        <input
-                          type="text"
-                          className="form-control"
-                          value={token}
-                          readonly
-                          aria-describedby="basic-addon3"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-                {depositCurrency != "ETH" &&
-                  depositCurrency != "W2" &&
-                  depositCurrency != "W1" && (
-                    <button
-                      type="button"
-                      className="btn btn-primary"
-                      onClick={deposit}
-                    >
-                      Deposit
-                    </button>
-                  )}
-                {(depositCurrency == "ETH" ||
-                  depositCurrency == "W2" ||
-                  depositCurrency == "W1") && (
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={copy}
-                  >
-                    Copy To ClipBoard
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
+          <DepositModalHome
+            options={options}
+            depositCurrency={depositCurrency}
+            deposit={deposit}
+            copy={copy}
+            setDepositCurrency={setDepositCurrency}
+            setDepositAmount={setDepositAmount}
+          />
         </div>
         <div
           className="modal fade"
@@ -797,92 +447,13 @@ export default function Index({
           role="dialog"
           aria-hidden="true"
         >
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title" id="exampleModalLabel">
-                  Withdrawal
-                </h5>
-                <button
-                  type="button"
-                  className="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <div
-                    className="form-group"
-                    style={{ flex: 1, marginRight: 10 }}
-                  >
-                    <label for="exampleFormControlSelect1">Currency</label>
-                    <select
-                      className="form-control"
-                      onChange={(e) => setWithdrawalCurrency(e.target.value)}
-                    >
-                      {options.map((option) => (
-                        <option value={option.value}>{option.label}</option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <div style={{ flex: 1, marginRight: 10 }}>
-                    <label for="basic-url">Amount</label>
-                    <div className="input-group mb-3">
-                      <div className="input-group-prepend">
-                        <span className="input-group-text" id="basic-addon3">
-                          {withdrawalCurrency}
-                        </span>
-                      </div>
-                      <input
-                        type="number"
-                        className="form-control"
-                        onChange={(e) => setWithdrawalAmount(e.target.value)}
-                        aria-describedby="basic-addon3"
-                      />
-                    </div>
-                  </div>
-                </div>
-                {(withdrawalCurrency == "ETH" ||
-                  withdrawalCurrency == "W2" ||
-                  withdrawalCurrency == "W1") && (
-                  <div style={{ display: "flex", flexDirection: "row" }}>
-                    <div style={{ flex: 1, marginRight: 10 }}>
-                      <label for="basic-url">Address</label>
-                      <div className="input-group mb-3">
-                        <input
-                          type="text"
-                          className="form-control"
-                          onChange={(e) => setWithdrawalAddress(e.target.value)}
-                          aria-describedby="basic-addon3"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={withdraw}
-                >
-                  Withdraw
-                </button>
-              </div>
-            </div>
-          </div>
+          <WithdrawModalHome
+            options={options}
+            setWithdrawalCurrency={setWithdrawalCurrency}
+            setWithdrawalAmount={setWithdrawalAmount}
+            setWithdrawalAddress={setWithdrawalAddress}
+            withdraw={withdraw}
+          />
         </div>
       </div>
     </Layout>
