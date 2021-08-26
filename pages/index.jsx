@@ -1,5 +1,4 @@
 import Script from "next/script";
-import { useEffect } from "react";
 import MainHead from "./componets/MainHead";
 import Navbar from "./componets/Navbar";
 import HomeSection from "./componets/HomeSection";
@@ -12,12 +11,6 @@ export async function getServerSideProps({ req }) {
 }
 
 export default function Index({}) {
-  useEffect(() => {
-    fetch("/api/logs/get")
-      .then((data) => data.json())
-      .then(console.log);
-  }, []);
-
   return (
     <div>
       <MainHead />

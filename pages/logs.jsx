@@ -12,10 +12,10 @@ export async function getServerSideProps({ req }) {
   };
 }
 
-export default function Index({ data, isAdmin }) {
+export default function Index({ data, title, isAdmin }) {
   console.log("data: ", data);
   return (
-    <Layout isAdmin={isAdmin}>
+    <Layout title={title} isAdmin={isAdmin}>
       <div className="text-center">
         <div className="card">
           <div className="card-header">

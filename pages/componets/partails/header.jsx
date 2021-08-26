@@ -6,7 +6,7 @@ export default function Index({ isAdmin, title }) {
       data-sidebarClass="navbar-dark bg-dark"
     >
       <div className="container">
-        <a className="navbar-brand" href="#">
+        <a className="navbar-brand" href="/">
           1tok1
         </a>
         <button

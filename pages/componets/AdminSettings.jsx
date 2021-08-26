@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-nextjs-toast";
-import { ErrorToast, InfoToast, SucessToast } from "../../helpers/toastTypes";
+import { ErrorToast, SucessToast } from "../../helpers/toastTypes";
 
 import {
   getLatestAdminSettings,

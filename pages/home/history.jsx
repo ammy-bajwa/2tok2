@@ -1,9 +1,4 @@
-import { AgGridColumn, AgGridReact } from "ag-grid-react";
-import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
-
 import Layout from "../componets/Layout";
-import handleRefCellRenderer from "../helpers/refCellRenderer";
 import HistoryTradeTable from "../componets/HistoryTradeTable";
 import HistoryDepWidTable from "../componets/HistoryDepWidTable";
 import HistoryNav from "../componets/HistoryNav";
