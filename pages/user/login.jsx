@@ -3,6 +3,7 @@ import UserLoginHead from "../componets/UserLoginHead";
 import Footer from "../componets/Footer";
 import { addScriptsInBody } from "../helpers/addScripts";
 import LoginForm from "../componets/LoginForm";
+import { COMPANY_TITLE } from "../constants/company";
 
 export async function getServerSideProps({ req }) {
   return {
@@ -23,11 +24,11 @@ export default function Index({ messages }) {
             <div className="simple-page-wrap h-100">
               <div className="simple-page-logo text-light">
                 <a>
-                  <h1>1Tok1</h1>
+                  <h1>{COMPANY_TITLE}</h1>
                 </a>
               </div>
 
-              <div className="simple-page-form" id="signup-form">
+              <div className="simple-page-form" id="login-form">
                 <h1 className="text-center mb-20">Login</h1>
                 <LoginForm />
                 <div style={{ height: 20 }}></div>

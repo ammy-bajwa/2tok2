@@ -1,3 +1,5 @@
+import { COMPANY_TITLE } from "../constants/company";
+
 export default function Index() {
   return (
     <nav className="navbar navbar-expand-md fixed-top custom_nav_menu sticky">
@@ -6,7 +8,7 @@ export default function Index() {
         <a className="navbar-brand logo">
           {/*<!-- <img src="images/csr-live-logo-4.svg" alt="" className="img-fluid logo-light">
              <img src="images/csr-live-logo-4.svg" alt="" className="img-fluid logo-dark"> --> */}
-          <h4 style={{ color: "white" }}>1Tok1</h4>
+          <h4 style={{ color: "white" }}>{COMPANY_TITLE}</h4>
         </a>
 
         <button
@@ -29,7 +31,7 @@ export default function Index() {
               <a className="navbar-brand logo">
                 {/*<!-- <img src="images/csr-live-logo-4.svg" alt="" className="img-fluid logo-light">
                          <img src="images/csr-live-logo-4.svg" alt="" className="img-fluid logo-dark"> --> */}
-                <h4 style={{ color: "white" }}>1Tok1</h4>
+                <h4 style={{ color: "white" }}>{COMPANY_TITLE}</h4>
               </a>
             </div>
           </div>

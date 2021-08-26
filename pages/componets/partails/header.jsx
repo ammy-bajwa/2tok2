@@ -1,5 +1,6 @@
+import { COMPANY_TITLE } from "../../constants/company";
+
 export default function Index({ isAdmin, title }) {
-  console.log("isAdmin: ", isAdmin);
   return (
     <nav
       className="navbar navbar-expand-md navbar-dark bg-dark sidebarNavigation"
@@ -7,7 +8,7 @@ export default function Index({ isAdmin, title }) {
     >
       <div className="container">
         <a className="navbar-brand" href="/">
-          1tok1
+          {COMPANY_TITLE}
         </a>
         <button
           className="navbar-toggler leftNavbarToggler"

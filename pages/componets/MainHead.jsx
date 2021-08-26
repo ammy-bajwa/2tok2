@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { COMPANY_PAGE_TITLE, COMPANY_TITLE } from "../constants/company";
 
 export default function Index() {
   return (
@@ -11,8 +12,7 @@ export default function Index() {
         name="csrf-token"
         content="JVpbnb_kLlwwqKoaw6LxmSiCcCZDRYxWZXNnVWdT8IsQazDH6IJKE1jq-X_70bXTatFGFAx80zsJGwNkHxaVvw=="
       />
-      <title>1Tok1 | 1Tok1</title>
-
+      <title>{COMPANY_PAGE_TITLE}</title>;
       <link
         rel="shortcut icon"
         href="images/faviconfeac.ico?20200226"
@@ -108,15 +108,14 @@ export default function Index() {
         name="msapplication-square310x310logo"
         content="images/largetilefeac.html?20200226"
       />
-
       <meta name="msapplication-TileColor" content="#ffffff" />
       <meta name="theme-color" content="#ffffff" />
       <meta property="og:type" content="website" />
       <meta property="og:url" content="index.html" />
-      <meta property="og:title" content="CSR.live | 1Tok1" />
-      <meta property="og:description" content="1Tok1" />
-      <meta name="description" content="1Tok1" />
-      <meta name="og:sitename" content="1Tok1" />
+      <meta property="og:title" content={`CSR.live | ${COMPANY_TITLE}`} />
+      <meta property="og:description" content={COMPANY_TITLE} />
+      <meta name="description" content={COMPANY_TITLE} />
+      <meta name="og:sitename" content={COMPANY_TITLE} />
       <meta name="og:type" content="website" />
       <meta name="og:url" content="index.html" />
       <meta name="og:image" content="images/og_img.html" />
