@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import UserLoginHead from "../componets/UserLoginHead";
 import Footer from "../componets/Footer";
+import { addScriptsInBody } from "../helpers/addScripts";
+import LoginForm from "../componets/LoginForm";
 
 export async function getServerSideProps({ req }) {
   return {
@@ -10,31 +12,7 @@ export async function getServerSideProps({ req }) {
 
 export default function Index({ messages }) {
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src =
-      "http://www.google.com/recaptcha/api.js?hl=en&amp;render=explicit&amp;onload=recaptchaOnloadCallback";
-    script.async = true;
-    document.body.appendChild(script);
-    const script2 = document.createElement("script");
-    script2.src = "/assets/8/8f271511da/cfd4ba49/jquery.js";
-    script2.async = true;
-    document.body.appendChild(script2);
-    const script3 = document.createElement("script");
-    script3.src = "/assets/8/8f271511da/2de337b0/vendor/modernizr.custom.js";
-    script3.async = true;
-    document.body.appendChild(script3);
-    const script4 = document.createElement("script");
-    script4.src = "/assets/8/8f271511da/2de337b0/vendor/modernizr.custom.js";
-    script4.async = true;
-    document.body.appendChild(script4);
-    const script8 = document.createElement("script");
-    script8.src = "/assets/8/8f271511da/32384b8a/js/sweetalert-dev.js";
-    script8.async = true;
-    document.body.appendChild(script8);
-    const script9 = document.createElement("script");
-    script9.src = `jQuery(function ($) {jQuery(".password-hide-show").hidePassword(true)});`;
-    script9.async = true;
-    document.body.appendChild(script9);
+    addScriptsInBody();
   }, []);
   return (
     <div>
@@ -51,67 +29,7 @@ export default function Index({ messages }) {
 
               <div className="simple-page-form" id="signup-form">
                 <h1 className="text-center mb-20">Login</h1>
-                <form id="login-form" method="post" autocomplete="off">
-                  <input
-                    type="hidden"
-                    name="_csrf-frontend"
-                    value="1NnNFoTsqxbr5PWnyaUIhmlXmqL_-JWotWVJKkHhR_zh6KZM04rPWYOmpsLx1kzMKwSskLDBysXZDS0bOaQiyA=="
-                  />
-                  <div className="form-group field-loginform-username required">
-                    <input
-                      type="email"
-                      id="loginform-username"
-                      className="form-control"
-                      name="email"
-                      tabindex="1"
-                      placeholder="Email"
-                      aria-required="true"
-                    />
-
-                    <p className="help-block help-block-error"></p>
-                  </div>
-                  <div className="form-group field-loginform-password required">
-                    <input
-                      type="password"
-                      id="loginform-password"
-                      className="password-hide-show form-control"
-                      name="password"
-                      tabindex="2"
-                      placeholder="Password"
-                      aria-required="true"
-                    />
-
-                    <p className="help-block help-block-error"></p>
-                  </div>
-                  <div className="form-group m-b-xl field-loginform-rememberme">
-                    <div className="checkbox">
-                      <input
-                        type="hidden"
-                        name="LoginForm[rememberMe]"
-                        value="0"
-                      />
-                      <input
-                        type="checkbox"
-                        id="loginform-rememberme"
-                        name="LoginForm[rememberMe]"
-                        value="1"
-                      />
-                      <label
-                        className="control-label"
-                        for="loginform-rememberme"
-                      >
-                        Remember me
-                      </label>
-                      <p className="help-block help-block-error"></p>
-                    </div>
-                  </div>
-                  <input
-                    type="submit"
-                    className="btn btn-primary input-100"
-                    name="login-button"
-                    value="Log In"
-                  ></input>
-                </form>
+                <LoginForm />
                 <div style={{ height: 20 }}></div>
                 {messages.error && (
                   <div className="alert alert-danger" role="alert">

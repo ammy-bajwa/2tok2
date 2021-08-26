@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import UserRegisterHead from "../componets/UserRegisterHead";
 import Footer from "../componets/Footer";
+import RegisterForm from "../componets/RegisterForm";
 
 export async function getServerSideProps({ req }) {
   return {
@@ -42,7 +43,7 @@ export default function Index({ messages }) {
   return (
     <div>
       <UserRegisterHead />
-      <div className="simple-page bg-oxygen ">
+      <div className="simple-page bg-oxygen">
         <div id="video-bg">
           <div className="h-90 overflow">
             <div className="simple-page-wrap">
@@ -54,96 +55,7 @@ export default function Index({ messages }) {
 
               <div className="simple-page-form" id="registration">
                 <h1>Sign up for a new account</h1>
-                <form id="registration-form" method="post" autocomplete="off">
-                  <input
-                    type="hidden"
-                    name="_csrf-frontend"
-                    value="NPzieYimaD0zlGsCgmqlkoYbH6aaVmUcLNEzPaDIm14BzYkj38AMclvWOGe6GeHYxEgplNVvOnFAuVcM2I3-ag=="
-                  />
-                  <div className="form-group field-registrationform-email required">
-                    <input
-                      type="text"
-                      id="registrationform-userName"
-                      className="form-control"
-                      name="username"
-                      placeholder="Full Name"
-                      aria-required="true"
-                    />
-                    <p className="help-block help-block-error"></p>
-                  </div>
-                  <div className="form-group field-registrationform-email required">
-                    <input
-                      type="email"
-                      id="registrationform-email"
-                      className="form-control"
-                      name="email"
-                      placeholder="Email"
-                      aria-required="true"
-                    />
-                    <p className="help-block help-block-error"></p>
-                  </div>
-                  <div className="form-group field-registrationform-password required">
-                    <input
-                      type="password"
-                      id="registrationform-password"
-                      className="password-hide-show form-control"
-                      name="password"
-                      placeholder="Password"
-                      aria-required="true"
-                    />
-                    <p className="help-block help-block-error"></p>
-                  </div>
-                  <div className="form-group field-registrationform-password_confirm required">
-                    <input
-                      type="password"
-                      id="registrationform-password_confirm"
-                      className="password-hide-show form-control"
-                      name="confirmPassword"
-                      placeholder="Confirm Password"
-                      aria-required="true"
-                    />
-                    <p className="help-block help-block-error"></p>
-                  </div>
-                  <div className="form-group field-registrationform-terms required">
-                    <div className="checkbox">
-                      <input
-                        type="hidden"
-                        name="RegistrationForm[terms]"
-                        value="0"
-                      />
-                      <input
-                        type="checkbox"
-                        id="registrationform-terms"
-                        name="RegistrationForm[terms]"
-                        value="1"
-                        aria-required="true"
-                      />
-                      <label for="registrationform-terms">
-                        I have read and accept the{" "}
-                        <a
-                          className="underline"
-                          href="terms-of-use.html"
-                          target="_blank"
-                        >
-                          Terms and Conditions
-                        </a>
-                      </label>
-                    </div>
-                    <p className="help-block help-block-error"></p>
-                  </div>
-
-                  <input
-                    type="submit"
-                    className="btn btn-primary input-100 "
-                    name="login-button"
-                    value="Sign up"
-                  ></input>
-                  {messages.error && (
-                    <div className="alert alert-danger" role="alert">
-                      {messages.error}
-                    </div>
-                  )}
-                </form>
+                <RegisterForm messages={messages} />
               </div>
               <div className="simple-page-footer">
                 <p>
