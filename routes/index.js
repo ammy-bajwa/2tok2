@@ -320,6 +320,16 @@ class Routes {
         res.redirect("/");
       }
     });
+
+    this.express.get("/reset-password/:token", async (req, res) => {
+      console.log("Here---------------- 2: ", req.params);
+      const { token } = req.params;
+      req.locals = {
+        token,
+      };
+      this.next.render(req, res, "/resetPassword", req.query);
+      // res.redirect("/");
+    });
   }
 }
 

@@ -6,12 +6,16 @@ const {
 } = require("../constants/logs");
 const database = require("../db");
 const eth = require("../ethProvider");
+const { sendPasswordResetEmail } = require("../helpers/sendPasswordResetEmail");
+const { validateToken } = require("../helpers/token");
 // const {
 //   updateAdminSettings,
 //   getLatestAdminSettings,
 // } = require("../models/adminSettings");
 
 const { logThis } = require("../models/logs");
+const { createToken } = require("../models/user");
+const { store } = require("../store");
 
 const catchHandler = (err, res, msg) => {
   res.json({ error: msg || "Something went wrong !", err });
@@ -403,6 +407,60 @@ class Routes {
           console.error(err);
           catchHandler(err, res);
         });
+    });
+
+    this.express.post("/api/forget-password", (req, res) => {
+      const { email } = req.body;
+      database
+        .raw("SELECT * FROM users WHERE email = ?", [email])
+        .then((data) => data.rows[0])
+        .then(async (data) => {
+          console.log(data);
+          if (!data) {
+            res.json({ error: "User not found", success: false });
+          } else {
+            try {
+              // create a token and save it
+              let passwordResetToken = await createToken();
+              passwordResetToken = passwordResetToken.replace("/", "");
+              const tokenValue = {
+                token: passwordResetToken,
+                email,
+                expirationTime: new Date(
+                  new Date().getTime() + 2 * 60 * 1000
+                ).getTime(),
+                used: false,
+              };
+              store.setToken(passwordResetToken, tokenValue);
+              const message = `Click here to reset you password <a href="http://localhost:3000/reset-password/${passwordResetToken}">Reset Password</a>`;
+              await sendPasswordResetEmail(email, message);
+              console.log("passwordResetToken: ", passwordResetToken);
+              console.log("store: ", store.tokens);
+              res.json({
+                message: "Password reset email sended successfully",
+                success: true,
+              });
+            } catch (error) {
+              console.error(error);
+              res
+                .status(500)
+                .json({ error: "Error sending password reset email" });
+            }
+          }
+        });
+    });
+
+    this.express.post("/api/change-password", async (req, res) => {
+      const { password, token } = req.body;
+      try {
+        // validateToken
+        const { email } = await validateToken(token);
+        console.log("email: ", email);
+        // reset password of user here
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Token is invalid" });
+      }
     });
   }
 }

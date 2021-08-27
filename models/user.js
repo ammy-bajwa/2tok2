@@ -153,6 +153,15 @@ const userTransactions = (request, response) => {
     response.status(404);
   }
 };
+
+// crypto ships with node - we're leveraging it to create a random, secure token
+const createToken = () => {
+  return new Promise((resolve, reject) => {
+    crypto.randomBytes(16, (err, data) => {
+      err ? reject(err) : resolve(data.toString("base64"));
+    });
+  });
+};
 // don't forget to export!
 module.exports = {
   signin,
@@ -160,6 +169,8 @@ module.exports = {
   authenticate,
   updateUserToken,
   userTransactions,
+  findUser,
+  createToken,
 };
 // check out bcrypt's docs for more info on their hashing function
 const hashPassword = (password) => {
@@ -194,12 +205,4 @@ const createUser = (user) => {
         false
       );
     });
-};
-// crypto ships with node - we're leveraging it to create a random, secure token
-const createToken = () => {
-  return new Promise((resolve, reject) => {
-    crypto.randomBytes(16, (err, data) => {
-      err ? reject(err) : resolve(data.toString("base64"));
-    });
-  });
 };

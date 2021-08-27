@@ -1,4 +1,4 @@
-const LoginForm = () => (
+const LoginForm = ({ setEmail }) => (
   <form id="login-form" method="post" autoComplete="off">
     <input
       type="hidden"
@@ -12,6 +12,7 @@ const LoginForm = () => (
         className="form-control"
         name="email"
         tabIndex="1"
+        onChange={(e) => setEmail(e?.target?.value)}
         placeholder="Email"
         aria-required="true"
       />

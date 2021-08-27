@@ -71,3 +71,7 @@ body {
 .overflow {
   overflow: auto;
 }
+
+.on_hover:hover {
+  cursor: pointer;
+}
