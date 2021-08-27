@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build": "next build && databaseMigration",
+    "build": "next build && npm run databaseMigration",
     "databaseMigration": "knex migrate:latest",
     "db": "heroku pg:psql postgresql-rigid-77757 --app wayn2tok"
   },
