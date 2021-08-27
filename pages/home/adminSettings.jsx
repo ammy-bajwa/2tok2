@@ -17,9 +17,9 @@ export default function Index({ userName, title, isAdmin }) {
             {messages.success}
           </div>
         )}
-        {messages.error && (
+        {messages?.error && (
           <div className="alert alert-danger" role="alert">
-            {messages.error}
+            {messages?.error}
           </div>
         )}
 

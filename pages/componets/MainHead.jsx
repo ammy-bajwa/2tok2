@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { COMPANY_PAGE_TITLE, COMPANY_TITLE } from "../constants/company";
+import { COMPANY_PAGE_TITLE, COMPANY_TITLE } from "../../constants/company";
 
 export default function Index() {
   return (

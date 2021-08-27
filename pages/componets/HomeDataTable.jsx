@@ -1,6 +1,6 @@
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
 
-const HomeDataTable = ({ data }) => (
+const HomeDataTable = ({ data = {} }) => (
   <AgGridReact
     rowData={Object.keys(data).map((key) => {
       return { currency: key, balance: data[key] };

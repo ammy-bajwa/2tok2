@@ -4,7 +4,7 @@ const SendModalHome = ({
   options,
   setSendAmount,
   sendCurrency,
-  send
+  send,
 }) => (
   <div className="modal-dialog" role="document">
     <div className="modal-content">
@@ -43,7 +43,7 @@ const SendModalHome = ({
               className="form-control"
               onChange={(e) => setSendCurrency(e.target.value)}
             >
-              {options.map((option) => (
+              {options?.map((option) => (
                 <option value={option.value}>{option.label}</option>
               ))}
             </select>

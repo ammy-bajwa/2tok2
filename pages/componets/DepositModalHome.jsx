@@ -30,7 +30,7 @@ const DepositModalHome = ({
               className="form-control"
               onChange={(e) => setDepositCurrency(e.target.value)}
             >
-              {options.map((option) => (
+              {options?.map((option) => (
                 <option value={option.value}>{option.label}</option>
               ))}
             </select>

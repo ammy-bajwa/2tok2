@@ -3,11 +3,10 @@ import { ErrorToast, SucessToast } from "../../helpers/toastTypes";
 import { toast } from "react-nextjs-toast";
 import UserLoginHead from "../componets/UserLoginHead";
 import Footer from "../componets/Footer";
-import { addScriptsInBody } from "../helpers/addScripts";
 import LoginForm from "../componets/LoginForm";
-import { COMPANY_TITLE } from "../constants/company";
 import { sendForgetPasswordEmail } from "../../api/user";
-import { validateEmail } from "../helpers/email";
+import { COMPANY_TITLE } from "../../constants/company";
+import { validateEmail } from "../../helpers/email";
 
 export async function getServerSideProps({ req }) {
   return {
@@ -17,7 +16,31 @@ export async function getServerSideProps({ req }) {
 
 export default function Index({ messages }) {
   useEffect(() => {
-    addScriptsInBody();
+    const script = document.createElement("script");
+    script.src =
+      "http://www.google.com/recaptcha/api.js?hl=en&amp;render=explicit&amp;onload=recaptchaOnloadCallback";
+    script.async = true;
+    document.body.appendChild(script);
+    const script2 = document.createElement("script");
+    script2.src = "/assets/8/8f271511da/cfd4ba49/jquery.js";
+    script2.async = true;
+    document.body.appendChild(script2);
+    const script3 = document.createElement("script");
+    script3.src = "/assets/8/8f271511da/2de337b0/vendor/modernizr.custom.js";
+    script3.async = true;
+    document.body.appendChild(script3);
+    const script4 = document.createElement("script");
+    script4.src = "/assets/8/8f271511da/2de337b0/vendor/modernizr.custom.js";
+    script4.async = true;
+    document.body.appendChild(script4);
+    const script8 = document.createElement("script");
+    script8.src = "/assets/8/8f271511da/32384b8a/js/sweetalert-dev.js";
+    script8.async = true;
+    document.body.appendChild(script8);
+    const script9 = document.createElement("script");
+    script9.src = `jQuery(function ($) {jQuery(".password-hide-show").hidePassword(true)});`;
+    script9.async = true;
+    document.body.appendChild(script9);
   }, []);
   const [email, setEmail] = useState("");
 
@@ -58,10 +81,10 @@ export default function Index({ messages }) {
                 <h1 className="text-center mb-20">Login</h1>
                 <LoginForm setEmail={setEmail} />
                 <div style={{ height: 20 }}></div>
-                {messages.error && (
+                {messages?.error && (
                   <div className="alert alert-danger" role="alert">
                     {" "}
-                    {messages.error}{" "}
+                    {messages?.error}{" "}
                   </div>
                 )}
               </div>

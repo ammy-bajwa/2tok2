@@ -28,7 +28,7 @@ const HomeExchange = ({
             className="form-control"
             onChange={(e) => setPayCurrency(e.target.value)}
           >
-            {options.map((option) => (
+            {options?.map((option) => (
               <option value={option.value}>{option.label}</option>
             ))}
           </select>
@@ -39,7 +39,7 @@ const HomeExchange = ({
             className="form-control"
             onChange={(e) => setReceiveCurrency(e.target.value)}
           >
-            {options.map((option) => (
+            {options?.map((option) => (
               <option value={option.value}>{option.label}</option>
             ))}
           </select>

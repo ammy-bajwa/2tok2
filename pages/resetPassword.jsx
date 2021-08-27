@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { updateUserPassword } from "../api/user";
 import Layout from "./componets/Layout";
-import LogsTable from "./componets/LogsTable";
 
 export async function getServerSideProps({ req }) {
   return {

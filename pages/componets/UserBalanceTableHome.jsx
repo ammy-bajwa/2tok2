@@ -1,6 +1,6 @@
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
 
-const UserBalanceTableHome = ({ data, actionRenderer }) => (
+const UserBalanceTableHome = ({ data = {}, actionRenderer }) => (
   <AgGridReact
     rowData={Object.keys(data).map((key) => {
       return { currency: key, balance: data[key] };

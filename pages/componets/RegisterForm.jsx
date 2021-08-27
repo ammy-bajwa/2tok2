@@ -75,11 +75,6 @@ const RegisterForm = ({ messages }) => (
       name="login-button"
       value="Sign up"
     ></input>
-    {messages.error && (
-      <div className="alert alert-danger" role="alert">
-        {messages.error}
-      </div>
-    )}
   </form>
 );
 export default RegisterForm;

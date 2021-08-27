@@ -1,6 +1,6 @@
 import { AgGridColumn, AgGridReact } from "ag-grid-react";
 
-import handleRefCellRenderer from "../helpers/refCellRenderer";
+import handleRefCellRenderer from "../helpersLocal/refCellRenderer";
 
 const HistoryDepWidTable = ({ data }) => {
   return (
