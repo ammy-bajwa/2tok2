@@ -6,6 +6,7 @@ import IdleTime from "./componets/IdleTime";
 import "./styles.css";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
+import 'ag-grid-community/dist/styles/ag-theme-balham.css';
 
 const App = ({ Component, pageProps }) => {
   useEffect(() => {
