@@ -1,4 +1,4 @@
-import { COMPANY_TITLE } from "../../constants/company";
+import { COMPANY_TITLE } from "../../../company";
 
 export default function Index({ isAdmin, title }) {
   return (

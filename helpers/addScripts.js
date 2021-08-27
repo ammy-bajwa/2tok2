@@ -1,4 +1,4 @@
-export const addScriptsInBody = () => {
+const addScriptsInBody = () => {
   const script = document.createElement("script");
   script.src =
     "http://www.google.com/recaptcha/api.js?hl=en&amp;render=explicit&amp;onload=recaptchaOnloadCallback";
@@ -24,4 +24,8 @@ export const addScriptsInBody = () => {
   script9.src = `jQuery(function ($) {jQuery(".password-hide-show").hidePassword(true)});`;
   script9.async = true;
   document.body.appendChild(script9);
+};
+
+module.exports = {
+  addScriptsInBody,
 };
