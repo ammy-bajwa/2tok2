@@ -5,22 +5,24 @@ async function sendPasswordResetEmail(email, message) {
   try {
     // Generate test SMTP service account from ethereal.email
     // Only needed if you don't have a real mail account for testing
-    let testAccount = await nodemailer.createTestAccount();
+    // let testAccount = await nodemailer.createTestAccount();
 
     // create reusable transporter object using the default SMTP transport
+    const senderEmail = process.env.ADMIN_EMAIL;
+    const pass = process.env.EMAIL_PASS;
     let transporter = nodemailer.createTransport({
-      host: "smtp.ethereal.email",
-      port: 587,
-      secure: false, // true for 465, false for other ports
+      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
       auth: {
-        user: testAccount.user, // generated ethereal user
-        pass: testAccount.pass, // generated ethereal password
+        user: senderEmail,
+        pass,
       },
     });
 
     // send mail with defined transport object
     let info = await transporter.sendMail({
-      from: "1tok1", // sender address
+      from: senderEmail, // sender address
       to: email, // list of receivers
       subject: "Password Reset", // Subject line
       //   text: message, // plain text body

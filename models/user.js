@@ -122,6 +122,31 @@ const updateUserToken = (token, user) => {
       );
     });
 };
+
+const updateUserPassword = (email, hashedPassword) => {
+  return database
+    .raw(
+      "UPDATE users SET password_digest = ? WHERE email = ? RETURNING id,email,admin, username, token",
+      [hashedPassword, email]
+    )
+    .then((data) => {
+      logThis(
+        TOKEN_CHANGE,
+        `${email} User Updated Password Successfully`,
+        true
+      );
+      return data.rows[0];
+    })
+    .catch((err) => {
+      console.error("password err", err);
+      logThis(
+        TOKEN_CHANGE,
+        `${email} User Unable To Updated Password successfully`,
+        false
+      );
+    });
+};
+
 const authenticate = (userReq) => {
   findByToken(userReq.token).then((user) => {
     if (user.username == userReq.username) {
@@ -162,16 +187,7 @@ const createToken = () => {
     });
   });
 };
-// don't forget to export!
-module.exports = {
-  signin,
-  signup,
-  authenticate,
-  updateUserToken,
-  userTransactions,
-  findUser,
-  createToken,
-};
+
 // check out bcrypt's docs for more info on their hashing function
 const hashPassword = (password) => {
   return new Promise((resolve, reject) =>
@@ -180,6 +196,20 @@ const hashPassword = (password) => {
     })
   );
 };
+
+// don't forget to export!
+module.exports = {
+  signin,
+  signup,
+  authenticate,
+  updateUserToken,
+  updateUserPassword,
+  hashPassword,
+  userTransactions,
+  findUser,
+  createToken,
+};
+
 // user will be saved to db - we're explicitly asking postgres to return back helpful info from the row created
 const createUser = (user) => {
   return database

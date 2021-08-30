@@ -321,11 +321,12 @@ class Routes {
       }
     });
 
-    this.express.get("/reset-password/:token", async (req, res) => {
+    this.express.get("/reset-password/:token/:email", async (req, res) => {
       console.log("Here---------------- 2: ", req.params);
-      const { token } = req.params;
+      const { token, email } = req.params;
       req.locals = {
         token,
+        email,
       };
       this.next.render(req, res, "/resetPassword", req.query);
       // res.redirect("/");

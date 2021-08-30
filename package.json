@@ -5,9 +5,9 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "build": "next build && npm run databaseMigration",
+    "build": "next build",
     "databaseMigration": "knex migrate:latest",
-    "db": "heroku pg:psql postgresql-rigid-77757 --app wayn2tok"
+    "db": "heroku pg:psql postgresql-trapezoidal-22836 --app wayne2tok2"
   },
   "dependencies": {
     "ag-grid-community": "^26.0.0",

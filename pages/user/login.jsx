@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { ErrorToast, SucessToast } from "../../helpers/toastTypes";
-import { toast } from "react-nextjs-toast";
+import { toast } from "react-toastify";
 import UserLoginHead from "../componets/UserLoginHead";
 import Footer from "../componets/Footer";
 import LoginForm from "../componets/LoginForm";
@@ -43,25 +42,31 @@ export default function Index({ messages }) {
     document.body.appendChild(script9);
   }, []);
   const [email, setEmail] = useState("");
+  const [isDisabled, setDisabled] = useState(false);
 
   const handleForgetPassword = () => {
-    if (!email && validateEmail(email)) {
-      alert("Error in sending password reset email else 1!!");
+    setDisabled(true);
+    if (!email || !validateEmail(email)) {
+      toast.error("Error No Valid Email !!");
+      setDisabled(false);
     } else if (validateEmail(email)) {
       sendForgetPasswordEmail(email)
         .then(({ success, message }) => {
           if (success) {
-            alert(message);
+            toast.success(message);
           } else {
-            alert("Error in sending password reset email! 3!");
+            toast.error("Error in sending password reset email !!");
+            setDisabled(false);
           }
         })
         .catch((err) => {
           console.error(err);
-          alert("Error in sending password reset email!!");
+          toast.error("Error in sending password reset email !!");
+          setDisabled(false);
         });
     } else {
-      alert("Error in sending password reset email!! else");
+      toast.error("Error in sending password reset email!!");
+      setDisabled(false);
     }
   };
   return (
@@ -91,9 +96,13 @@ export default function Index({ messages }) {
               <div className="simple-page-footer">
                 <p>
                   <span
-                    className="on_hover"
+                    className={`on_hover ${isDisabled && "text-muted"}`}
                     title="Forgot your password? Change it here!"
-                    onClick={handleForgetPassword}
+                    onClick={() => {
+                      if (!isDisabled) {
+                        handleForgetPassword();
+                      }
+                    }}
                   >
                     Forgot your password?
                   </span>

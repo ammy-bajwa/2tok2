@@ -2,11 +2,13 @@ import NProgress from "nprogress";
 import { useEffect } from "react";
 import Router from "next/router";
 import IdleTime from "./componets/IdleTime";
+import { ToastContainer } from "react-toastify";
 
 import "./styles.css";
+import "react-toastify/dist/ReactToastify.css";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine-dark.css";
-import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import "ag-grid-community/dist/styles/ag-theme-balham.css";
 
 const App = ({ Component, pageProps }) => {
   useEffect(() => {
@@ -16,6 +18,17 @@ const App = ({ Component, pageProps }) => {
   }, []);
   return (
     <>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <IdleTime {...pageProps} />
       <Component {...pageProps} />
     </>

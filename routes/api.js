@@ -14,7 +14,11 @@ const { validateToken } = require("../helpers/token");
 // } = require("../models/adminSettings");
 
 const { logThis } = require("../models/logs");
-const { createToken } = require("../models/user");
+const {
+  createToken,
+  updateUserPassword,
+  hashPassword,
+} = require("../models/user");
 const { store } = require("../store");
 
 const catchHandler = (err, res, msg) => {
@@ -422,7 +426,7 @@ class Routes {
             try {
               // create a token and save it
               let passwordResetToken = await createToken();
-              passwordResetToken = passwordResetToken.replace("/", "");
+              passwordResetToken = passwordResetToken.replace(/[/]/g, "bar");
               const tokenValue = {
                 token: passwordResetToken,
                 email,
@@ -431,9 +435,17 @@ class Routes {
                 ).getTime(),
                 used: false,
               };
-              store.setToken(passwordResetToken, tokenValue);
-              const message = `Click here to reset you password <a href="http://localhost:3000/reset-password/${passwordResetToken}">Reset Password</a>`;
+              console.log("request.headers.host: ", req.headers.host);
+              store.setToken(email, tokenValue);
+              const message = `Click here to reset you password. This link will expire in 2 minutes <a href="${
+                process.env.NODE_ENV === "develoopment" ? "http" : "https"
+              }://${
+                req.headers.host
+              }/reset-password/${passwordResetToken}/${email}">Reset Password</a>`;
+
               await sendPasswordResetEmail(email, message);
+              // await sendPasswordResetEmail("bifikov418@mi166.com", message);
+
               console.log("passwordResetToken: ", passwordResetToken);
               console.log("store: ", store.tokens);
               res.json({
@@ -451,12 +463,17 @@ class Routes {
     });
 
     this.express.post("/api/change-password", async (req, res) => {
-      const { password, token } = req.body;
+      const { password, token, email } = req.body;
       try {
         // validateToken
-        const { email } = await validateToken(token);
-        console.log("email: ", email);
-        // reset password of user here
+        const { email: validEmail } = await validateToken(token, email);
+        const hashedPassword = await hashPassword(password);
+        console.log("hashedPassword: ", hashedPassword);
+        await updateUserPassword(validEmail, hashedPassword);
+        res.json({
+          message: "Password updated successfully",
+          success: true,
+        });
       } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Token is invalid" });
