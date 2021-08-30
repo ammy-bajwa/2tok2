@@ -40,6 +40,7 @@
     "react-dom": "^17.0.2",
     "react-nextjs-toast": "^1.2.5",
     "react-render-html": "^0.6.0",
+    "react-toastify": "^8.0.1",
     "serve-favicon": "^2.5.0",
     "styled-components": "^5.3.0",
     "web3": "^1.4.0"
