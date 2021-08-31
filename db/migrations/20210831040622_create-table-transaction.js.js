@@ -10,7 +10,8 @@ exports.up = function (knex) {
     createdAt TIMESTAMP,
     CONSTRAINT fk_user
     FOREIGN KEY(userId)
-    REFERENCES users(id) 
+    REFERENCES users(id) ,
+    CONSTRAINT ref_to UNIQUE(ref,userId)
     )`;
   return knex.raw(createQuery);
 };
