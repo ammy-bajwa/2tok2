@@ -7,28 +7,25 @@ export default function Index() {
             <div className="row">
               <div className="col-lg-12">
                 <div className="text-center">
-                  <h1 className="home_title text-white mx-auto text-capitalize mb-0">
+                  <h1 className="home_title text-dark mx-auto text-capitalize mb-0">
                     <div className="simple-text-rotate">
                       Secure & Easy Way to Trade
                     </div>
                   </h1>
                   <div className="home_text_details">
-                    <p className="home_subtitle mt-3 mx-auto mb-0">
+                    <p className="home_subtitle text-dark mt-3 mx-auto mb-0">
                       Unordinary digital agency crafting sophisticated and
                       eccentric stuff that will leave you speechless{" "}
                     </p>
                   </div>
                   <div className="home_btn_manage mt-4">
-                    <a
-                      className="btn btn-default btn_custom mr-3"
-                      href="/user/login"
-                    >
+                    <a className="btn btn-default mr-3" href="/user/login">
                       Login
                     </a>
                   </div>
                   <div className="home_recent_trades mx-auto mb-0 mt-5">
                     <div id="w0" className="grid-view">
-                      <table className="table table-dark">
+                      <table className="table table-light">
                         <thead>
                           <tr>
                             <th>Symbol</th>
@@ -107,7 +104,7 @@ export default function Index() {
       </div>
       <div className="scroll_down">
         <a href="#why" className="scroll">
-          <i className="mdi mdi-chevron-double-down text-white"></i>
+          <i className="mdi mdi-chevron-double-down text-dark"></i>
         </a>
       </div>
     </section>

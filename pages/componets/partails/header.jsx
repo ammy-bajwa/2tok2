@@ -1,10 +1,10 @@
-import { COMPANY_TITLE } from "../../../company";
+import { COMPANY_TITLE } from "../../../constants/company";
 
 export default function Index({ isAdmin, title }) {
   return (
     <nav
-      className="navbar navbar-expand-md navbar-dark bg-dark sidebarNavigation"
-      data-sidebarClass="navbar-dark bg-dark"
+      className="navbar navbar-expand-md navbar-light bg-light sidebarNavigation"
+      data-sidebarClass="navbar-light bg-light"
     >
       <div className="container">
         <a className="navbar-brand" href="/">

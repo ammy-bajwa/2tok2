@@ -108,7 +108,7 @@ button {
 .text_custom {
   color: rgba(28, 28, 28, 0.95) !important;
 }
-.btn_custom {
+/* .btn_custom {
   padding: 15px 32px !important;
   text-transform: uppercase;
   color: #ffffff !important;
@@ -137,7 +137,7 @@ button {
   background-color: #7b2cbf;
   border: none;
   background-position: 100% 0;
-}
+} */
 /*
 .btn {
     padding: 15px 32px;
@@ -466,15 +466,15 @@ button {
 }
 .home_recent_trades .recent-trades-item {
   width: 100%;
-  background-color: rgba(33, 37, 41, 0.9);
+  background-color: rgba(255, 255, 255, 0.9);
   padding: 0.5rem;
 }
 .home_recent_trades .recent-trades-volume-data {
   font-size: 28px;
-  color: #fff;
+  color: rgb(0, 0, 0);
 }
 .home_recent_trades .recent-trades-volume-title {
-  color: #fff;
+  color: rgb(0, 0, 0);
   font-size: 14px;
 }
 
