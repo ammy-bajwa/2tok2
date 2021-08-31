@@ -27,7 +27,7 @@ const App = ({ Component, pageProps }) => {
         rtl={false}
         draggable
         pauseOnHover
-        theme="dark"
+        theme="colored"
       />
       <IdleTime {...pageProps} />
       <Component {...pageProps} />
