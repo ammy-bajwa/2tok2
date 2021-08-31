@@ -19,7 +19,7 @@ export default function Index() {
                     </p>
                   </div>
                   <div className="home_btn_manage mt-4">
-                    <a className="btn btn-default mr-3" href="/user/login">
+                    <a className="btn btn-primary mr-3" href="/user/login">
                       Login
                     </a>
                   </div>

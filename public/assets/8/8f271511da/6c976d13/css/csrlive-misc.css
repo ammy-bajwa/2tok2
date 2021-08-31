@@ -957,7 +957,7 @@ body.bg-oxygen {
   position: relative;
   background: transparent;
   height: 100vh;
-  background-image: url("../../../../../images/background.jpg");
+  /* background-image: url("../../../../../images/background.jpg"); */
   background-position: center center;
 }
 
@@ -974,7 +974,7 @@ body.bg-oxygen {
 }
 
 .btn-primary {
-  color: #ffffff !important;
+  /* color: #ffffff !important;
   border: none;
   background-color: #e5383b;
   background-image: -webkit-linear-gradient(
@@ -992,13 +992,13 @@ body.bg-oxygen {
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   background-size: 200% 100%;
-  border-radius: 30px;
+  border-radius: 30px; */
 }
 .btn-primary:hover {
-  color: #ffffff !important;
+  /* color: #ffffff !important;
   background-color: #7b2cbf;
   border: none;
-  background-position: 100% 0;
+  background-position: 100% 0; */
 }
 
 /*# sourceMappingURL=../css/csrlive-misc.css.map */

@@ -76,7 +76,7 @@ export default function Index({ messages }) {
         <div id="video-bg">
           <div className="h-90 overflow">
             <div className="simple-page-wrap h-100">
-              <div className="simple-page-logo text-light">
+              <div className="simple-page-logo text-dark">
                 <a>
                   <h1>{COMPANY_TITLE}</h1>
                 </a>
@@ -93,7 +93,7 @@ export default function Index({ messages }) {
                   </div>
                 )}
               </div>
-              <div className="simple-page-footer">
+              <div className="simple-page-footer text-dark">
                 <p>
                   <span
                     className={`on_hover ${isDisabled && "text-muted"}`}
@@ -108,8 +108,12 @@ export default function Index({ messages }) {
                   </span>
                 </p>
                 <p>
-                  <small>Don't have an account ?</small>
-                  <a href="/user/register" title="Sign up here!">
+                  <small className="text-dark">Don't have an account ?</small>
+                  <a
+                    className="text-dark"
+                    href="/user/register"
+                    title="Sign up here!"
+                  >
                     Sign up here!
                   </a>
                 </p>
