@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { COMPANY_TITLE } from "../../constants/company";
 
 export default function Index() {
   return (
@@ -11,7 +12,7 @@ export default function Index() {
         name="csrf-token"
         content="NPzieYimaD0zlGsCgmqlkoYbH6aaVmUcLNEzPaDIm14BzYkj38AMclvWOGe6GeHYxEgplNVvOnFAuVcM2I3-ag=="
       />
-      <title>Sign Up | 1Tok1</title>
+      <title>Sign Up | {COMPANY_TITLE}</title>
       <link
         rel="shortcut icon"
         href="/images/faviconfeac.ico?20200226"

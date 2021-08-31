@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import UserRegisterHead from "../componets/UserRegisterHead";
 import Footer from "../componets/Footer";
 import RegisterForm from "../componets/RegisterForm";
+import { COMPANY_TITLE } from "../../constants/company";
 
 export async function getServerSideProps({ req }) {
   return {
@@ -47,9 +48,9 @@ export default function Index({ messages }) {
         <div id="video-bg">
           <div className="h-90 overflow">
             <div className="simple-page-wrap">
-              <div className="simple-page-logo text-light">
+              <div className="simple-page-logo text-dark">
                 <a>
-                  <h1>1Tok1</h1>
+                  <h1>{COMPANY_TITLE}</h1>
                 </a>
               </div>
 
@@ -59,8 +60,10 @@ export default function Index({ messages }) {
               </div>
               <div className="simple-page-footer">
                 <p>
-                  <small>Do you have an account ?</small>
-                  <a href="/user/login">Log in</a>
+                  <small className="text-dark">Do you have an account ?</small>
+                  <a className="text-dark" href="/user/login">
+                    Log in
+                  </a>
                 </p>
               </div>
             </div>
