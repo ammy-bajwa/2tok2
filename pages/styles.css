@@ -24,22 +24,22 @@ body {
 }
 
 .nav-tabs a {
-  color: #f657c1 !important;
+  color: black !important;
 }
 
 .nav-tabs a:hover {
-  color: #d144ac !important;
+  color: #1a1a1a !important;
 }
 
 .nav-tabs .nav-link:focus,
 .nav-tabs .nav-link:hover {
-  border-color: #d144ac #d144ac #d144ac !important;
+  border-color: black !important;
 }
 
 .nav-tabs .nav-item.show .nav-link,
 .nav-tabs .nav-link.active {
-  background-color: #545454 !important;
-  border-color: #a6388a #dc51b0 #fff0 !important;
+  background-color: #bebebe !important;
+  border-color: #fff0 !important;
 }
 .btn-primary {
   background-color: #007bff99 !important;
