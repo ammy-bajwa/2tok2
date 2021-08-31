@@ -54,7 +54,7 @@ class Routes {
             data: JSON.stringify(_data || {}),
             tradeData: JSON.stringify(tradeData?.rows || []),
             userName,
-            settings: JSON.stringify(global.settings?.[0]),
+            settings: JSON.stringify(global.settings?.[0] || []),
             title: "trade",
             token: req.session?.loggedUser?.token,
             userId: req.session?.loggedUser?.id,

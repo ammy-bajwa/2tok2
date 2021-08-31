@@ -54,7 +54,7 @@ export default function Index({ message, data, userName, title, isAdmin }) {
           </div>
           <div className="card-body">
             <div
-              className="ag-theme-alpine-dark"
+              className="ag-theme-balham"
               style={{ height: "70vh", width: "100%" }}
             >
               <AgGridReact

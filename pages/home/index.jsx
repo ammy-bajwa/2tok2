@@ -38,7 +38,7 @@ export default function Index({ userName, title, isAdmin, messages, data }) {
           </div>
           <div className="card-body">
             <div
-              className="ag-theme-alpine-dark"
+              className="ag-theme-balham"
               style={{ height: "65vh", width: "100%" }}
             >
               <HomeDataTable data={data} />

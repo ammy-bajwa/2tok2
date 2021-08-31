@@ -23,7 +23,7 @@ export default function Index({ data, title, isAdmin }) {
           </div>
           <div className="card-body">
             <div
-              className="ag-theme-alpine-dark"
+              className="ag-theme-balham"
               style={{ height: "65vh", width: "100%" }}
             >
               <LogsTable data={data} />

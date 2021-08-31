@@ -376,7 +376,7 @@ export default function Index({
             </div>
             <div className="card-body">
               <div
-                className="ag-theme-alpine-dark"
+                className="ag-theme-balham"
                 style={{ height: 300, width: "100%" }}
               >
                 <UserBalanceTableHome
@@ -411,7 +411,7 @@ export default function Index({
           </div>
           <div className="card-body">
             <div
-              className="ag-theme-alpine-dark"
+              className="ag-theme-balham"
               style={{ height: "70vh", width: "100%" }}
             >
               <OrderBookHome tradeDataState={tradeDataState} />

@@ -101,7 +101,7 @@ export default function Index({ userName, title, isAdmin, message, data }) {
                 aria-labelledby="nav-trades-tab"
               >
                 <div
-                  className="ag-theme-alpine-dark"
+                  className="ag-theme-balham"
                   style={{ height: "70vh", width: "100%" }}
                 >
                   <AdminHistoryTradeTable data={data?.trade_data} />
@@ -114,7 +114,7 @@ export default function Index({ userName, title, isAdmin, message, data }) {
                 aria-labelledby="nav-deposits-tab"
               >
                 <div
-                  className="ag-theme-alpine-dark"
+                  className="ag-theme-balham"
                   style={{ height: "70vh", width: "100%" }}
                 >
                   <AdminHistoryDepWidTable data={data?.deposits_data} />
@@ -127,7 +127,7 @@ export default function Index({ userName, title, isAdmin, message, data }) {
                 aria-labelledby="nav-withdrawals-tab"
               >
                 <div
-                  className="ag-theme-alpine-dark"
+                  className="ag-theme-balham"
                   style={{ height: "70vh", width: "100%" }}
                 >
                   <AdminHistoryDepWidTable data={data?.withdrawals_data} />
