@@ -1,3 +1,3 @@
 export default function Index() {
-  return <h1 className="text-light text-center">User settings</h1>;
+  return <h1 className="text-dark text-center mt-3">User settings</h1>;
 }
