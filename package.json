@@ -7,7 +7,7 @@
     "dev": "nodemon index.js",
     "build": "next build",
     "databaseMigration": "knex migrate:latest",
-    "db": "heroku pg:psql postgresql-trapezoidal-22836 --app wayne2tok2"
+    "db": "heroku pg:psql postgresql-solid-78493 --app wayne2tok2"
   },
   "dependencies": {
     "ag-grid-community": "^26.0.0",

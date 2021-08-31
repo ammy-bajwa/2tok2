@@ -13,4 +13,7 @@ exports.up = function (knex) {
   return knex.raw(createQuery);
 };
 
-exports.down = function (knex) {};
+exports.down = function (knex) {
+  let dropQuery = `DROP TABLE wallet`;
+  return knex.raw(dropQuery);
+};

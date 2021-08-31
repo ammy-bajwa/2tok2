@@ -4,7 +4,7 @@ module.exports = {
     connection: {
       connectionString:
         process.env.DATABASE_URL ||
-        "postgres://etfoafwfistqlv:05a994451e373142a25d4153ca3615d77596f362247673956c30704df0cec68d@ec2-44-196-8-220.compute-1.amazonaws.com:5432/d7mufq9thbcm9e",
+        "postgres://otlqwwznmpbsbn:c6112ff19acd42f6e3f7967c8a7c777b96175d44dc93cd866bf6a1dd830470cc@ec2-52-2-118-38.compute-1.amazonaws.com:5432/d4jdsu9d2346ll",
       ssl: { rejectUnauthorized: false },
     },
     pool: { min: 0, max: 200 },
@@ -22,7 +22,7 @@ module.exports = {
     connection: {
       connectionString:
         process.env.DATABASE_URL ||
-        "postgres://etfoafwfistqlv:05a994451e373142a25d4153ca3615d77596f362247673956c30704df0cec68d@ec2-44-196-8-220.compute-1.amazonaws.com:5432/d7mufq9thbcm9e?ssl=true",
+        "postgres://otlqwwznmpbsbn:c6112ff19acd42f6e3f7967c8a7c777b96175d44dc93cd866bf6a1dd830470cc@ec2-52-2-118-38.compute-1.amazonaws.com:5432/d4jdsu9d2346ll?ssl=true",
       ssl: { rejectUnauthorized: false },
     },
     pool: { min: 0, max: 200 },
@@ -40,7 +40,7 @@ module.exports = {
     connection: {
       connectionString:
         process.env.DATABASE_URL ||
-        "postgres://etfoafwfistqlv:05a994451e373142a25d4153ca3615d77596f362247673956c30704df0cec68d@ec2-44-196-8-220.compute-1.amazonaws.com:5432/d7mufq9thbcm9e?ssl=true",
+        "postgres://otlqwwznmpbsbn:c6112ff19acd42f6e3f7967c8a7c777b96175d44dc93cd866bf6a1dd830470cc@ec2-52-2-118-38.compute-1.amazonaws.com:5432/d4jdsu9d2346ll?ssl=true",
       ssl: { rejectUnauthorized: false },
     },
     pool: { min: 0, max: 200 },
